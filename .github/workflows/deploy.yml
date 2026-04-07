@@ -42,7 +42,8 @@ jobs:
             docker pull ${{ secrets.ECR_URL }}/rural-frontend:latest
             docker stop rural-frontend || true
             docker rm rural-frontend || true
-            docker tag rural-frontend:latest ${{ secrets.ECR_URL }}:latest
-            docker push ${{ secrets.ECR_URL }}:latest
+            docker tag rural-frontend:latest ${{ secrets.ECR_URL }}/rural-frontend:latest
+            docker push ${{ secrets.ECR_URL }}/rural-frontend:latest
+            
 
                                                         
