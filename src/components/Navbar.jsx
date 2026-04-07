@@ -107,13 +107,13 @@ const s = {
   logoText: {
     fontSize: "1.3rem",
     fontWeight: 700,
-    color: "#d4af63",
+    color: "#d46390",
     display: "block"
   },
 
   logoSub: {
     fontSize: "0.65rem",
-    color: "rgba(212,175,99,0.5)",
+    color: "rgba(122, 99, 212, 0.5)",
     letterSpacing: "0.15em",
     textTransform: "uppercase"
   },
@@ -125,7 +125,7 @@ const s = {
   },
 
   link: {
-    color: "rgba(240,230,208,0.6)",
+    color: "rgba(17, 17, 16, 0.6)",
     textDecoration: "none",
     fontSize: "0.9rem",
     padding: "8px 16px",
@@ -135,7 +135,7 @@ const s = {
 
   activeLink: {
     background: "rgba(212,175,99,0.15)",
-    color: "#d4af63",
+    color: "#d463c9",
     boxShadow: "0 0 10px rgba(212,175,99,0.3)"
   },
 
