@@ -1,0 +1,4 @@
+window.ENV = {
+  USER_API: "http://51.20.78.199:5000/api",
+    ANIMAL_API: "http://51.20.78.199:5001/api"
+}
