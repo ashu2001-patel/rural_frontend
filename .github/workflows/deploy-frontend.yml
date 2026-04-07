@@ -9,7 +9,7 @@ jobs:
 deploy:
 runs-on: ubuntu-latest
 
-```
+
 steps:
   - name: Checkout code
     uses: actions/checkout@v3
@@ -41,4 +41,3 @@ steps:
         docker stop rural-frontend || true
         docker rm rural-frontend || true
         docker run -d -p 80:80 --name rural-frontend ${{ secrets.ECR_URL }}/rural-frontend:latest
-```
