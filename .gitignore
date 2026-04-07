@@ -1,44 +1,89 @@
-# dependencies
+# -----------------------------
+
+# Node modules
+
+# -----------------------------
 
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# build output
+# -----------------------------
+
+# Build files
+
+# -----------------------------
 
 dist/
 build/
 
-# environment variables
+# -----------------------------
+
+# Environment variables
+
+# -----------------------------
 
 .env
 .env.*
 !.env.example
 
-# logs
+# -----------------------------
 
+# Logs
+
+# -----------------------------
+
+logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+
+# -----------------------------
 
 # OS files
+
+# -----------------------------
 
 .DS_Store
 Thumbs.db
 
-# IDE/editor
+# -----------------------------
+
+# Editor files
+
+# -----------------------------
 
 .vscode/
 .idea/
 
-# cache
+# -----------------------------
 
-.cache/
-.vite/
+# Temporary files
 
-# testing
+# -----------------------------
+
+tmp/
+temp/
+
+# -----------------------------
+
+# Docker
+
+# -----------------------------
+
+.dockerignore
+
+# -----------------------------
+
+# Coverage
+
+# -----------------------------
 
 coverage/
 
-# misc
+# -----------------------------
+
+# Misc
+
+# -----------------------------
 
 *.local

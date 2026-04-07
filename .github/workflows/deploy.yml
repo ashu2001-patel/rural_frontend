@@ -24,11 +24,14 @@ steps:
   - name: Login to Amazon ECR
     uses: aws-actions/amazon-ecr-login@v1
 
-  - name: Build and Push Docker Image
-    run: |
-      docker build -t rural-frontend .
-      docker tag rural-frontend:latest ${{ secrets.ECR_URL }}/rural-frontend:latest
-      docker push ${{ secrets.ECR_URL }}/rural-frontend:latest
+  - name: Build Docker Image
+    run: docker build -t rural-frontend .
+
+  - name: Tag Docker Image
+    run: docker tag rural-frontend:latest ${{ secrets.ECR_URL }}/rural-frontend:latest
+
+  - name: Push to ECR
+    run: docker push ${{ secrets.ECR_URL }}/rural-frontend:latest
 
   - name: Deploy to EC2
     uses: appleboy/ssh-action@v1.0.0
@@ -41,4 +44,3 @@ steps:
         docker stop rural-frontend || true
         docker rm rural-frontend || true
         docker run -d -p 80:80 --name rural-frontend ${{ secrets.ECR_URL }}/rural-frontend:latest
-
