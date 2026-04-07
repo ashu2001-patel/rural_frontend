@@ -42,4 +42,4 @@ jobs:
             docker pull ${{ secrets.ECR_URL }}/rural-frontend:latest
             docker stop rural-frontend || true
             docker rm rural-frontend || true
-            docker run -d -p 80:80 --name rural-frontend ${{ secrets.ECR_URL }}/rural-frontend:latest
+            docker run -d -p 80:80 --name rural-frontend ${{ secrets.ECR_URL }}/rural-frontend:latest 
