@@ -12,14 +12,20 @@ const AnimalList = () => {
     maxPrice: ""
   });
 
-  // 🔥 Media Viewer State
   const [viewer, setViewer] = useState({
     open: false,
     media: [],
     index: 0
   });
 
+  const [zoom, setZoom] = useState(false);
+
   const navigate = useNavigate();
+
+  // 🔥 Better media detection
+  const isVideo = (url) => {
+    return /\.(mp4|webm|ogg)$/i.test(url);
+  };
 
   const fetchAnimals = async () => {
     setLoading(true);
@@ -44,14 +50,33 @@ const AnimalList = () => {
     fetchAnimals();
   }, []);
 
+  // 🔥 Keyboard controls
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (!viewer.open) return;
+
+      if (e.key === "ArrowRight") nextMedia();
+      if (e.key === "ArrowLeft") prevMedia();
+      if (e.key === "Escape") closeViewer();
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [viewer]);
+
   // 🔥 Viewer Functions
   const openViewer = (animal, index = 0) => {
     const media = [...(animal.images || []), ...(animal.videos || [])];
+
+    if (!media.length) return;
+
     setViewer({ open: true, media, index });
+    setZoom(false);
   };
 
   const closeViewer = () => {
     setViewer({ ...viewer, open: false });
+    setZoom(false);
   };
 
   const nextMedia = () => {
@@ -59,6 +84,7 @@ const AnimalList = () => {
       ...v,
       index: (v.index + 1) % v.media.length
     }));
+    setZoom(false);
   };
 
   const prevMedia = () => {
@@ -66,6 +92,7 @@ const AnimalList = () => {
       ...v,
       index: (v.index - 1 + v.media.length) % v.media.length
     }));
+    setZoom(false);
   };
 
   return (
@@ -101,11 +128,13 @@ const AnimalList = () => {
               <div key={animal._id} style={s.card}
                 onClick={() => navigate(`/animal/${animal._id}`)}>
 
-                {/* 🔥 CLICKABLE IMAGE */}
                 <img
                   src={animal.images?.[0] || "https://via.placeholder.com/400x170"}
                   alt={animal.name}
                   style={s.img}
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/400x170";
+                  }}
                   onClick={(e) => {
                     e.stopPropagation();
                     openViewer(animal, 0);
@@ -136,10 +165,19 @@ const AnimalList = () => {
 
           <button style={s.navLeft} onClick={prevMedia}>◀</button>
 
-          {viewer.media[viewer.index]?.includes(".mp4") ? (
+          {isVideo(viewer.media[viewer.index]) ? (
             <video src={viewer.media[viewer.index]} controls style={s.viewerMedia} />
           ) : (
-            <img src={viewer.media[viewer.index]} alt="" style={s.viewerMedia} />
+            <img
+              src={viewer.media[viewer.index]}
+              alt=""
+              style={{
+                ...s.viewerMedia,
+                transform: zoom ? "scale(1.5)" : "scale(1)",
+                cursor: "zoom-in"
+              }}
+              onClick={() => setZoom(z => !z)}
+            />
           )}
 
           <button style={s.navRight} onClick={nextMedia}>▶</button>
@@ -196,7 +234,6 @@ const s = {
   tag: { color: "lightgreen" },
   viewBtn: { color: "#d4af63" },
 
-  // 🔥 Viewer Styles
   viewer: {
     position: "fixed",
     top: 0,
@@ -212,7 +249,8 @@ const s = {
 
   viewerMedia: {
     maxWidth: "90%",
-    maxHeight: "80%"
+    maxHeight: "80%",
+    transition: "all 0.3s ease"
   },
 
   closeBtn: {

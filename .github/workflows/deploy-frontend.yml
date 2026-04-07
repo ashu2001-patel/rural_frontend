@@ -1,0 +1,44 @@
+name: Deploy Frontend
+
+on:
+push:
+branches:
+- main
+
+jobs:
+deploy:
+runs-on: ubuntu-latest
+
+```
+steps:
+  - name: Checkout code
+    uses: actions/checkout@v3
+
+  - name: Configure AWS credentials
+    uses: aws-actions/configure-aws-credentials@v2
+    with:
+      aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      aws-region: ${{ secrets.AWS_REGION }}
+
+  - name: Login to Amazon ECR
+    uses: aws-actions/amazon-ecr-login@v1
+
+  - name: Build and Push Docker Image
+    run: |
+      docker build -t rural-frontend .
+      docker tag rural-frontend:latest ${{ secrets.ECR_URL }}/rural-frontend:latest
+      docker push ${{ secrets.ECR_URL }}/rural-frontend:latest
+
+  - name: Deploy to EC2
+    uses: appleboy/ssh-action@v1.0.0
+    with:
+      host: ${{ secrets.EC2_HOST }}
+      username: ec2-user
+      key: ${{ secrets.EC2_SSH_KEY }}
+      script: |
+        docker pull ${{ secrets.ECR_URL }}/rural-frontend:latest
+        docker stop rural-frontend || true
+        docker rm rural-frontend || true
+        docker run -d -p 80:80 --name rural-frontend ${{ secrets.ECR_URL }}/rural-frontend:latest
+```
