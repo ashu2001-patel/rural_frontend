@@ -28,12 +28,16 @@ const Navbar = () => {
 
       {/* 🔥 LINKS */}
       <div style={s.links}>
-        <Link to="/" style={{
-          ...s.link,
-          ...(isActive("/") && s.activeLink)
-        }}>
+        <Link to="/" style={{ ...s.link, ...(isActive("/") && s.activeLink) }}>
           Animals
         </Link>
+
+        {/* ✅ NEW FEATURE */}
+        {user && (
+          <Link to="/my-animals" style={{ ...s.link, ...(isActive("/my-animals") && s.activeLink) }}>
+            My Animals
+          </Link>
+        )}
 
         <div style={s.divider} />
 
@@ -53,7 +57,7 @@ const Navbar = () => {
             </div>
 
             <button onClick={handleLogout} style={s.logoutBtn}>
-              Sign Out
+              Logout
             </button>
           </>
         ) : (
@@ -75,19 +79,19 @@ const s = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "0 2.5rem",
+    padding: "0 2rem",
     height: "70px",
-    background: "rgba(26,18,11,0.85)",
-    backdropFilter: "blur(12px)",
-    borderBottom: "1px solid rgba(212,175,99,0.15)",
-    fontFamily: "'Crimson Pro', serif"
+    background: "rgba(20,14,8,0.9)",
+    backdropFilter: "blur(10px)",
+    borderBottom: "1px solid rgba(212,175,99,0.2)",
+    fontFamily: "'Poppins', sans-serif"
   },
 
   glowLine: {
     position: "absolute",
     bottom: 0,
-    left: "10%",
-    right: "10%",
+    left: "15%",
+    right: "15%",
     height: "2px",
     background: "linear-gradient(90deg, transparent, #d4af63, transparent)"
   },
@@ -101,19 +105,18 @@ const s = {
 
   logoIcon: {
     fontSize: "1.8rem",
-    filter: "drop-shadow(0 0 6px rgba(212,175,99,0.6))"
+    filter: "drop-shadow(0 0 8px rgba(212,175,99,0.7))"
   },
 
   logoText: {
     fontSize: "1.3rem",
-    fontWeight: 700,
-    color: "#d46390",
-    display: "block"
+    fontWeight: "700",
+    color: "#d4af63"
   },
 
   logoSub: {
     fontSize: "0.65rem",
-    color: "rgba(122, 99, 212, 0.5)",
+    color: "rgba(212,175,99,0.5)",
     letterSpacing: "0.15em",
     textTransform: "uppercase"
   },
@@ -121,27 +124,28 @@ const s = {
   links: {
     display: "flex",
     alignItems: "center",
-    gap: "10px"
+    gap: "12px"
   },
 
   link: {
-    color: "rgba(17, 17, 16, 0.6)",
+    position: "relative",
+    color: "#e6d8b5",
     textDecoration: "none",
     fontSize: "0.9rem",
-    padding: "8px 16px",
+    padding: "8px 14px",
     borderRadius: "6px",
-    transition: "all 0.3s ease"
+    transition: "0.3s"
   },
 
   activeLink: {
     background: "rgba(212,175,99,0.15)",
-    color: "#d463c9",
-    boxShadow: "0 0 10px rgba(212,175,99,0.3)"
+    color: "#d4af63",
+    boxShadow: "0 0 12px rgba(212,175,99,0.4)"
   },
 
   divider: {
     width: "1px",
-    height: "18px",
+    height: "20px",
     background: "rgba(212,175,99,0.2)"
   },
 
@@ -149,9 +153,9 @@ const s = {
     padding: "8px 18px",
     background: "linear-gradient(135deg, #d4af63, #8b5a2b)",
     border: "none",
-    borderRadius: "6px",
+    borderRadius: "8px",
     color: "#1a120b",
-    fontWeight: "bold",
+    fontWeight: "600",
     cursor: "pointer",
     textDecoration: "none",
     transition: "0.3s",
@@ -189,7 +193,7 @@ const s = {
     borderRadius: "6px",
     border: "1px solid rgba(212,175,99,0.3)",
     background: "transparent",
-    color: "#f0e6d0",
+    color: "#e6d8b5",
     cursor: "pointer",
     transition: "0.3s"
   }

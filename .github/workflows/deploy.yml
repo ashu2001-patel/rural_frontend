@@ -45,5 +45,6 @@ jobs:
             docker tag rural-frontend:latest ${{ secrets.ECR_URL }}/rural-frontend:latest
             docker push ${{ secrets.ECR_URL }}/rural-frontend:latest
             docker run -d -p 80:80 --name rural-frontend 713863945680.dkr.ecr.eu-north-1.amazonaws.com/rural-frontend:latest
+            docker ps
 
                                                         
