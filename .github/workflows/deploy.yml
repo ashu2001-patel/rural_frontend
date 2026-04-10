@@ -46,5 +46,19 @@ jobs:
             docker push ${{ secrets.ECR_URL }}/rural-frontend:latest
             docker run -d -p 80:80 --name rural-frontend 713863945680.dkr.ecr.eu-north-1.amazonaws.com/rural-frontend:latest
             docker ps
+  - name: Deploy to EC2
+  uses: appleboy/ssh-action@v1.0.0
+  with:
+    host: ${{ secrets.EC2_HOST }}
+    username: ${{ secrets.EC2_USER }}
+    key: ${{ secrets.EC2_SSH_KEY }}
+    script: |
+      aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin 713863945680.dkr.ecr.eu-north-1.amazonaws.com
+      docker pull 713863945680.dkr.ecr.eu-north-1.amazonaws.com/rural-frontend:latest
+      docker stop rural-frontend || true
+      docker rm rural-frontend || true
+      docker run -d -p 80:80 --name rural-frontend 713863945680.dkr.ecr.eu-north-1.amazonaws.com/rural-frontend:latest
+      ~/update-ip.sh
+      docker ps          
 
                                                         
