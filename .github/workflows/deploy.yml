@@ -15,11 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ✅ Checkout latest code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # ✅ Configure AWS Credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -27,81 +25,58 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # ✅ Login to Amazon ECR
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      # ✅ Build Docker Image
       - name: Build Docker Image
         run: docker build -t $ECR_REPOSITORY .
 
-      # ✅ Tag Docker Image
       - name: Tag Docker Image
         run: |
           docker tag $ECR_REPOSITORY:latest \
           ${{ secrets.ECR_URL }}/$ECR_REPOSITORY:latest
 
-      # ✅ Push Image to ECR
       - name: Push to ECR
         run: |
           docker push \
           ${{ secrets.ECR_URL }}/$ECR_REPOSITORY:latest
 
-      # ✅ Deploy to EC2
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
-          envs: AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
+          port: 22
+          timeout: 60s
+          command_timeout: 10m
+          debug: true
           script: |
-
             echo "🚀 Starting Deployment..."
 
-            # ✅ Export AWS creds (so EC2 can access ECR)
-            export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-            export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            export AWS_DEFAULT_REGION=eu-north-1
-
-            # ✅ Install AWS CLI if not exists
-            if ! command -v aws &> /dev/null
-            then
-              echo "Installing AWS CLI..."
-              sudo yum install -y aws-cli
-            fi
-
-            # ✅ Install Docker if not exists
-            if ! command -v docker &> /dev/null
-            then
-              echo "Installing Docker..."
-              sudo yum install -y docker
-              sudo systemctl start docker
-              sudo systemctl enable docker
-              sudo usermod -aG docker ec2-user
-            fi
-
-            # ✅ Login to ECR
             aws ecr get-login-password --region eu-north-1 | \
             docker login --username AWS --password-stdin \
             ${{ secrets.ECR_URL }}
 
-            # ✅ Pull latest image
             docker pull ${{ secrets.ECR_URL }}/rural-frontend:latest
 
-            # ✅ Stop & remove old container
             docker stop rural-frontend || true
             docker rm rural-frontend || true
 
-            # ✅ Run new container
             docker run -d -p 80:80 \
               --name rural-frontend \
               ${{ secrets.ECR_URL }}/rural-frontend:latest
 
-            # ✅ Cleanup unused images
+            NEW_IP=$(curl -s http://checkip.amazonaws.com)
+            cat > /tmp/config.js << CONF
+            window.ENV = {
+              USER_API: "http://$NEW_IP:5000/api",
+              ANIMAL_API: "http://$NEW_IP:5001/api",
+              TOOL_API: "http://$NEW_IP:5002/api"
+            }
+            CONF
+            docker cp /tmp/config.js rural-frontend:/usr/share/nginx/html/config.js
+
             docker system prune -af
-
-            # ✅ Verify running container
             docker ps
-
             echo "✅ Deployment Successful!"
