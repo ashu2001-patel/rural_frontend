@@ -34,6 +34,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/vet" element={<div>Vet Service Coming Soon</div>} />
+<Route path="/plants" element={<div>Plants & Gardening Coming Soon</div>} />
+<Route path="/my-tools" element={<div>My Tools Coming Soon</div>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
