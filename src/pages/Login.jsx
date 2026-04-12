@@ -17,7 +17,7 @@ const Login = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await userAPI.post("/user/login", form); // ✅ fixed endpoint
+      const res = await userAPI.post("/users/login", form); // ✅ fixed endpoint
       login(res.data.user, res.data.token);
       navigate("/");
     } catch (err) {
