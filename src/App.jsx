@@ -10,7 +10,13 @@ import ToolList from "./pages/Toollist";
 import MyAnimals from "./pages/myanimal";
 import PostTool from "./pages/PostTool";
 import ToolDetail from "./pages/Tooldetails";
-import AnimalDetail from "./pages/AnimalDetails"; // ✅ FIXED
+import AnimalDetail from "./pages/AnimalDetails"; // 
+import PlantList from "./pages/PlantList";
+import PlantDetail from "./pages/PlantDetails";
+import PostPlant from "./pages/PostPlant";
+
+// Inside Routes:
+//✅ FIXED
 
 // Add inside Routes:
 
@@ -31,6 +37,9 @@ function App() {
           <Route path="/post-tool" element={<PostTool />} />
 <Route path="/animal/:id" element={<AnimalDetail />} /> 
           {/* User Routes */}
+          <Route path="/plants" element={<PlantList />} />
+<Route path="/plant/:id" element={<PlantDetail />} />
+<Route path="/post-plant" element={<PostPlant />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />

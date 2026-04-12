@@ -24,6 +24,10 @@ const attachToken = (config) => {
   }
   return config;
 };
+const PLANT_API = window.ENV?.PLANT_API || import.meta.env.VITE_PLANT_API;
+export const plantAPI = axios.create({ baseURL: PLANT_API });
+plantAPI.interceptors.request.use(attachToken);
+
 
 userAPI.interceptors.request.use(attachToken);
 animalAPI.interceptors.request.use(attachToken);
