@@ -23,7 +23,7 @@ const MyAnimals = () => {
     try {
       setLoading(true);
       // ✅ Fixed endpoint — uses employer ID from token
-      const res = await animalAPI.get(`/animal/employer/${user.id}`);
+      const res = await animalAPI.get(`/animal/my/${user.id}`);
       setAnimals(res.data.animals || []);
     } catch (err) {
       console.error(err);
