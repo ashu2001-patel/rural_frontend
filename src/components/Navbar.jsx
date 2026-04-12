@@ -145,6 +145,25 @@ const Navbar = () => {
           <Link to="/vet" className={`nav-link ${isActive("/vet") ? "active" : ""}`}>🏥 Vet</Link>
           <Link to="/plants" className={`nav-link ${isActive("/plants") ? "active" : ""}`}>🌱 Plants</Link>
           {user && <Link to="/my-animals" className={`nav-link ${isActive("/my-animals") ? "active" : ""}`}>My Listings</Link>}
+          // Desktop — add Plant link
+<Link to="/plants" className={`nav-link ${isActive("/plants") ? "active" : ""}`}>🌱 Plants</Link>
+
+// Desktop — change My Animals to My Listings
+{user && <Link to="/my-listings" className={`nav-link ${isActive("/my-listings") ? "active" : ""}`}>My Listings</Link>}
+
+// Desktop post buttons — add plant
+<Link to="/post-animal" className="nav-post-btn">＋ Animal</Link>
+<Link to="/post-tool" className="nav-post-btn">＋ Tool</Link>
+<Link to="/post-plant" className="nav-post-btn">＋ Plant</Link>
+
+// Profile drawer — update My Animals to My Listings
+<Link to="/my-listings" className="pd-item" onClick={close}>
+  <div className="pd-icon amber">📋</div> My Listings
+</Link>
+
+// Mobile menu — update
+<Link to="/my-listings" className={`nm-item ${isActive("/my-listings") ? "active" : ""}`} onClick={close}>My Listings</Link>
+<Link to="/post-plant" className="nm-post" onClick={close}>🌱 Post Plant</Link>
         </div>
 
         {/* Desktop Right */}
