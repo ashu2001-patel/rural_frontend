@@ -22,8 +22,8 @@ const MyAnimals = () => {
   const fetchMyAnimals = async () => {
     try {
       setLoading(true);
-      // ✅ Fixed endpoint — uses employer ID from token
-      const res = await animalAPI.get(`/animal/my/${user.id}`);
+      // ✅ Fixed endpoint
+      const res = await animalAPI.get(`/animal/employer/${user.id}`);
       setAnimals(res.data.animals || []);
     } catch (err) {
       console.error(err);
@@ -84,9 +84,8 @@ const MyAnimals = () => {
         .ma-empty h3 { font-family: 'Playfair Display', serif; color: rgba(212,175,99,0.4); margin-bottom: 8px; }
         .ma-empty p { color: rgba(240,230,208,0.25); font-size: 0.85rem; margin-bottom: 1.5rem; }
         .ma-post-btn { display: inline-block; padding: 10px 24px; background: linear-gradient(135deg, #d4af63, #8b5a2b); border: none; border-radius: 8px; color: #1a0f05; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; }
-        @media (max-width: 600px) {
-          .ma-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 600px) { .ma-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 400px) { .ma-page { padding: 1.5rem 1rem; } }
       `}</style>
 
       <div className="ma-page">
@@ -141,9 +140,9 @@ const MyAnimals = () => {
                     <div className="ma-actions">
                       <button
                         className="ma-edit-btn"
-                        onClick={() => navigate(`/post-animal?edit=${animal._id}`)}
+                        onClick={() => navigate(`/animal/${animal._id}`)}
                       >
-                        ✏️ Edit
+                        👁 View
                       </button>
                       <button
                         className="ma-delete-btn"
