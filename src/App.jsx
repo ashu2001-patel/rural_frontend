@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer"; // ✅ add this
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -10,9 +12,14 @@ import Profile from "./pages/Profile";
 import AnimalDetail from "./pages/AnimalDetails";
 import MyListings from "./pages/MyListings";
 
+// ✅ Legal Pages
+import About from "./pages/About";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+
 const ComingSoon = ({ title, icon }) => (
   <div style={{
-    minHeight: "100vh",
+    minHeight: "70vh",
     background: "#0f0a05",
     display: "flex",
     flexDirection: "column",
@@ -62,28 +69,46 @@ function App() {
           a { -webkit-tap-highlight-color: transparent; }
         `}</style>
 
-        <Navbar />
+        {/* Layout Wrapper */}
+        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
 
-        <Routes>
+          <Navbar />
 
-          {/* Animal Routes */}
-          <Route path="/" element={<AnimalList />} />
-          <Route path="/animal/:id" element={<AnimalDetail />} />
-          <Route path="/post-animal" element={<PostAnimal />} />
+          {/* Main Content */}
+          <div style={{ flex: 1 }}>
 
-          {/* My Listings */}
-          <Route path="/my-listings" element={<MyListings />} />
-          <Route path="/my-animals" element={<MyListings />} />
+            <Routes>
 
-          {/* User */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
+              {/* Animal Routes */}
+              <Route path="/" element={<AnimalList />} />
+              <Route path="/animal/:id" element={<AnimalDetail />} />
+              <Route path="/post-animal" element={<PostAnimal />} />
 
-          {/* 404 */}
-          <Route path="*" element={<ComingSoon title="Page Not Found" icon="🌾" />} />
+              {/* My Listings */}
+              <Route path="/my-listings" element={<MyListings />} />
+              <Route path="/my-animals" element={<MyListings />} />
 
-        </Routes>
+              {/* User */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/profile" element={<Profile />} />
+
+              {/* ✅ Legal Pages */}
+              <Route path="/about" element={<About />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
+
+              {/* 404 */}
+              <Route path="*" element={<ComingSoon title="Page Not Found" icon="🌾" />} />
+
+            </Routes>
+
+          </div>
+
+          {/* ✅ Footer always at bottom */}
+          <Footer />
+
+        </div>
 
       </BrowserRouter>
     </AuthProvider>
