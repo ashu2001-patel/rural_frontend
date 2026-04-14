@@ -1,18 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AnimalList from "./pages/AnimalList";
 import PostAnimal from "./pages/PostAnimal";
 import Profile from "./pages/Profile";
-import ToolList from "./pages/Toollist";
-import PostTool from "./pages/PostTool";
-import ToolDetail from "./pages/Tooldetails";
 import AnimalDetail from "./pages/AnimalDetails";
-import PlantList from "./pages/PlantList";
-import PlantDetail from "./pages/PlantDetails";
-import PostPlant from "./pages/PostPlant";
 import MyListings from "./pages/MyListings";
 
 const ComingSoon = ({ title, icon }) => (
@@ -52,6 +47,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+
         {/* Global mobile meta */}
         <style>{`
           * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,38 +63,28 @@ function App() {
         `}</style>
 
         <Navbar />
+
         <Routes>
-          {/* Animal */}
+
+          {/* Animal Routes */}
           <Route path="/" element={<AnimalList />} />
           <Route path="/animal/:id" element={<AnimalDetail />} />
           <Route path="/post-animal" element={<PostAnimal />} />
 
-          {/* Tools */}
-          <Route path="/tools" element={<ToolList />} />
-          <Route path="/tool/:id" element={<ToolDetail />} />
-          <Route path="/post-tool" element={<PostTool />} />
-
-          {/* Plants */}
-          <Route path="/plants" element={<PlantList />} />
-          <Route path="/plant/:id" element={<PlantDetail />} />
-          <Route path="/post-plant" element={<PostPlant />} />
-
           {/* My Listings */}
           <Route path="/my-listings" element={<MyListings />} />
           <Route path="/my-animals" element={<MyListings />} />
-          <Route path="/my-tools" element={<MyListings />} />
 
           {/* User */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
 
-          {/* Coming Soon */}
-          <Route path="/vet" element={<ComingSoon title="Vet Consultation Service" icon="🏥" />} />
-
           {/* 404 */}
           <Route path="*" element={<ComingSoon title="Page Not Found" icon="🌾" />} />
+
         </Routes>
+
       </BrowserRouter>
     </AuthProvider>
   );
