@@ -15,44 +15,19 @@ import MyListings from "./pages/MyListings";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
-// ✅ separate file
 
-const ComingSoon = ({ title, icon }) => (
+const ComingSoon = ({ title }) => (
   <div
     style={{
-      minHeight: "70vh",
-      background: "#0f0a05",
+      minHeight: "60vh",
       display: "flex",
-      flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      gap: "1rem",
-      padding: "2rem",
+      color: "#d4af63",
+      fontSize: "20px",
     }}
   >
-    <span style={{ fontSize: "3rem" }}>{icon}</span>
-    <h2
-      style={{
-        fontFamily: "'Playfair Display', serif",
-        color: "#d4af63",
-        fontSize: "clamp(1.2rem, 4vw, 1.8rem)",
-        textAlign: "center",
-        margin: 0,
-      }}
-    >
-      {title}
-    </h2>
-    <p
-      style={{
-        color: "rgba(212,175,99,0.4)",
-        fontSize: "0.85rem",
-        letterSpacing: "0.15em",
-        textTransform: "uppercase",
-        textAlign: "center",
-      }}
-    >
-      Coming Soon
-    </p>
+    {title}
   </div>
 );
 
@@ -60,28 +35,11 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-
-        <ScrollToTop /> {/* ✅ scroll fix */}
-
-        {/* Global CSS */}
-        <style>{`
-          * { box-sizing: border-box; margin: 0; padding: 0; }
-          html { font-size: 16px; -webkit-text-size-adjust: 100%; }
-          body { overflow-x: hidden; }
-          img { max-width: 100%; }
-          input, textarea, select, button {
-            font-family: inherit;
-            -webkit-appearance: none;
-            border-radius: 0;
-          }
-          a { -webkit-tap-highlight-color: transparent; }
-        `}</style>
-
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
           
           <Navbar />
 
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, padding: "10px" }}>
             <Routes>
 
               {/* Animal */}
@@ -102,11 +60,8 @@ function App() {
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
 
-              {/* 404 */}
-              <Route
-                path="*"
-                element={<ComingSoon title="Page Not Found" icon="🌾" />}
-              />
+              {/* Fallback */}
+              <Route path="*" element={<ComingSoon title="Page Not Found" />} />
 
             </Routes>
           </div>
