@@ -15,8 +15,7 @@ import MyListings from "./pages/MyListings";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
-
-import ScrollToTop from "./components/ScrollToTop"; // ✅ separate file
+// ✅ separate file
 
 const ComingSoon = ({ title, icon }) => (
   <div
