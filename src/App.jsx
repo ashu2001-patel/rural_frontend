@@ -7,7 +7,7 @@ import AnimalList from "./pages/AnimalList";
 import PostAnimal from "./pages/PostAnimal";
 import Profile from "./pages/Profile";
 import AnimalDetail from "./pages/AnimalDetails";
-import MyAnimals from "./pages/MyAnimals";
+import MyAnimals from "./pages/myanimal";
 
 function App() {
   return (
