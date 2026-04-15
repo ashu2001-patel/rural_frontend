@@ -23,7 +23,7 @@ const MyAnimals = () => {
     try {
       setLoading(true);
       // ✅ Fixed endpoint
-      const res = await animalAPI.get(`/my`);
+      const res = await animalAPI.get("/my");
       setAnimals(res.data.animals || []);
     } catch (err) {
       console.error(err);
