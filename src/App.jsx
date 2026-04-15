@@ -11,22 +11,14 @@ import PostAnimal from "./pages/PostAnimal";
 import Profile from "./pages/Profile";
 import AnimalDetail from "./pages/AnimalDetails";
 import MyListings from "./pages/MyListings";
+import RequestsPage from "./pages/RequestsPage";
 
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 
 const ComingSoon = ({ title }) => (
-  <div
-    style={{
-      minHeight: "60vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "#d4af63",
-      fontSize: "20px",
-    }}
-  >
+  <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#d4af63" }}>
     {title}
   </div>
 );
@@ -36,7 +28,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-          
+
           <Navbar />
 
           <div style={{ flex: 1, padding: "10px" }}>
@@ -49,6 +41,10 @@ function App() {
 
               {/* Listings */}
               <Route path="/my-listings" element={<MyListings />} />
+
+              {/* Requests */}
+              <Route path="/requests" element={<RequestsPage />} />
+              <Route path="/history" element={<RequestsPage />} />
 
               {/* User */}
               <Route path="/login" element={<Login />} />
