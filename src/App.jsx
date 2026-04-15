@@ -11,7 +11,7 @@ import PostAnimal from "./pages/PostAnimal";
 import Profile from "./pages/Profile";
 import AnimalDetail from "./pages/AnimalDetails";
 import MyListings from "./pages/MyListings";
-import RequestsPage from "./pages/RequestsPage";
+import RequestsPage from "./pages/requestpages";
 
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
