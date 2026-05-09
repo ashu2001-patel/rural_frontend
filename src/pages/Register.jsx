@@ -1,28 +1,89 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import { userAPI } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
+  const [method, setMethod] = useState(null); // "otp" | "gmail"
+  const [step, setStep] = useState(1);        // 1=phone, 2=otp, 3=details
   const [form, setForm] = useState({
     name: "", email: "", password: "",
-    phoneNumber: "", address: "", role: "buyer"
+    phoneNumber: "", address: "",
   });
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [welcome, setWelcome] = useState("");
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // ─── Normalise phone: strip non-digits, remove leading 0 ───
+  const normalisePhone = (raw) => raw.replace(/\D/g, "").replace(/^0+/, "");
+
+  // ─── Step 1: Send OTP ───────────────────────────────────────
+  const handleSendOtp = async () => {
+    const digits = normalisePhone(form.phoneNumber);
+    if (digits.length !== 10) {
+      setError("Enter a valid 10-digit phone number");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
-      const res = await userAPI.post("/users/register", form);
+      await userAPI.post("/users/send-otp", { phoneNumber: digits });
+      setStep(2);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to send OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ─── Step 2: Verify OTP ────────────────────────────────────
+  const handleVerifyOtp = async () => {
+    if (!otp || otp.length < 4) { setError("Enter the OTP"); return; }
+    setLoading(true);
+    setError("");
+    try {
+      await userAPI.post("/users/verify-otp", {
+        phoneNumber: normalisePhone(form.phoneNumber),
+        otp,
+      });
+      setStep(3);
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ─── Step 3: Register after OTP (phone-login endpoint) ─────
+  // This creates the user account with all their details
+  const handleOtpRegister = async (e) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.password) {
+      setError("Please fill all required fields");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      // Use /phone-login — backend creates user if not exists
+      const res = await userAPI.post("/users/phone-login", {
+        phoneNumber: normalisePhone(form.phoneNumber),
+        name: form.name,
+        email: form.email,
+        address: form.address,
+        password: form.password,
+      });
       login(res.data.user, res.data.token);
-      navigate("/");
+      if (res.data.isNewUser) setWelcome(`Welcome to Rural Company, ${res.data.user.name}! 🌾 Your account is ready.`);
+      else navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     } finally {
@@ -30,116 +91,344 @@ const Register = () => {
     }
   };
 
+  // ─── Gmail manual form register ────────────────────────────
+  const handleEmailRegister = async (e) => {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.password) {
+      setError("Please fill all required fields");
+      return;
+    }
+    setLoading(true);
+    setError("");
+    try {
+      const res = await userAPI.post("/users/register", {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        phoneNumber: form.phoneNumber || undefined,
+        address: form.address || undefined,
+      });
+      login(res.data.user, res.data.token);
+      if (res.data.isNewUser) setWelcome(`Welcome to Rural Company, ${res.data.user.name}! 🌾 Your account is ready.`);
+      else navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ─── Google one-click ───────────────────────────────────────
+  const handleGoogleRegister = async (credentialResponse) => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await userAPI.post("/users/google-login", {
+        credential: credentialResponse.credential,
+      });
+      login(res.data.user, res.data.token);
+      if (res.data.isNewUser) setWelcome(`Welcome to Rural Company, ${res.data.user.name}! 🌾 Your account is ready.`);
+      else navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Google signup failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div style={s.wrap}>
-      <div style={s.bg} />
-      <div style={s.grain} />
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap');
+        .reg-wrap { min-height: 100vh; background: #1a120b; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; position: relative; overflow: hidden; font-family: 'Poppins', sans-serif; }
+        .reg-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 80%, rgba(74,107,58,0.2) 0%, transparent 60%), radial-gradient(ellipse at 20% 20%, rgba(139,90,43,0.2) 0%, transparent 60%); pointer-events: none; }
+        .reg-card { position: relative; z-index: 10; width: 100%; max-width: 460px; background: rgba(30,20,12,0.9); border: 1px solid rgba(212,175,99,0.18); border-radius: 12px; padding: 2.5rem 2rem; }
+        .reg-top-line { position: absolute; top: 0; left: 10%; right: 10%; height: 2px; background: linear-gradient(90deg, transparent, #d4af63, transparent); border-radius: 2px; }
+        .reg-brand { text-align: center; margin-bottom: 1.5rem; }
+        .reg-icon { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+        .reg-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #d4af63; display: block; }
+        .reg-sub { font-size: 0.75rem; color: rgba(212,175,99,0.4); letter-spacing: 0.15em; text-transform: uppercase; display: block; margin-top: 3px; }
+        .reg-divider { display: flex; align-items: center; gap: 12px; margin: 1rem 0 1.4rem; }
+        .reg-divider-line { flex: 1; height: 1px; background: rgba(212,175,99,0.12); }
+        .reg-error { background: rgba(180,60,40,0.12); border: 1px solid rgba(180,60,40,0.25); border-radius: 8px; padding: 9px 12px; color: #e8917a; font-size: 0.84rem; text-align: center; margin-bottom: 1rem; }
+        .reg-method-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.2rem; }
+        .reg-method-btn { padding: 14px 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(212,175,99,0.15); border-radius: 10px; color: rgba(230,216,181,0.6); font-family: 'Poppins', sans-serif; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; text-align: center; }
+        .reg-method-btn:hover { border-color: rgba(212,175,99,0.3); color: rgba(212,175,99,0.8); background: rgba(212,175,99,0.05); }
+        .reg-method-icon { font-size: 1.4rem; display: block; margin-bottom: 5px; }
+        .reg-method-label { font-size: 0.8rem; font-weight: 500; display: block; }
+        .reg-method-sub { font-size: 0.68rem; color: rgba(212,175,99,0.4); display: block; margin-top: 2px; }
+        .reg-step-indicator { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 1.2rem; }
+        .reg-step-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(212,175,99,0.2); transition: all 0.2s; }
+        .reg-step-dot.active { background: #d4af63; width: 20px; border-radius: 4px; }
+        .reg-step-dot.done { background: rgba(120,180,80,0.6); }
+        .reg-label { display: block; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(212,175,99,0.5); margin-bottom: 5px; }
+        .reg-input { width: 100%; padding: 10px 13px; background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,99,0.15); border-radius: 8px; color: #f0e6d0; font-family: 'Poppins', sans-serif; font-size: 0.92rem; box-sizing: border-box; outline: none; transition: border-color 0.2s; }
+        .reg-input::placeholder { color: rgba(240,230,208,0.2); }
+        .reg-input:focus { border-color: rgba(212,175,99,0.4); background: rgba(255,255,255,0.06); }
+        .reg-field { margin-bottom: 1rem; }
+        .reg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .reg-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #d4af63, #8b5a2b); border: none; border-radius: 8px; color: #1a0f05; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+        .reg-btn:hover { transform: translateY(-1px); }
+        .reg-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+        .reg-btn-outline { width: 100%; padding: 11px; background: transparent; border: 1px solid rgba(212,175,99,0.25); border-radius: 8px; color: rgba(212,175,99,0.7); font-family: 'Poppins', sans-serif; font-size: 0.88rem; cursor: pointer; transition: all 0.2s; margin-top: 8px; }
+        .reg-btn-outline:hover { border-color: rgba(212,175,99,0.45); color: #d4af63; }
+        .reg-otp-row { display: flex; gap: 10px; }
+        .reg-otp-input { flex: 1; padding: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(212,175,99,0.15); border-radius: 8px; color: #f0e6d0; font-family: 'Poppins', sans-serif; font-size: 1.1rem; text-align: center; letter-spacing: 0.3em; outline: none; }
+        .reg-otp-input:focus { border-color: rgba(212,175,99,0.4); }
+        .reg-otp-btn { padding: 12px 18px; background: rgba(212,175,99,0.1); border: 1px solid rgba(212,175,99,0.25); border-radius: 8px; color: #d4af63; font-family: 'Poppins', sans-serif; font-size: 0.82rem; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+        .reg-otp-btn:hover { background: rgba(212,175,99,0.18); }
+        .reg-phone-row { display: flex; gap: 8px; align-items: center; }
+        .reg-phone-prefix { padding: 10px 12px; background: rgba(212,175,99,0.08); border: 1px solid rgba(212,175,99,0.15); border-radius: 8px; color: rgba(212,175,99,0.7); font-size: 0.9rem; white-space: nowrap; }
+        .reg-step-title { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(212,175,99,0.4); text-align: center; margin-bottom: 1rem; }
+        .reg-success-check { width: 44px; height: 44px; border-radius: 50%; background: rgba(74,107,58,0.2); border: 2px solid rgba(120,180,80,0.4); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin: 0 auto 8px; }
+        .reg-login { text-align: center; margin-top: 1.2rem; font-size: 0.84rem; color: rgba(240,230,208,0.35); }
+        .reg-login a { color: #d4af63; text-decoration: none; border-bottom: 1px solid rgba(212,175,99,0.3); }
+        .reg-google-wrap { display: flex; justify-content: center; margin-bottom: 4px; }
+        .reg-required { color: rgba(232,145,122,0.7); margin-left: 2px; }
+        .reg-welcome { background: rgba(74,107,58,0.15); border: 1px solid rgba(120,180,80,0.3); border-radius: 10px; padding: 1.2rem 1rem; text-align: center; margin-bottom: 1.2rem; }
+        .reg-welcome-icon { font-size: 2rem; display: block; margin-bottom: 6px; }
+        .reg-welcome-text { color: rgba(120,180,80,0.9); font-size: 0.9rem; line-height: 1.5; }
+        .reg-welcome-sub { color: rgba(212,175,99,0.5); font-size: 0.75rem; margin-top: 6px; display: block; }
+        @media (max-width: 480px) { .reg-card { padding: 2rem 1.4rem; } .reg-row { grid-template-columns: 1fr; } }
+      `}</style>
 
-      <div style={s.card}>
-        <div style={s.topLine} />
+      <div className="reg-wrap">
+        <div className="reg-bg" />
+        <div className="reg-card">
+          <div className="reg-top-line" />
 
-        <div style={s.brand}>
-          <span style={s.icon}>🌱</span>
-          <span style={s.title}>Join Rural Company</span>
-          <span style={s.sub}>Create your account</span>
-        </div>
-
-        <div style={s.divider}>
-          <div style={s.dividerLine} />
-          <span style={{ color: "rgba(74,107,58,0.7)", fontSize: 13 }}>🌿</span>
-          <div style={s.dividerLine} />
-        </div>
-
-        {error && <div style={s.error}>{error}</div>}
-
-        <form onSubmit={handleSubmit}>
-          {/* Row 1 */}
-          <div style={s.row}>
-            <div style={s.field}>
-              <label style={s.label}>Full Name</label>
-              <input style={s.input} type="text" name="name" placeholder="Ramesh Kumar" value={form.name} onChange={handleChange} required />
-            </div>
-            <div style={s.field}>
-              <label style={s.label}>Phone Number</label>
-              <input style={s.input} type="tel" name="phoneNumber" placeholder="+91 98765 43210" value={form.phoneNumber} onChange={handleChange} required />
-            </div>
+          <div className="reg-brand">
+            <span className="reg-icon">🌾</span>
+            <span className="reg-title">Join Rural Company</span>
+            <span className="reg-sub">Create your account</span>
           </div>
 
-          {/* Email */}
-          <div style={s.field}>
-            <label style={s.label}>Email Address</label>
-            <input style={s.input} type="email" name="email" placeholder="you@example.com" value={form.email} onChange={handleChange} required />
+          <div className="reg-divider">
+            <div className="reg-divider-line" />
+            <span style={{ color: "rgba(74,107,58,0.7)", fontSize: 13 }}>🌿</span>
+            <div className="reg-divider-line" />
           </div>
 
-          {/* Address */}
-          <div style={s.field}>
-            <label style={s.label}>Address</label>
-            <input style={s.input} type="text" name="address" placeholder="Village, District, State" value={form.address} onChange={handleChange} required />
-          </div>
+          {error && <div className="reg-error">{error}</div>}
 
-          {/* Password */}
-          <div style={s.field}>
-            <label style={s.label}>Password</label>
-            <input style={s.input} type="password" name="password" placeholder="••••••••" value={form.password} onChange={handleChange} required />
-          </div>
-
-          {/* Role */}
-          <div style={s.field}>
-            <label style={s.label}>I am a</label>
-            <div style={s.roleRow}>
-              <button
-                type="button"
-                style={{ ...s.roleBtn, ...(form.role === "vet" ? s.roleBtnActive : {}) }}
-                onClick={() => setForm({ ...form, role: "vet" })}
-              >
-                🌾 Seller / Farmer
+          {/* ── Welcome banner (shown after new registration) ── */}
+          {welcome && (
+            <div className="reg-welcome">
+              <span className="reg-welcome-icon">🌾</span>
+              <p className="reg-welcome-text">{welcome}</p>
+              <span className="reg-welcome-sub">A welcome SMS has been sent to your phone.</span>
+              <button className="reg-btn" style={{ marginTop: "1rem" }} onClick={() => navigate("/")}>
+                Go to Home →
               </button>
-              <button
-                type="button"
-                style={{ ...s.roleBtn, ...(form.role === "user" ? s.roleBtnActive : {}) }}
-                onClick={() => setForm({ ...form, role: "user" })}
-              >
-                🛒 Buyer
-              </button>
             </div>
-          </div>
+          )}
 
-          <button style={s.btn} type="submit" disabled={loading}>
-            {loading ? "Creating account..." : "Create Account"}
-          </button>
-        </form>
+          {/* ── Choose method ── */}
+          {!welcome && !method && (
+            <>
+              <p style={{ textAlign: "center", fontSize: "0.82rem", color: "rgba(212,175,99,0.4)", marginBottom: "1rem", letterSpacing: "0.08em" }}>
+                Choose how to register
+              </p>
+              <div className="reg-method-row">
+                <button className="reg-method-btn" onClick={() => { setMethod("otp"); setStep(1); }}>
+                  <span className="reg-method-icon">📱</span>
+                  <span className="reg-method-label">Register with OTP</span>
+                  <span className="reg-method-sub">Verify via phone</span>
+                </button>
+                <button className="reg-method-btn" onClick={() => setMethod("gmail")}>
+                  <span className="reg-method-icon">✉️</span>
+                  <span className="reg-method-label">Email / Google</span>
+                  <span className="reg-method-sub">Email or one-click</span>
+                </button>
+              </div>
+              <p className="reg-login">
+                Already have an account? <Link to="/login">Sign in</Link>
+              </p>
+            </>
+          )}
 
-        <p style={s.loginLink}>
-          Already have an account? <Link to="/login" style={s.link}>Sign in</Link>
-        </p>
+          {/* ══════════════════════════════════
+               OTP FLOW
+          ══════════════════════════════════ */}
+          {!welcome && method === "otp" && (
+            <>
+              <div className="reg-step-indicator">
+                {[1, 2, 3].map((s) => (
+                  <div
+                    key={s}
+                    className={`reg-step-dot ${step === s ? "active" : step > s ? "done" : ""}`}
+                  />
+                ))}
+              </div>
+
+              {/* Step 1 — Phone */}
+              {step === 1 && (
+                <>
+                  <p className="reg-step-title">Step 1 — Enter your phone number</p>
+                  <div className="reg-field">
+                    <label className="reg-label">Phone Number <span className="reg-required">*</span></label>
+                    <div className="reg-phone-row">
+                      <span className="reg-phone-prefix">+91</span>
+                      <input
+                        className="reg-input"
+                        type="tel"
+                        name="phoneNumber"
+                        placeholder="98765 43210"
+                        value={form.phoneNumber}
+                        onChange={handleChange}
+                        maxLength={10}
+                      />
+                    </div>
+                  </div>
+                  <button className="reg-btn" onClick={handleSendOtp} disabled={loading}>
+                    {loading ? "Sending OTP..." : "Send OTP →"}
+                  </button>
+                  <button className="reg-btn-outline" onClick={() => setMethod(null)}>← Back</button>
+                </>
+              )}
+
+              {/* Step 2 — OTP */}
+              {step === 2 && (
+                <>
+                  <p className="reg-step-title">Step 2 — OTP sent to +91 {form.phoneNumber}</p>
+                  <div className="reg-field">
+                    <label className="reg-label">OTP Code <span className="reg-required">*</span></label>
+                    <div className="reg-otp-row">
+                      <input
+                        className="reg-otp-input"
+                        type="tel"
+                        placeholder="• • • • • •"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        maxLength={6}
+                      />
+                      <button className="reg-otp-btn" onClick={handleSendOtp} disabled={loading}>
+                        Resend
+                      </button>
+                    </div>
+                  </div>
+                  <button className="reg-btn" onClick={handleVerifyOtp} disabled={loading}>
+                    {loading ? "Verifying..." : "Verify OTP →"}
+                  </button>
+                  <button className="reg-btn-outline" onClick={() => { setStep(1); setOtp(""); setError(""); }}>
+                    ← Back
+                  </button>
+                </>
+              )}
+
+              {/* Step 3 — Fill details */}
+              {step === 3 && (
+                <>
+                  <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+                    <div className="reg-success-check">✅</div>
+                    <p style={{ fontSize: "0.78rem", color: "rgba(120,180,80,0.7)", letterSpacing: "0.1em" }}>
+                      Phone verified!
+                    </p>
+                  </div>
+                  <p className="reg-step-title">Step 3 — Complete your profile</p>
+                  <form onSubmit={handleOtpRegister}>
+                    <div className="reg-row">
+                      <div className="reg-field">
+                        <label className="reg-label">Full Name <span className="reg-required">*</span></label>
+                        <input className="reg-input" type="text" name="name" placeholder="Ramesh Kumar"
+                          value={form.name} onChange={handleChange} required />
+                      </div>
+                      <div className="reg-field">
+                        <label className="reg-label">Email <span className="reg-required">*</span></label>
+                        <input className="reg-input" type="email" name="email" placeholder="you@email.com"
+                          value={form.email} onChange={handleChange} required />
+                      </div>
+                    </div>
+                    <div className="reg-field">
+                      <label className="reg-label">Address</label>
+                      <input className="reg-input" type="text" name="address" placeholder="Village, District, State"
+                        value={form.address} onChange={handleChange} />
+                    </div>
+                    <div className="reg-field">
+                      <label className="reg-label">Password <span className="reg-required">*</span></label>
+                      <input className="reg-input" type="password" name="password" placeholder="••••••••"
+                        value={form.password} onChange={handleChange} required />
+                    </div>
+                    <button className="reg-btn" type="submit" disabled={loading}>
+                      {loading ? "Creating account..." : "🌾 Create Account"}
+                    </button>
+                  </form>
+                </>
+              )}
+            </>
+          )}
+
+          {/* ══════════════════════════════════
+               GMAIL FLOW
+          ══════════════════════════════════ */}
+          {!welcome && method === "gmail" && (
+            <>
+              <p className="reg-step-title">Sign up with Google or your email</p>
+
+              {/* Option A — Google one-click */}
+              <div className="reg-google-wrap">
+                <GoogleLogin
+                  onSuccess={handleGoogleRegister}
+                  onError={() => setError("Google Sign In Failed")}
+                  theme="filled_black"
+                  shape="pill"
+                  text="signup_with"
+                />
+              </div>
+
+              <p style={{ textAlign: "center", fontSize: "0.75rem", color: "rgba(212,175,99,0.3)", margin: "12px 0", letterSpacing: "0.08em" }}>
+                — or fill in manually —
+              </p>
+
+              {/* Option B — Manual email form */}
+              <form onSubmit={handleEmailRegister}>
+                <div className="reg-row">
+                  <div className="reg-field">
+                    <label className="reg-label">Full Name <span className="reg-required">*</span></label>
+                    <input className="reg-input" type="text" name="name" placeholder="Ramesh Kumar"
+                      value={form.name} onChange={handleChange} required />
+                  </div>
+                  <div className="reg-field">
+                    <label className="reg-label">Phone</label>
+                    <input className="reg-input" type="tel" name="phoneNumber" placeholder="98765 43210"
+                      value={form.phoneNumber} onChange={handleChange} maxLength={10} />
+                  </div>
+                </div>
+                <div className="reg-field">
+                  <label className="reg-label">Email Address <span className="reg-required">*</span></label>
+                  <input className="reg-input" type="email" name="email" placeholder="you@gmail.com"
+                    value={form.email} onChange={handleChange} required />
+                </div>
+                <div className="reg-field">
+                  <label className="reg-label">Address</label>
+                  <input className="reg-input" type="text" name="address" placeholder="Village, District, State"
+                    value={form.address} onChange={handleChange} />
+                </div>
+                <div className="reg-field">
+                  <label className="reg-label">Password <span className="reg-required">*</span></label>
+                  <input className="reg-input" type="password" name="password" placeholder="••••••••"
+                    value={form.password} onChange={handleChange} required />
+                </div>
+                <button className="reg-btn" type="submit" disabled={loading}>
+                  {loading ? "Creating account..." : "🌾 Create Account"}
+                </button>
+              </form>
+
+              <button className="reg-btn-outline" onClick={() => { setMethod(null); setError(""); }}>
+                ← Back
+              </button>
+            </>
+          )}
+
+          {!welcome && method && (
+            <p className="reg-login">
+              Already have an account? <Link to="/login">Sign in</Link>
+            </p>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
-};
-
-const s = {
-  wrap: { minHeight: "100vh", background: "#1a120b", display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem", position: "relative", overflow: "hidden", fontFamily: "'Crimson Pro', Georgia, serif" },
-  bg: { position: "absolute", inset: 0, background: "radial-gradient(ellipse at 80% 80%, rgba(74,107,58,0.2) 0%, transparent 60%), radial-gradient(ellipse at 20% 20%, rgba(139,90,43,0.2) 0%, transparent 60%)" },
-  grain: { position: "absolute", inset: 0, opacity: 0.035, backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`, backgroundSize: "200px" },
-  card: { position: "relative", zIndex: 10, width: "100%", maxWidth: "460px", background: "rgba(30,20,12,0.88)", border: "1px solid rgba(212,175,99,0.18)", borderRadius: "4px", padding: "2.5rem", backdropFilter: "blur(12px)" },
-  topLine: { position: "absolute", top: 0, left: "10%", right: "10%", height: "2px", background: "linear-gradient(90deg, transparent, #d4af63, transparent)" },
-  brand: { textAlign: "center", marginBottom: "1.8rem" },
-  icon: { fontSize: "2rem", display: "block", marginBottom: "4px" },
-  title: { fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1.5rem", fontWeight: 700, color: "#d4af63", display: "block", letterSpacing: "0.03em" },
-  sub: { fontSize: "0.78rem", color: "rgba(212,175,99,0.4)", letterSpacing: "0.18em", textTransform: "uppercase", display: "block", marginTop: "2px" },
-  divider: { display: "flex", alignItems: "center", gap: "12px", margin: "1.2rem 0 1.5rem" },
-  dividerLine: { flex: 1, height: "1px", background: "rgba(212,175,99,0.12)" },
-  error: { background: "rgba(180,60,40,0.12)", border: "1px solid rgba(180,60,40,0.25)", borderRadius: "3px", padding: "8px 12px", color: "#e8917a", fontSize: "0.88rem", textAlign: "center", marginBottom: "1rem" },
-  row: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" },
-  field: { marginBottom: "1rem" },
-  label: { display: "block", fontSize: "0.7rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(212,175,99,0.55)", marginBottom: "5px" },
-  input: { width: "100%", padding: "10px 13px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(212,175,99,0.15)", borderRadius: "3px", color: "#f0e6d0", fontFamily: "'Crimson Pro', Georgia, serif", fontSize: "0.95rem", boxSizing: "border-box", outline: "none" },
-  roleRow: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" },
-  roleBtn: { padding: "9px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(212,175,99,0.12)", borderRadius: "3px", color: "rgba(240,230,208,0.45)", fontFamily: "'Crimson Pro', Georgia, serif", fontSize: "0.88rem", letterSpacing: "0.06em", cursor: "pointer", textAlign: "center", transition: "all 0.2s" },
-  roleBtnActive: { borderColor: "rgba(212,175,99,0.4)", background: "rgba(212,175,99,0.08)", color: "#d4af63" },
-  btn: { width: "100%", padding: "13px", background: "linear-gradient(135deg, #8b5a2b, #6b4420)", border: "1px solid rgba(212,175,99,0.3)", borderRadius: "3px", color: "#f0e6d0", fontFamily: "'Playfair Display', Georgia, serif", fontSize: "1rem", fontWeight: 700, letterSpacing: "0.08em", cursor: "pointer", marginTop: "0.3rem" },
-  loginLink: { textAlign: "center", marginTop: "1.3rem", fontSize: "0.88rem", color: "rgba(240,230,208,0.35)" },
-  link: { color: "#d4af63", textDecoration: "none", borderBottom: "1px solid rgba(212,175,99,0.3)" }
 };
 
 export default Register;

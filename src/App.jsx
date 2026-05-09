@@ -10,7 +10,7 @@ import AnimalList from "./pages/AnimalList";
 import PostAnimal from "./pages/PostAnimal";
 import Profile from "./pages/Profile";
 import AnimalDetail from "./pages/AnimalDetails";
-import MyListings from "./pages/MyListings";
+import MyAnimals from "./pages/myanimal";
 import RequestsPage from "./pages/requestpages";
 
 import About from "./pages/About";
@@ -18,7 +18,16 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 
 const ComingSoon = ({ title }) => (
-  <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#d4af63" }}>
+  <div
+    style={{
+      minHeight: "60vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "#d4af63",
+      fontSize: "20px",
+    }}
+  >
     {title}
   </div>
 );
@@ -27,28 +36,36 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh"
+          }}
+        >
           <Navbar />
 
           <div style={{ flex: 1, padding: "10px" }}>
             <Routes>
 
-              {/* Animal */}
+              {/* Home */}
               <Route path="/" element={<AnimalList />} />
               <Route path="/animal/:id" element={<AnimalDetail />} />
               <Route path="/post-animal" element={<PostAnimal />} />
 
-              {/* Listings */}
-              <Route path="/my-listings" element={<MyListings />} />
+              {/* My Listings */}
+              <Route path="/my-listings" element={<MyAnimals />} />
+              <Route path="/my-animals" element={<MyAnimals />} />
 
               {/* Requests */}
               <Route path="/requests" element={<RequestsPage />} />
               <Route path="/history" element={<RequestsPage />} />
 
-              {/* User */}
+              {/* Authentication */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+
+              {/* Profile */}
               <Route path="/profile" element={<Profile />} />
 
               {/* Legal */}
@@ -57,13 +74,15 @@ function App() {
               <Route path="/terms" element={<Terms />} />
 
               {/* Fallback */}
-              <Route path="*" element={<ComingSoon title="Page Not Found" />} />
+              <Route
+                path="*"
+                element={<ComingSoon title="Page Not Found" />}
+              />
 
             </Routes>
           </div>
 
           <Footer />
-
         </div>
       </BrowserRouter>
     </AuthProvider>
