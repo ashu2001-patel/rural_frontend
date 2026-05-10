@@ -161,7 +161,6 @@ const Navbar = () => {
             <>
               <Link to="/dashboard" className={`nav-link ${isActive("/dashboard") ? "active" : ""}`}>{t("nav.dashboard")}</Link>
               <Link to="/my-listings" className={`nav-link ${isActive("/my-listings") ? "active" : ""}`}>{t("nav.myListings")}</Link>
-              <Link to="/requests" className={`nav-link ${isActive("/requests") ? "active" : ""}`}>{t("nav.requests")}</Link>
             </>
           )}
         </div>
@@ -218,9 +217,6 @@ const Navbar = () => {
             <Link to="/my-listings" className="pd-item" onClick={close}>
               <div className="pd-icon amber">📋</div> {t("nav.myListings")}
             </Link>
-            <Link to="/requests" className="pd-item" onClick={close}>
-              <div className="pd-icon amber">📥</div> {t("nav.requests")}
-            </Link>
             <Link to="/transactions" className="pd-item" onClick={close}>
               <div className="pd-icon amber">💳</div> {t("nav.transactionHistory")}
             </Link>
@@ -256,7 +252,6 @@ const Navbar = () => {
           <>
             <Link to="/dashboard" className={`nm-item ${isActive("/dashboard") ? "active" : ""}`} onClick={close}>📊 {t("nav.dashboard")}</Link>
             <Link to="/my-listings" className={`nm-item ${isActive("/my-listings") ? "active" : ""}`} onClick={close}>📋 {t("nav.myListings")}</Link>
-            <Link to="/requests" className={`nm-item ${isActive("/requests") ? "active" : ""}`} onClick={close}>📥 {t("nav.requests")}</Link>
             <Link to="/transactions" className={`nm-item ${isActive("/transactions") ? "active" : ""}`} onClick={close}>💳 {t("nav.transactions")}</Link>
             <Link to="/profile" className={`nm-item ${isActive("/profile") ? "active" : ""}`} onClick={close}>👤 {t("nav.profile")}</Link>
           </>

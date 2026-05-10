@@ -157,12 +157,6 @@ const MyAnimals = () => {
                     {/* Actions */}
                     <div className="ma-actions">
                       <button
-                        className="ma-action-btn ma-action-btn--requests"
-                        onClick={() => navigate("/requests")}
-                      >
-                        📥 {t("myAnimals.card.requests")}
-                      </button>
-                      <button
                         className="ma-action-btn ma-action-btn--view"
                         onClick={() => navigate(`/animal/${animal._id}`)}
                       >
@@ -174,7 +168,7 @@ const MyAnimals = () => {
                         aria-label={t("myAnimals.card.delete")}
                         onClick={() => handleDelete(animal._id)}
                       >
-                        {deletingId === animal._id ? "…" : "🗑"}
+                        {deletingId === animal._id ? "…" : `🗑 ${t("myAnimals.card.delete")}`}
                       </button>
                     </div>
                   </div>
@@ -256,9 +250,8 @@ const STYLES = `
   font-weight:500; transition:opacity .18s;
 }
 .ma-action-btn:disabled       { opacity:.5; cursor:not-allowed; }
-.ma-action-btn--requests      { background:rgba(212,175,99,.1); border:1px solid rgba(212,175,99,.22); color:rgba(212,175,99,.8); }
 .ma-action-btn--view          { background:rgba(74,107,180,.12); border:1px solid rgba(74,107,180,.25); color:rgba(130,160,230,.8); }
-.ma-action-btn--delete        { flex:0 0 42px; background:rgba(220,53,69,.1); border:1px solid rgba(220,53,69,.2); color:rgba(240,100,100,.8); }
+.ma-action-btn--delete        { background:rgba(220,53,69,.1); border:1px solid rgba(220,53,69,.2); color:rgba(240,100,100,.8); }
 
 /* ── Empty / loading ── */
 .ma-center { display:flex; flex-direction:column; align-items:center; padding:80px 16px; }

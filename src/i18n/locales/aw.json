@@ -509,7 +509,9 @@
       "loadingDot": "…",
       "displayName": "संपर्क देखा",
       "blurredPlaceholder": "+91 ••••• •••••",
-      "whatsapp": "💬 व्हाट्सएप"
+      "whatsapp": "💬 व्हाट्सएप",
+      "call": "📞 कॉल",
+      "freeNote": "अबहीं मुफ्त बा • जब हमार लोग बढ़िहैं तो शुल्क लागू हो सकत बा"
     },
     "usage": {
       "loading": "लोड…",

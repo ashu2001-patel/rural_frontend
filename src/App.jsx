@@ -12,7 +12,6 @@ import PostAnimal from "./pages/PostAnimal";
 import Profile from "./pages/Profile";
 import AnimalDetail from "./pages/AnimalDetails";
 import MyAnimals from "./pages/myanimal";
-import RequestsPage from "./pages/requestpages";
 import Dashboard from "./pages/Dashboard";
 import TransactionHistory from "./pages/TransactionHistory";
 
@@ -62,10 +61,6 @@ function App() {
               {/* My Listings */}
               <Route path="/my-listings" element={<MyAnimals />} />
               <Route path="/my-animals" element={<MyAnimals />} />
-
-              {/* Requests */}
-              <Route path="/requests" element={<RequestsPage />} />
-              <Route path="/history" element={<RequestsPage />} />
 
               {/* Dashboard & Transactions */}
               <Route path="/dashboard"    element={<Dashboard />} />

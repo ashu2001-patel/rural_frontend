@@ -31,11 +31,9 @@ const Dashboard = () => {
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
-    listings:    [],
-    sellerReqs:  [],
-    buyerReqs:   [],
+    listings:     [],
     transactions: [],
-    usage:       [],
+    usage:        [],
   });
 
   useEffect(() => {
@@ -49,18 +47,14 @@ const Dashboard = () => {
     // Each call is independent; one failing should not blank out the page.
     const safe = (p) => p.then(r => r.data).catch(() => null);
 
-    const [listings, sellerReqs, buyerReqs, history, usage] = await Promise.all([
+    const [listings, history, usage] = await Promise.all([
       safe(animalAPI.get("/animal/my")),
-      safe(animalAPI.get("/request/seller/requests")),
-      safe(animalAPI.get("/request/buyer/requests")),
       safe(paymentAPI.get("/payment/history")),
       safe(paymentAPI.get("/usage/status")),
     ]);
 
     setData({
       listings:     listings?.animals || listings?.data || listings || [],
-      sellerReqs:   sellerReqs?.requests || sellerReqs || [],
-      buyerReqs:    buyerReqs?.requests  || buyerReqs  || [],
       transactions: history?.transactions || [],
       usage:        usage?.features || [],
     });
@@ -69,21 +63,19 @@ const Dashboard = () => {
 
   /* ── Derived stats ────────────────────────────────────────────────── */
   const listings    = Array.isArray(data.listings) ? data.listings : [];
-  const sellerReqs  = Array.isArray(data.sellerReqs) ? data.sellerReqs : [];
-  const buyerReqs   = Array.isArray(data.buyerReqs) ? data.buyerReqs : [];
   const transactions = Array.isArray(data.transactions) ? data.transactions : [];
 
-  const activeListings  = listings.filter(a => a.status !== "sold").length;
-  const pendingReceived = sellerReqs.filter(r => r.status === "pending").length;
-  const totalSpent      = transactions
+  const activeListings = listings.filter(a => a.status !== "sold").length;
+  const soldCount      = listings.filter(a => a.status === "sold").length;
+  const totalSpent     = transactions
     .filter(t => t.status === "success" && !t.isFree)
     .reduce((sum, t) => sum + (t.amount || 0), 0);
-  const freeRemaining   = data.usage.reduce((sum, f) => sum + f.remaining, 0);
+  const freeRemaining  = data.usage.reduce((sum, f) => sum + f.remaining, 0);
 
-  /* ── Recent activity feed (merged + sorted) ────────────────────────── */
-  const activity = [
-    ...transactions.slice(0, 10).map(tx => ({
-      kind: "tx",
+  /* ── Recent activity feed (transactions only) ──────────────────────── */
+  const activity = transactions
+    .slice(0, 10)
+    .map(tx => ({
       date: tx.createdAt,
       icon: FEATURE_ICON[tx.type] || "💳",
       title: tx.isFree
@@ -91,24 +83,7 @@ const Dashboard = () => {
         : t("dashboard.activity.paidFor", { amount: (tx.amount / 100).toFixed(0), feature: featureLabel(tx.type) }),
       meta: tx.status,
       link: tx.referenceId ? `/animal/${tx.referenceId}` : null,
-    })),
-    ...sellerReqs.slice(0, 10).map(r => ({
-      kind: "req-in",
-      date: r.createdAt,
-      icon: "📥",
-      title: t("dashboard.activity.newRequestFrom", { name: r.buyerName || t("dashboard.activity.buyerFallback") }),
-      meta: r.status,
-      link: r.animalId ? `/animal/${r.animalId}` : "/requests",
-    })),
-    ...buyerReqs.slice(0, 10).map(r => ({
-      kind: "req-out",
-      date: r.createdAt,
-      icon: "📤",
-      title: t("dashboard.activity.youRequested", { name: r.animalName || t("dashboard.activity.animalFallback") }),
-      meta: r.status,
-      link: r.animalId ? `/animal/${r.animalId}` : "/requests",
-    })),
-  ]
+    }))
     .filter(a => a.date)
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 8);
@@ -137,11 +112,11 @@ const Dashboard = () => {
             </div>
           </Link>
 
-          <Link to="/requests" className="db-stat clickable">
-            <span className="db-stat-ico">📥</span>
+          <Link to="/my-listings" className="db-stat clickable">
+            <span className="db-stat-ico">✅</span>
             <div>
-              <span className="db-stat-val">{loading ? "—" : pendingReceived}</span>
-              <span className="db-stat-lbl">{t("dashboard.stats.pendingRequests")}</span>
+              <span className="db-stat-val">{loading ? "—" : soldCount}</span>
+              <span className="db-stat-lbl">{t("myAnimals.stats.sold")}</span>
             </div>
           </Link>
 
@@ -255,7 +230,7 @@ const Dashboard = () => {
         {/* ── Quick links ──────────────────────────────────────────── */}
         <section className="db-quick">
           <Link to="/my-listings"   className="db-quick-tile">{t("dashboard.quick.myListings")}</Link>
-          <Link to="/requests"      className="db-quick-tile">{t("dashboard.quick.requests")}</Link>
+          <Link to="/post-animal"   className="db-quick-tile">＋ {t("nav.postAnimal")}</Link>
           <Link to="/transactions"  className="db-quick-tile">{t("dashboard.quick.transactions")}</Link>
           <Link to="/profile"       className="db-quick-tile">{t("dashboard.quick.profile")}</Link>
         </section>

@@ -509,7 +509,9 @@
       "loadingDot": "…",
       "displayName": "Reveal Contact",
       "blurredPlaceholder": "+91 ••••• •••••",
-      "whatsapp": "💬 WhatsApp"
+      "whatsapp": "💬 WhatsApp",
+      "call": "📞 Call",
+      "freeNote": "Free for now • Pricing may be introduced as our community grows"
     },
     "usage": {
       "loading": "Loading…",

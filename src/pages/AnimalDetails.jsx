@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { animalAPI } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import MediaViewer from "../components/MediaViewer";
-import TranslateBox from "../components/TranslateBox";
 import RevealContact from "../components/revealcontact";
 
 const AnimalDetail = () => {
@@ -13,12 +12,8 @@ const AnimalDetail = () => {
   const { user }  = useAuth();
   const { t, i18n } = useTranslation();
 
-  const [animal, setAnimal]               = useState(null);
-  const [loading, setLoading]             = useState(true);
-  const [showForm, setShowForm]           = useState(false);
-  const [requestSent, setRequestSent]     = useState(false);
-  const [requestLoading, setReqLoading]   = useState(false);
-  const [form, setForm] = useState({ buyerName: "", buyerContact: "", message: "" });
+  const [animal, setAnimal]   = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     animalAPI.get(`/animal/${id}`)
@@ -27,24 +22,10 @@ const AnimalDetail = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  const handleRequest = async (e) => {
-    e.preventDefault();
-    if (!user) { navigate("/login"); return; }
-    setReqLoading(true);
-    try {
-      await animalAPI.post(`/request/animal/${id}/request`, form);
-      setRequestSent(true);
-      setShowForm(false);
-    } catch (err) {
-      alert(err.response?.data?.message || t("animalDetails.request.failed"));
-    } finally {
-      setReqLoading(false);
-    }
-  };
-
   /* ── Loading ── */
   if (loading) return (
     <div className="ad-state">
+      <style>{STYLES}</style>
       <div className="ad-spinner" />
       <p className="ad-state-text">{t("animalDetails.loading")}</p>
     </div>
@@ -53,13 +34,13 @@ const AnimalDetail = () => {
   /* ── Not found ── */
   if (!animal) return (
     <div className="ad-state">
+      <style>{STYLES}</style>
       <span style={{ fontSize: "2.5rem" }}>🐄</span>
       <h3 className="ad-state-title">{t("animalDetails.notFound")}</h3>
       <button className="ad-btn ad-btn--gold" onClick={() => navigate(-1)}>← {t("common.goBack")}</button>
     </div>
   );
 
-  const isOwner   = user && (animal.employerId === user.id || animal.employerId === user._id);
   const isSold    = animal.status === "sold";
   const createdAt = animal.createdAt
     ? new Date(animal.createdAt).toLocaleDateString(i18n.language === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric" })
@@ -112,137 +93,34 @@ const AnimalDetail = () => {
                   <span className="ad-info-label">{t("animalDetails.info.category")}</span>
                   <strong className="ad-info-val">{animal.category || t("animalDetails.info.categoryDefault")}</strong>
                 </div>
-                <div className="ad-info-item">
+                <div className="ad-info-item ad-info-item--contact">
                   <span className="ad-info-label">{t("animalDetails.info.contact")}</span>
-                  <RevealContact contact={animal.contact} animalId={animal._id} />
+                  <RevealContact contact={animal.contact} />
                 </div>
               </div>
 
-              {/* Description */}
+              {/* Description (plain text — translation widget removed) */}
               {animal.description && (
                 <div className="ad-desc-wrap">
                   <p className="ad-desc-label">{t("animalDetails.description.label")}</p>
-                  <TranslateBox text={animal.description} />
+                  <p className="ad-desc-text">{animal.description}</p>
                 </div>
               )}
-
-              {/* Desktop CTA — hidden on mobile (shown in sticky bar instead) */}
-              <div className="ad-desktop-cta">
-                {animal.contact && (
-                  <div className="ad-cta-row">
-                    <a href={`tel:${animal.contact}`} className="ad-cta-btn ad-cta-btn--call">
-                      {t("animalDetails.cta.callSeller")}
-                    </a>
-                    <a
-                      href={`https://wa.me/${animal.contact.replace(/\D/g, "")}`}
-                      target="_blank" rel="noreferrer"
-                      className="ad-cta-btn ad-cta-btn--whatsapp"
-                    >
-                      {t("animalDetails.cta.whatsapp")}
-                    </a>
-                  </div>
-                )}
-
-                {!isOwner && !isSold && (
-                  <div className="ad-request-wrap">
-                    {requestSent ? (
-                      <div className="ad-success-msg">{t("animalDetails.request.successMsg")}</div>
-                    ) : !showForm ? (
-                      <button className="ad-cta-btn ad-cta-btn--request" onClick={() => setShowForm(true)}>
-                        {t("animalDetails.cta.requestToBuy")}
-                      </button>
-                    ) : (
-                      <RequestForm
-                        t={t}
-                        form={form} setForm={setForm}
-                        onSubmit={handleRequest} loading={requestLoading}
-                        onCancel={() => setShowForm(false)}
-                      />
-                    )}
-                  </div>
-                )}
-              </div>
 
             </div>
           </div>
         </div>
-
-        {/* ── Mobile sticky bottom bar ── */}
-        <div className="ad-sticky-bar">
-          {animal.contact ? (
-            <>
-              <a href={`tel:${animal.contact}`} className="ad-sticky-btn ad-sticky-btn--call">{t("animalDetails.cta.stickyCall")}</a>
-              <a
-                href={`https://wa.me/${animal.contact.replace(/\D/g, "")}`}
-                target="_blank" rel="noreferrer"
-                className="ad-sticky-btn ad-sticky-btn--whatsapp"
-              >
-                {t("animalDetails.cta.stickyWhatsapp")}
-              </a>
-            </>
-          ) : null}
-          {!isOwner && !isSold && !requestSent && (
-            <button
-              className="ad-sticky-btn ad-sticky-btn--request"
-              onClick={() => setShowForm(f => !f)}
-            >
-              {showForm ? t("animalDetails.cta.stickyCancel") : t("animalDetails.cta.stickyRequest")}
-            </button>
-          )}
-          {!isOwner && !isSold && requestSent && (
-            <div className="ad-sticky-sent">{t("animalDetails.cta.stickySent")}</div>
-          )}
-        </div>
-
-        {/* ── Mobile slide-up request form ── */}
-        {showForm && !requestSent && (
-          <div className="ad-mobile-form-wrap">
-            <RequestForm
-              t={t}
-              form={form} setForm={setForm}
-              onSubmit={handleRequest} loading={requestLoading}
-              onCancel={() => setShowForm(false)}
-            />
-          </div>
-        )}
 
       </div>
     </>
   );
 };
 
-const RequestForm = ({ t, form, setForm, onSubmit, loading, onCancel }) => (
-  <form onSubmit={onSubmit} className="ad-req-form">
-    <p className="ad-req-title">{t("animalDetails.request.title")}</p>
-    <input
-      className="ad-req-input" required placeholder={t("animalDetails.request.yourName")}
-      value={form.buyerName}
-      onChange={e => setForm(f => ({ ...f, buyerName: e.target.value }))}
-    />
-    <input
-      className="ad-req-input" required placeholder={t("animalDetails.request.yourContact")}
-      value={form.buyerContact}
-      onChange={e => setForm(f => ({ ...f, buyerContact: e.target.value }))}
-    />
-    <textarea
-      className="ad-req-input ad-req-textarea" placeholder={t("animalDetails.request.messageOptional")}
-      value={form.message}
-      onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
-    />
-    <div className="ad-req-btns">
-      <button type="submit" className="ad-req-send" disabled={loading}>
-        {loading ? t("animalDetails.request.sending") : t("animalDetails.request.send")}
-      </button>
-      <button type="button" className="ad-req-cancel" onClick={onCancel}>{t("common.cancel")}</button>
-    </div>
-  </form>
-);
-
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap');
 
 /* ── Base ── */
-.ad-page { min-height:100vh; background:#0f0a05; font-family:'Poppins',sans-serif; padding:16px; padding-bottom:90px; }
+.ad-page { min-height:100vh; background:#0f0a05; font-family:'Poppins',sans-serif; padding:16px; }
 
 /* ── Back ── */
 .ad-back { background:none; border:none; color:rgba(212,175,99,.55); cursor:pointer; font-size:.84rem; padding:0 0 14px; font-family:'Poppins',sans-serif; display:block; }
@@ -273,56 +151,24 @@ const STYLES = `
 /* ── Info grid ── */
 .ad-info-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
 .ad-info-item { background:rgba(255,255,255,.03); border:1px solid rgba(212,175,99,.08); border-radius:10px; padding:12px; }
+.ad-info-item--contact { grid-column:1 / -1; }
 .ad-info-label { display:block; font-size:.72rem; color:rgba(212,175,99,.45); margin-bottom:5px; }
 .ad-info-val   { font-size:.88rem; color:#f0e6d0; display:block; word-break:break-word; }
 
 /* ── Description ── */
-.ad-desc-wrap  { margin-bottom:18px; }
+.ad-desc-wrap  { margin-bottom:4px; }
 .ad-desc-label { font-size:.75rem; color:rgba(212,175,99,.45); margin-bottom:8px; letter-spacing:.05em; }
-
-/* ── Desktop CTA ── */
-.ad-cta-row     { display:flex; gap:10px; margin-bottom:10px; }
-.ad-cta-btn     { flex:1; padding:13px 10px; border-radius:10px; border:none; cursor:pointer; font-family:'Poppins',sans-serif; font-size:.85rem; font-weight:600; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; transition:opacity .18s; }
-.ad-cta-btn--call      { background:rgba(74,138,58,.2); border:1px solid rgba(74,138,58,.35); color:#7ecb63; }
-.ad-cta-btn--whatsapp  { background:rgba(37,211,102,.12); border:1px solid rgba(37,211,102,.25); color:#4fcf7c; }
-.ad-cta-btn--request   { background:linear-gradient(135deg,#d4af63,#8b5a2b); color:#1a0f05; width:100%; }
-
-/* ── Request form ── */
-.ad-request-wrap { margin-top:10px; }
-.ad-req-form     { background:rgba(15,10,5,.9); border:1px solid rgba(212,175,99,.15); border-radius:12px; padding:16px; }
-.ad-req-title    { font-size:.8rem; color:rgba(212,175,99,.6); margin:0 0 12px; letter-spacing:.05em; }
-.ad-req-input    { width:100%; padding:10px 12px; background:rgba(255,255,255,.04); border:1px solid rgba(212,175,99,.18); border-radius:8px; color:#f0e6d0; font-family:'Poppins',sans-serif; font-size:.85rem; outline:none; box-sizing:border-box; margin-bottom:8px; }
-.ad-req-textarea { height:72px; resize:none; }
-.ad-req-input::placeholder { color:rgba(240,230,208,.22); }
-.ad-req-btns  { display:flex; gap:8px; margin-top:4px; }
-.ad-req-send  { flex:1; padding:10px; background:linear-gradient(135deg,#d4af63,#8b5a2b); color:#1a0f05; border:none; border-radius:8px; font-weight:600; cursor:pointer; font-family:'Poppins',sans-serif; font-size:.85rem; }
-.ad-req-send:disabled { opacity:.6; }
-.ad-req-cancel { padding:10px 16px; background:transparent; border:1px solid rgba(255,255,255,.1); border-radius:8px; color:rgba(240,230,208,.5); cursor:pointer; font-family:'Poppins',sans-serif; font-size:.85rem; }
-
-/* ── Success ── */
-.ad-success-msg { padding:12px; background:rgba(74,107,58,.15); border:1px solid rgba(74,107,58,.25); border-radius:10px; text-align:center; font-size:.84rem; color:#a0d080; }
-
-/* ── Mobile sticky bar ── */
-.ad-sticky-bar {
-  display:none; position:fixed; bottom:0; left:0; right:0;
-  background:rgba(15,10,5,.96); border-top:1px solid rgba(212,175,99,.12);
-  padding:10px 14px; gap:8px; z-index:100; backdrop-filter:blur(12px);
-}
-.ad-sticky-btn { flex:1; padding:12px 8px; border-radius:10px; border:none; cursor:pointer; font-family:'Poppins',sans-serif; font-size:.82rem; font-weight:600; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:5px; }
-.ad-sticky-btn--call      { background:rgba(74,138,58,.2); border:1px solid rgba(74,138,58,.3); color:#7ecb63; }
-.ad-sticky-btn--whatsapp  { background:rgba(37,211,102,.12); border:1px solid rgba(37,211,102,.25); color:#4fcf7c; }
-.ad-sticky-btn--request   { background:linear-gradient(135deg,#d4af63,#8b5a2b); color:#1a0f05; }
-.ad-sticky-sent { flex:1; text-align:center; color:#a0d080; font-size:.82rem; padding:12px; }
-
-/* ── Mobile form overlay ── */
-.ad-mobile-form-wrap {
-  position:fixed; bottom:66px; left:0; right:0;
-  padding:12px 14px; background:rgba(15,10,5,.98);
-  border-top:1px solid rgba(212,175,99,.12); z-index:99;
+.ad-desc-text  {
+  color:#f0e6d0; font-size:.95rem; line-height:1.7;
+  margin:0; padding:14px 16px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(212,175,99,.08);
+  border-radius:10px;
+  white-space:pre-wrap;
 }
 
 /* ── State / loading ── */
-.ad-state { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; gap:12px; font-family:'Poppins',sans-serif; }
+.ad-state { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:60vh; gap:12px; font-family:'Poppins',sans-serif; background:#0f0a05; }
 .ad-spinner { width:36px; height:36px; border:2px solid rgba(212,175,99,.15); border-top:2px solid #d4af63; border-radius:50%; animation:ad-spin .8s linear infinite; }
 .ad-state-text  { color:rgba(212,175,99,.4); font-size:.85rem; }
 .ad-state-title { font-family:'Playfair Display',serif; color:rgba(212,175,99,.45); font-size:1.2rem; }
@@ -338,15 +184,14 @@ const STYLES = `
 
 /* ── Mobile ── */
 @media (max-width:640px) {
-  .ad-page        { padding:12px; padding-bottom:80px; }
-  .ad-price       { font-size:1.4rem; }
-  .ad-name        { font-size:1.3rem; }
-  .ad-info-grid   { grid-template-columns:1fr 1fr; }
-  .ad-sticky-bar  { display:flex; }
-  .ad-desktop-cta { display:none; }
+  .ad-page  { padding:12px; }
+  .ad-price { font-size:1.4rem; }
+  .ad-name  { font-size:1.3rem; }
+  .ad-info-grid { grid-template-columns:1fr 1fr; }
 }
 @media (max-width:380px) {
   .ad-info-grid { grid-template-columns:1fr; }
+  .ad-info-item--contact { grid-column:auto; }
 }
 `;
 
