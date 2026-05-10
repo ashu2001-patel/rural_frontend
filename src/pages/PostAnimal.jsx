@@ -25,9 +25,35 @@ const PostAnimal = () => {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError]   = useState("");
+  const [locationFetching, setLocationFetching] = useState(false);
   const navigate = useNavigate();
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+  const getAutoLocation = async () => {
+    setLocationFetching(true);
+    try {
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          timeout: 10000,
+          enableHighAccuracy: false,
+        });
+      });
+
+      const { latitude, longitude } = position.coords;
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+        { headers: { "User-Agent": "RuralCompanyApp/1.0" } }
+      );
+      const data = await response.json();
+      const locationName = data.address?.city || data.address?.town || data.address?.village || data.name || "Location";
+      set("location", locationName);
+    } catch (err) {
+      setError(t("postAnimal.errors.locationFetchFailed") || "Unable to fetch location");
+    } finally {
+      setLocationFetching(false);
+    }
+  };
 
   const pickCategory = (cat) => {
     setForm(f => ({
@@ -134,7 +160,18 @@ const PostAnimal = () => {
                 />
               </div>
               <div className="pa-section pa-section--flex">
-                <label className="pa-label">{t("postAnimal.fields.location")} *</label>
+                <label className="pa-label">
+                  {t("postAnimal.fields.location")} *
+                  <button
+                    type="button"
+                    className="pa-location-btn"
+                    onClick={getAutoLocation}
+                    disabled={locationFetching}
+                    title="Auto-detect location"
+                  >
+                    {locationFetching ? "📍" : "📍"}
+                  </button>
+                </label>
                 <input
                   className="pa-input"
                   name="location"
@@ -268,8 +305,11 @@ const STYLES = `
 .pa-section     { margin-bottom:18px; }
 .pa-section--flex { flex:1; }
 .pa-row         { display:flex; gap:12px; }
-.pa-label       { display:flex; justify-content:space-between; font-size:.77rem; color:rgba(212,175,99,.7); margin-bottom:8px; letter-spacing:.04em; }
+.pa-label       { display:flex; justify-content:space-between; align-items:center; font-size:.77rem; color:rgba(212,175,99,.7); margin-bottom:8px; letter-spacing:.04em; }
 .pa-char        { color:rgba(212,175,99,.35); }
+.pa-location-btn { background:none; border:none; font-size:1rem; cursor:pointer; padding:0; color:rgba(212,175,99,.8); transition:color .2s; }
+.pa-location-btn:hover { color:#d4af63; }
+.pa-location-btn:disabled { opacity:.5; cursor:not-allowed; }
 
 .pa-input {
   width:100%; padding:12px 14px; background:rgba(255,255,255,.04);
