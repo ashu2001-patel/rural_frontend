@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { animalAPI, paymentAPI } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
@@ -9,21 +10,24 @@ const FEATURE_ICON = {
   highlight_post: "⭐",
 };
 
-const fmtRelative = (iso) => {
-  const diff = Date.now() - new Date(iso).getTime();
-  const m = Math.floor(diff / 60000);
-  if (m < 1)    return "just now";
-  if (m < 60)   return `${m}m ago`;
-  const h = Math.floor(m / 60);
-  if (h < 24)   return `${h}h ago`;
-  const d = Math.floor(h / 24);
-  if (d < 7)    return `${d}d ago`;
-  return new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
-};
-
 const Dashboard = () => {
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  const fmtRelative = (iso) => {
+    const diff = Date.now() - new Date(iso).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1)    return t("dashboard.time.justNow");
+    if (m < 60)   return t("dashboard.time.minutesShort", { m });
+    const h = Math.floor(m / 60);
+    if (h < 24)   return t("dashboard.time.hoursShort", { h });
+    const d = Math.floor(h / 24);
+    if (d < 7)    return t("dashboard.time.daysShort", { d });
+    return new Date(iso).toLocaleDateString(i18n.language === "hi" ? "hi-IN" : "en-IN", { day: "2-digit", month: "short" });
+  };
+
+  const featureLabel = (key) => t(`transactions.feature.${key}`, (key || "").replace("_", " "));
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({
@@ -78,21 +82,21 @@ const Dashboard = () => {
 
   /* ── Recent activity feed (merged + sorted) ────────────────────────── */
   const activity = [
-    ...transactions.slice(0, 10).map(t => ({
+    ...transactions.slice(0, 10).map(tx => ({
       kind: "tx",
-      date: t.createdAt,
-      icon: FEATURE_ICON[t.type] || "💳",
-      title: t.isFree
-        ? `Used free ${(t.type || "").replace("_", " ")}`
-        : `Paid ₹${(t.amount / 100).toFixed(0)} for ${(t.type || "").replace("_", " ")}`,
-      meta: t.status,
-      link: t.referenceId ? `/animal/${t.referenceId}` : null,
+      date: tx.createdAt,
+      icon: FEATURE_ICON[tx.type] || "💳",
+      title: tx.isFree
+        ? t("dashboard.activity.usedFree", { feature: featureLabel(tx.type) })
+        : t("dashboard.activity.paidFor", { amount: (tx.amount / 100).toFixed(0), feature: featureLabel(tx.type) }),
+      meta: tx.status,
+      link: tx.referenceId ? `/animal/${tx.referenceId}` : null,
     })),
     ...sellerReqs.slice(0, 10).map(r => ({
       kind: "req-in",
       date: r.createdAt,
       icon: "📥",
-      title: `New request from ${r.buyerName || "buyer"}`,
+      title: t("dashboard.activity.newRequestFrom", { name: r.buyerName || t("dashboard.activity.buyerFallback") }),
       meta: r.status,
       link: r.animalId ? `/animal/${r.animalId}` : "/requests",
     })),
@@ -100,7 +104,7 @@ const Dashboard = () => {
       kind: "req-out",
       date: r.createdAt,
       icon: "📤",
-      title: `You requested ${r.animalName || "an animal"}`,
+      title: t("dashboard.activity.youRequested", { name: r.animalName || t("dashboard.activity.animalFallback") }),
       meta: r.status,
       link: r.animalId ? `/animal/${r.animalId}` : "/requests",
     })),
@@ -117,10 +121,10 @@ const Dashboard = () => {
         {/* ── Hero ──────────────────────────────────────────────────── */}
         <header className="db-hero">
           <div>
-            <p className="db-greet">Welcome back,</p>
-            <h1 className="db-name">{user?.name?.split(" ")[0] || "Friend"} 👋</h1>
+            <p className="db-greet">{t("dashboard.greet")}</p>
+            <h1 className="db-name">{user?.name?.split(" ")[0] || t("dashboard.fallbackName")} 👋</h1>
           </div>
-          <Link to="/post-animal" className="db-post-btn">＋ Post Animal</Link>
+          <Link to="/post-animal" className="db-post-btn">{t("dashboard.postBtn")}</Link>
         </header>
 
         {/* ── Stat cards ───────────────────────────────────────────── */}
@@ -129,7 +133,7 @@ const Dashboard = () => {
             <span className="db-stat-ico">🐄</span>
             <div>
               <span className="db-stat-val">{loading ? "—" : activeListings}</span>
-              <span className="db-stat-lbl">Active Listings</span>
+              <span className="db-stat-lbl">{t("dashboard.stats.activeListings")}</span>
             </div>
           </Link>
 
@@ -137,7 +141,7 @@ const Dashboard = () => {
             <span className="db-stat-ico">📥</span>
             <div>
               <span className="db-stat-val">{loading ? "—" : pendingReceived}</span>
-              <span className="db-stat-lbl">Pending Requests</span>
+              <span className="db-stat-lbl">{t("dashboard.stats.pendingRequests")}</span>
             </div>
           </Link>
 
@@ -145,7 +149,7 @@ const Dashboard = () => {
             <span className="db-stat-ico">🎁</span>
             <div>
               <span className="db-stat-val">{loading ? "—" : freeRemaining}</span>
-              <span className="db-stat-lbl">Free Uses Left</span>
+              <span className="db-stat-lbl">{t("dashboard.stats.freeUsesLeft")}</span>
             </div>
           </div>
 
@@ -155,7 +159,7 @@ const Dashboard = () => {
               <span className="db-stat-val amber">
                 {loading ? "—" : `₹${(totalSpent / 100).toFixed(0)}`}
               </span>
-              <span className="db-stat-lbl">Total Spent</span>
+              <span className="db-stat-lbl">{t("dashboard.stats.totalSpent")}</span>
             </div>
           </Link>
         </section>
@@ -163,13 +167,13 @@ const Dashboard = () => {
         {/* ── Free usage breakdown ─────────────────────────────────── */}
         <section className="db-card">
           <div className="db-card-header">
-            <h2 className="db-card-title">Your Free Usage</h2>
-            <span className="db-card-sub">Resets monthly</span>
+            <h2 className="db-card-title">{t("dashboard.freeUsage.title")}</h2>
+            <span className="db-card-sub">{t("dashboard.freeUsage.resets")}</span>
           </div>
 
           {loading && <div className="db-skeleton" />}
           {!loading && data.usage.length === 0 && (
-            <p className="db-empty-line">No usage data available.</p>
+            <p className="db-empty-line">{t("dashboard.freeUsage.noData")}</p>
           )}
           {!loading && data.usage.length > 0 && (
             <div className="db-usage-list">
@@ -182,10 +186,10 @@ const Dashboard = () => {
                     <div className="db-usage-head">
                       <span className="db-usage-name">
                         <span className="db-usage-ico">{FEATURE_ICON[f.featureKey] || "•"}</span>
-                        {f.displayName}
+                        {t(`transactions.feature.${f.featureKey}`, f.displayName)}
                       </span>
                       <span className={`db-usage-count ${done ? "exhausted" : ""}`}>
-                        {f.remaining}/{f.freeLimit} left
+                        {t("dashboard.freeUsage.leftFormat", { remaining: f.remaining, limit: f.freeLimit })}
                       </span>
                     </div>
                     <div className="db-bar">
@@ -196,7 +200,7 @@ const Dashboard = () => {
                     </div>
                     {done && (
                       <span className="db-usage-note">
-                        ₹{(f.price / 100).toFixed(0)} per use after limit
+                        {t("dashboard.freeUsage.perUsePrice", { price: (f.price / 100).toFixed(0) })}
                       </span>
                     )}
                   </div>
@@ -209,8 +213,8 @@ const Dashboard = () => {
         {/* ── Recent activity ───────────────────────────────────────── */}
         <section className="db-card">
           <div className="db-card-header">
-            <h2 className="db-card-title">Recent Activity</h2>
-            <Link to="/transactions" className="db-card-link">View history →</Link>
+            <h2 className="db-card-title">{t("dashboard.activity.title")}</h2>
+            <Link to="/transactions" className="db-card-link">{t("dashboard.activity.viewHistory")}</Link>
           </div>
 
           {loading && (
@@ -222,9 +226,7 @@ const Dashboard = () => {
           )}
 
           {!loading && activity.length === 0 && (
-            <p className="db-empty-line">
-              Nothing here yet. Browse the marketplace to get started.
-            </p>
+            <p className="db-empty-line">{t("dashboard.activity.empty")}</p>
           )}
 
           {!loading && activity.length > 0 && (
@@ -252,10 +254,10 @@ const Dashboard = () => {
 
         {/* ── Quick links ──────────────────────────────────────────── */}
         <section className="db-quick">
-          <Link to="/my-listings"   className="db-quick-tile">📋 My Listings</Link>
-          <Link to="/requests"      className="db-quick-tile">📥 Requests</Link>
-          <Link to="/transactions"  className="db-quick-tile">💳 Transactions</Link>
-          <Link to="/profile"       className="db-quick-tile">👤 Profile</Link>
+          <Link to="/my-listings"   className="db-quick-tile">{t("dashboard.quick.myListings")}</Link>
+          <Link to="/requests"      className="db-quick-tile">{t("dashboard.quick.requests")}</Link>
+          <Link to="/transactions"  className="db-quick-tile">{t("dashboard.quick.transactions")}</Link>
+          <Link to="/profile"       className="db-quick-tile">{t("dashboard.quick.profile")}</Link>
         </section>
       </div>
     </>

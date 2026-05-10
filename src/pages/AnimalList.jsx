@@ -1,13 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { animalAPI } from "../api/axios";
 
 const CATEGORIES = ["All", "Cow", "Buffalo", "Goat", "Sheep", "Pig", "Poultry", "Horse", "Camel"];
 const CAT_ICONS  = { All:"🐄", Cow:"🐄", Buffalo:"🐃", Goat:"🐐", Sheep:"🐑", Pig:"🐷", Poultry:"🐓", Horse:"🐴", Camel:"🐪" };
+const CAT_KEYS = { All: "all", Cow: "cow", Buffalo: "buffalo", Goat: "goat", Sheep: "sheep", Pig: "pig", Poultry: "poultry", Horse: "horse", Camel: "camel" };
 
 const SKELETON_COUNT = 6;
 
 const AnimalList = () => {
+  const { t } = useTranslation();
   const [animals,  setAnimals]  = useState([]);
   const [loading,  setLoading]  = useState(true);
   const [viewMode, setView]     = useState("grid");
@@ -79,14 +82,14 @@ const AnimalList = () => {
 
         {/* ── Hero ── */}
         <section className="al-hero">
-          <span className="al-hero-tag">🌾 Livestock Marketplace</span>
-          <h1 className="al-hero-title">Find animals from trusted rural sellers</h1>
-          <p className="al-hero-sub">Browse livestock with photos, videos and direct contact</p>
+          <span className="al-hero-tag">{t("animalList.heroTag")}</span>
+          <h1 className="al-hero-title">{t("animalList.heroTitle")}</h1>
+          <p className="al-hero-sub">{t("animalList.heroSub")}</p>
           <div className="al-stats">
-            <div className="al-stat"><strong>{stats.total}</strong><span>Listings</span></div>
-            <div className="al-stat"><strong>{stats.withImages}</strong><span>With Photos</span></div>
-            <div className="al-stat"><strong>{stats.withVideo}</strong><span>With Videos</span></div>
-            <div className="al-stat"><strong>{stats.states}</strong><span>States</span></div>
+            <div className="al-stat"><strong>{stats.total}</strong><span>{t("animalList.stats.listings")}</span></div>
+            <div className="al-stat"><strong>{stats.withImages}</strong><span>{t("animalList.stats.withPhotos")}</span></div>
+            <div className="al-stat"><strong>{stats.withVideo}</strong><span>{t("animalList.stats.withVideos")}</span></div>
+            <div className="al-stat"><strong>{stats.states}</strong><span>{t("animalList.stats.states")}</span></div>
           </div>
         </section>
 
@@ -98,7 +101,7 @@ const AnimalList = () => {
               className={`al-cat ${category === cat ? "al-cat--active" : ""}`}
               onClick={() => setCat(cat)}
             >
-              {CAT_ICONS[cat] || "🐾"} {cat}
+              {CAT_ICONS[cat] || "🐾"} {t(`animalList.categories.${CAT_KEYS[cat]}`)}
             </button>
           ))}
         </div>
@@ -111,21 +114,21 @@ const AnimalList = () => {
               className="al-filter-toggle"
               onClick={() => setShowFilters(f => !f)}
             >
-              {showFilters ? "✕ Hide Filters" : "⚙ Filters"}
+              {showFilters ? t("animalList.toolbar.hideFilters") : t("animalList.toolbar.showFilters")}
             </button>
             <select className="al-sort" value={sortBy} onChange={e => setSort(e.target.value)}>
-              <option value="latest">Latest</option>
-              <option value="price_asc">Price ↑</option>
-              <option value="price_desc">Price ↓</option>
+              <option value="latest">{t("animalList.toolbar.sortLatest")}</option>
+              <option value="price_asc">{t("animalList.toolbar.sortPriceAsc")}</option>
+              <option value="price_desc">{t("animalList.toolbar.sortPriceDesc")}</option>
             </select>
             <div className="al-view-toggle">
               <button
                 className={`al-view-btn ${viewMode === "grid" ? "al-view-btn--active" : ""}`}
-                onClick={() => setView("grid")} aria-label="Grid view"
+                onClick={() => setView("grid")} aria-label={t("animalList.toolbar.viewGrid")}
               >⊞</button>
               <button
                 className={`al-view-btn ${viewMode === "list" ? "al-view-btn--active" : ""}`}
-                onClick={() => setView("list")} aria-label="List view"
+                onClick={() => setView("list")} aria-label={t("animalList.toolbar.viewList")}
               >☰</button>
             </div>
           </div>
@@ -134,33 +137,33 @@ const AnimalList = () => {
           {showFilters && (
             <div className="al-filters">
               <input
-                className="al-input" placeholder="🔍 Animal name"
+                className="al-input" placeholder={t("animalList.filters.name")}
                 value={filters.name}
                 onChange={e => setFilters(f => ({ ...f, name: e.target.value }))}
               />
               <input
-                className="al-input" placeholder="📍 Location"
+                className="al-input" placeholder={t("animalList.filters.location")}
                 value={filters.location}
                 onChange={e => setFilters(f => ({ ...f, location: e.target.value }))}
               />
               <input
-                className="al-input al-input--narrow" type="number" placeholder="Min ₹"
+                className="al-input al-input--narrow" type="number" placeholder={t("animalList.filters.minPrice")}
                 value={filters.minPrice}
                 onChange={e => setFilters(f => ({ ...f, minPrice: e.target.value }))}
               />
               <input
-                className="al-input al-input--narrow" type="number" placeholder="Max ₹"
+                className="al-input al-input--narrow" type="number" placeholder={t("animalList.filters.maxPrice")}
                 value={filters.maxPrice}
                 onChange={e => setFilters(f => ({ ...f, maxPrice: e.target.value }))}
               />
-              <button className="al-search-btn" onClick={fetchAnimals}>Search</button>
+              <button className="al-search-btn" onClick={fetchAnimals}>{t("animalList.toolbar.search")}</button>
               <button
                 className="al-clear-btn"
                 onClick={() => {
                   setFilters({ name: "", location: "", minPrice: "", maxPrice: "" });
                   setTimeout(fetchAnimals, 0);
                 }}
-              >Clear</button>
+              >{t("animalList.toolbar.clear")}</button>
             </div>
           )}
         </div>
@@ -182,18 +185,18 @@ const AnimalList = () => {
         ) : filtered.length === 0 ? (
           <div className="al-empty">
             <span className="al-empty-icon">🐄</span>
-            <h3 className="al-empty-title">No animals found</h3>
-            <p className="al-empty-sub">Try changing the filters or check back later</p>
+            <h3 className="al-empty-title">{t("animalList.empty.title")}</h3>
+            <p className="al-empty-sub">{t("animalList.empty.sub")}</p>
           </div>
         ) : (
           <>
-            <p className="al-count">{filtered.length} listing{filtered.length !== 1 ? "s" : ""} found</p>
+            <p className="al-count">{t("animalList.count", { count: filtered.length })}</p>
 
             <section className={viewMode === "grid" ? "al-grid" : "al-list"}>
               {filtered.map((animal, idx) =>
                 viewMode === "grid"
-                  ? <GridCard  key={animal._id} animal={animal} idx={idx} wishlist={wishlist} onWishlist={toggleWishlist} onView={() => navigate(`/animal/${animal._id}`)} />
-                  : <ListCard  key={animal._id} animal={animal} idx={idx} wishlist={wishlist} onWishlist={toggleWishlist} onView={() => navigate(`/animal/${animal._id}`)} />
+                  ? <GridCard  key={animal._id} t={t} animal={animal} idx={idx} wishlist={wishlist} onWishlist={toggleWishlist} onView={() => navigate(`/animal/${animal._id}`)} />
+                  : <ListCard  key={animal._id} t={t} animal={animal} idx={idx} wishlist={wishlist} onWishlist={toggleWishlist} onView={() => navigate(`/animal/${animal._id}`)} />
               )}
             </section>
           </>
@@ -204,7 +207,7 @@ const AnimalList = () => {
 };
 
 /* ── Grid Card ── */
-const GridCard = ({ animal, idx, wishlist, onWishlist, onView }) => (
+const GridCard = ({ t, animal, idx, wishlist, onWishlist, onView }) => (
   <article className="al-card" style={{ animationDelay: `${idx * 0.05}s` }} onClick={onView}>
     <div className="al-card-media">
       <img
@@ -217,7 +220,7 @@ const GridCard = ({ animal, idx, wishlist, onWishlist, onView }) => (
       <div className="al-card-tags">
         {animal.category && <span className="al-card-tag">{animal.category}</span>}
         {animal.videos?.length
-          ? <span className="al-card-tag">🎥 Video</span>
+          ? <span className="al-card-tag">{t("animalList.card.video")}</span>
           : animal.images?.length
           ? <span className="al-card-tag">📷 {animal.images.length}</span>
           : null}
@@ -225,7 +228,7 @@ const GridCard = ({ animal, idx, wishlist, onWishlist, onView }) => (
       <button
         className={`al-wish ${wishlist.includes(animal._id) ? "al-wish--liked" : ""}`}
         onClick={e => onWishlist(e, animal._id)}
-        aria-label="Wishlist"
+        aria-label={t("animalList.card.wishlist")}
       >
         {wishlist.includes(animal._id) ? "♥" : "♡"}
       </button>
@@ -233,20 +236,23 @@ const GridCard = ({ animal, idx, wishlist, onWishlist, onView }) => (
     <div className="al-card-body">
       <div className="al-card-top">
         <h3 className="al-card-title">{animal.name}</h3>
-        <span className="al-badge">{animal.status === "sold" ? "Sold" : "Available"}</span>
+        <span className="al-badge">{animal.status === "sold" ? t("animalList.card.sold") : t("animalList.card.available")}</span>
       </div>
       <p className="al-price">₹{Number(animal.price || 0).toLocaleString()}</p>
-      <p className="al-meta">📍 {animal.location || "Location not added"}</p>
+      <p className="al-meta">📍 {animal.location || t("animalList.card.locationMissing")}</p>
       <div className="al-card-footer">
-        <span className="al-photos">{animal.images?.length || 0} photo{animal.images?.length !== 1 ? "s" : ""}{animal.videos?.length ? ` · ${animal.videos.length} video` : ""}</span>
-        <span className="al-view-link">View →</span>
+        <span className="al-photos">
+          {t("animalList.card.photos", { count: animal.images?.length || 0 })}
+          {animal.videos?.length ? ` · ${t("animalList.card.videoCount", { count: animal.videos.length })}` : ""}
+        </span>
+        <span className="al-view-link">{t("animalList.card.viewLink")}</span>
       </div>
     </div>
   </article>
 );
 
 /* ── List Card ── */
-const ListCard = ({ animal, idx, wishlist, onWishlist, onView }) => (
+const ListCard = ({ t, animal, idx, wishlist, onWishlist, onView }) => (
   <article className="al-list-card" style={{ animationDelay: `${idx * 0.04}s` }} onClick={onView}>
     <img
       src={animal.images?.[0] || "https://via.placeholder.com/100x80?text=No+Image"}
@@ -257,17 +263,17 @@ const ListCard = ({ animal, idx, wishlist, onWishlist, onView }) => (
     <div className="al-list-body">
       <div className="al-list-top">
         <h3 className="al-card-title">{animal.name}</h3>
-        <span className="al-badge">{animal.status === "sold" ? "Sold" : "Avail."}</span>
+        <span className="al-badge">{animal.status === "sold" ? t("animalList.card.sold") : t("animalList.card.availableShort")}</span>
       </div>
       <div className="al-list-price-row">
         <p className="al-price" style={{ margin: 0 }}>₹{Number(animal.price || 0).toLocaleString()}</p>
         {animal.category && <span className="al-card-tag">{animal.category}</span>}
       </div>
-      <p className="al-meta">📍 {animal.location || "—"}</p>
+      <p className="al-meta">📍 {animal.location || t("animalList.card.locationDash")}</p>
     </div>
     <button
       className={`al-wish al-wish--static ${wishlist.includes(animal._id) ? "al-wish--liked" : ""}`}
-      onClick={e => onWishlist(e, animal._id)} aria-label="Wishlist"
+      onClick={e => onWishlist(e, animal._id)} aria-label={t("animalList.card.wishlist")}
     >
       {wishlist.includes(animal._id) ? "♥" : "♡"}
     </button>

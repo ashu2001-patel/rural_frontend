@@ -1,10 +1,12 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import usePaymentGate from "../hooks/usePaymentGate";
 import PaymentGateModal from "./PaymentGateModal";
 import UsageBadge from "./UsageBadge";
 
 const HighlightPost = ({ animalId, isHighlighted, onSuccess }) => {
+  const { t } = useTranslation();
   const { user }  = useAuth();
   const navigate  = useNavigate();
   const gate      = usePaymentGate("highlight_post", animalId);
@@ -18,7 +20,7 @@ const HighlightPost = ({ animalId, isHighlighted, onSuccess }) => {
   if (isHighlighted) {
     return (
       <div style={s.highlighted}>
-        ⭐ Post is Highlighted
+        {t("payment.highlight.alreadyHighlighted")}
       </div>
     );
   }
@@ -35,12 +37,12 @@ const HighlightPost = ({ animalId, isHighlighted, onSuccess }) => {
         disabled={gate.loading || gate.payLoading}
       >
         {gate.loading || gate.payLoading
-          ? "Processing…"
+          ? t("payment.highlight.processing")
           : gate.requiresPayment
-          ? `⭐ Highlight — ₹${(gate.price / 100).toFixed(0)}`
+          ? t("payment.highlight.buttonPaid", { price: (gate.price / 100).toFixed(0) })
           : gate.remaining > 0
-          ? `⭐ Highlight Post (Free)`
-          : `⭐ Highlight Post`}
+          ? t("payment.highlight.buttonFree")
+          : t("payment.highlight.buttonPlain")}
       </button>
 
       {user && (
@@ -56,7 +58,7 @@ const HighlightPost = ({ animalId, isHighlighted, onSuccess }) => {
         show={gate.showModal}
         onClose={gate.closeModal}
         featureKey="highlight_post"
-        displayName={gate.displayName || "Highlight Post"}
+        displayName={gate.displayName || t("payment.highlight.displayName")}
         price={gate.price}
         remaining={gate.remaining}
         freeLimit={gate.freeLimit}

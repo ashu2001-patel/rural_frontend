@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PaymentGateModal
@@ -30,6 +31,8 @@ const PaymentGateModal = ({
   payLoading,
   payError,
 }) => {
+  const { t } = useTranslation();
+
   // Lock body scroll while modal is open
   useEffect(() => {
     if (show) {
@@ -45,13 +48,20 @@ const PaymentGateModal = ({
   const priceINR = (price / 100).toFixed(0);
   const isFree   = price === 0;
 
-  const FEATURE_META = {
-    reveal_contact: { icon: "📞", benefit: "See the seller's phone number and WhatsApp link" },
-    highlight_post: { icon: "⭐", benefit: "Feature your listing at the top of search results for 30 days" },
-    post_animal:    { icon: "🐄", benefit: "Create a new animal listing" },
-  };
+  const featureLabel = t(`transactions.feature.${featureKey}`, displayName);
 
-  const meta = FEATURE_META[featureKey] || { icon: "🔓", benefit: `Access ${displayName}` };
+  const FEATURE_ICON = {
+    reveal_contact: "📞",
+    highlight_post: "⭐",
+    post_animal:    "🐄",
+  };
+  const FEATURE_BENEFIT_KEY = {
+    reveal_contact: "payment.benefit.reveal_contact",
+    highlight_post: "payment.benefit.highlight_post",
+    post_animal:    "payment.benefit.post_animal",
+  };
+  const icon = FEATURE_ICON[featureKey] || "🔓";
+  const benefit = t(FEATURE_BENEFIT_KEY[featureKey] || "payment.benefit.default", { feature: featureLabel });
 
   return (
     <>
@@ -64,14 +74,14 @@ const PaymentGateModal = ({
       <div className="pgm-sheet" role="dialog" aria-modal="true">
 
         {/* Close */}
-        <button className="pgm-close" onClick={onClose} aria-label="Close">✕</button>
+        <button className="pgm-close" onClick={onClose} aria-label={t("common.close")}>✕</button>
 
         {/* Icon */}
-        <div className="pgm-icon">{meta.icon}</div>
+        <div className="pgm-icon">{icon}</div>
 
         {/* Heading */}
         <h2 className="pgm-title">
-          {isFree ? `Unlock ${displayName}` : `Free limit reached`}
+          {isFree ? t("payment.modal.unlock", { feature: featureLabel }) : t("payment.modal.limitReached")}
         </h2>
 
         {/* Usage pill */}
@@ -84,19 +94,19 @@ const PaymentGateModal = ({
               />
             </span>
             <span className="pgm-usage-text">
-              {freeLimit - remaining} / {freeLimit} free uses used
+              {t("payment.modal.youHaveUsed", { used: freeLimit - remaining, limit: freeLimit })}
             </span>
           </div>
         )}
 
         {/* Benefit */}
-        <p className="pgm-benefit">{meta.benefit}</p>
+        <p className="pgm-benefit">{benefit}</p>
 
         {/* Price block */}
         {!isFree && (
           <div className="pgm-price-block">
             <span className="pgm-price">₹{priceINR}</span>
-            <span className="pgm-price-note">one-time · instant access</span>
+            <span className="pgm-price-note">{t("payment.modal.costsOnce", { price: priceINR })}</span>
           </div>
         )}
 
@@ -110,17 +120,17 @@ const PaymentGateModal = ({
           disabled={payLoading}
         >
           {payLoading
-            ? <><span className="pgm-btn-spinner" /> Processing…</>
+            ? <><span className="pgm-btn-spinner" /> {t("payment.modal.processing")}</>
             : isFree
-            ? `Access ${displayName}`
-            : `Pay ₹${priceINR} & Continue`}
+            ? t("payment.modal.unlock", { feature: featureLabel })
+            : t("payment.modal.payNow", { price: priceINR })}
         </button>
 
         <button className="pgm-cancel-btn" onClick={onClose} disabled={payLoading}>
-          Not now
+          {t("common.cancel")}
         </button>
 
-        <p className="pgm-secure">🔒 Payments secured by Razorpay</p>
+        <p className="pgm-secure">🔒 {t("payment.modal.razorpaySafe")}</p>
       </div>
     </>
   );

@@ -1,12 +1,13 @@
 import { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { paymentAPI } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
-const FEATURE_META = {
-  reveal_contact: { label: "Reveal Contact", icon: "📞" },
-  post_animal:    { label: "Post Animal",    icon: "🐄" },
-  highlight_post: { label: "Highlight Post", icon: "⭐" },
+const FEATURE_ICON = {
+  reveal_contact: "📞",
+  post_animal:    "🐄",
+  highlight_post: "⭐",
 };
 
 const STATUS_STYLES = {
@@ -15,15 +16,17 @@ const STATUS_STYLES = {
   failed:  { color: "#fc8181", bg: "rgba(220,53,69,.12)", border: "rgba(220,53,69,.3)" },
 };
 
-const fmtDate = (iso) => {
-  const d = new Date(iso);
-  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })
-       + " · " + d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
-};
-
 const TransactionHistory = () => {
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  const fmtDate = (iso) => {
+    const d = new Date(iso);
+    const locale = i18n.language === "hi" ? "hi-IN" : "en-IN";
+    return d.toLocaleDateString(locale, { day: "2-digit", month: "short", year: "numeric" })
+         + " · " + d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
+  };
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError]     = useState("");
@@ -42,7 +45,7 @@ const TransactionHistory = () => {
       const res = await paymentAPI.get("/payment/history");
       setTransactions(res.data.transactions || []);
     } catch (err) {
-      setError(err.response?.data?.message || "Could not load history");
+      setError(err.response?.data?.message || t("transactions.errors.loadFailed"));
     } finally {
       setLoading(false);
     }
@@ -71,27 +74,27 @@ const TransactionHistory = () => {
       <style>{css}</style>
       <div className="th-wrap">
         <header className="th-header">
-          <Link to="/profile" className="th-back">← Back</Link>
-          <h1 className="th-title">Transaction History</h1>
-          <p className="th-sub">All your payments, free uses, and pending orders</p>
+          <Link to="/profile" className="th-back">{t("transactions.back")}</Link>
+          <h1 className="th-title">{t("transactions.title")}</h1>
+          <p className="th-sub">{t("transactions.sub")}</p>
         </header>
 
         {/* ── Stats Strip ─────────────────────────────────────────────── */}
         <div className="th-stats">
           <div className="th-stat">
-            <span className="th-stat-label">Total Spent</span>
+            <span className="th-stat-label">{t("transactions.stats.totalSpent")}</span>
             <span className="th-stat-val amber">₹{(stats.totalSpent / 100).toFixed(0)}</span>
           </div>
           <div className="th-stat">
-            <span className="th-stat-label">Paid</span>
+            <span className="th-stat-label">{t("transactions.stats.paid")}</span>
             <span className="th-stat-val">{stats.paidCount}</span>
           </div>
           <div className="th-stat">
-            <span className="th-stat-label">Free Uses</span>
+            <span className="th-stat-label">{t("transactions.stats.freeUses")}</span>
             <span className="th-stat-val">{stats.freeCount}</span>
           </div>
           <div className="th-stat">
-            <span className="th-stat-label">Pending</span>
+            <span className="th-stat-label">{t("transactions.stats.pending")}</span>
             <span className="th-stat-val">{stats.pending}</span>
           </div>
         </div>
@@ -99,11 +102,11 @@ const TransactionHistory = () => {
         {/* ── Filters ────────────────────────────────────────────────── */}
         <div className="th-filters">
           {[
-            { k: "all",     label: "All" },
-            { k: "success", label: "Successful" },
-            { k: "pending", label: "Pending" },
-            { k: "failed",  label: "Failed" },
-            { k: "free",    label: "Free" },
+            { k: "all",     label: t("transactions.filters.all") },
+            { k: "success", label: t("transactions.filters.successful") },
+            { k: "pending", label: t("transactions.filters.pending") },
+            { k: "failed",  label: t("transactions.filters.failed") },
+            { k: "free",    label: t("transactions.filters.free") },
           ].map(f => (
             <button
               key={f.k}
@@ -135,21 +138,21 @@ const TransactionHistory = () => {
           <div className="th-empty error">
             <span className="th-empty-ico">⚠</span>
             <p>{error}</p>
-            <button className="th-retry" onClick={fetchHistory}>Retry</button>
+            <button className="th-retry" onClick={fetchHistory}>{t("common.retry")}</button>
           </div>
         )}
 
         {!loading && !error && filtered.length === 0 && (
           <div className="th-empty">
             <span className="th-empty-ico">📭</span>
-            <h3>No transactions yet</h3>
+            <h3>{t("transactions.empty.title")}</h3>
             <p>
               {filter === "all"
-                ? "Your payments and free uses will appear here."
-                : `No ${filter} transactions found.`}
+                ? t("transactions.empty.all")
+                : t("transactions.empty.filtered", { status: t(`transactions.filters.${filter}`, filter) })}
             </p>
             {filter !== "all" && (
-              <button className="th-retry" onClick={() => setFilter("all")}>Show all</button>
+              <button className="th-retry" onClick={() => setFilter("all")}>{t("transactions.empty.showAll")}</button>
             )}
           </div>
         )}
@@ -157,17 +160,21 @@ const TransactionHistory = () => {
         {!loading && !error && filtered.length > 0 && (
           <div className="th-list">
             {filtered.map(tx => {
-              const meta   = FEATURE_META[tx.type] || { label: tx.type, icon: "•" };
+              const featureLabel = t(`transactions.feature.${tx.type}`, tx.type);
+              const featureIcon  = FEATURE_ICON[tx.type] || "•";
               const status = tx.isFree ? "success" : tx.status;
               const sStyle = STATUS_STYLES[status] || STATUS_STYLES.pending;
+              const statusText = tx.isFree
+                ? t("transactions.status.free")
+                : t(`transactions.status.${status}`, status);
 
               return (
                 <div key={tx._id} className="th-item">
-                  <div className="th-icon">{meta.icon}</div>
+                  <div className="th-icon">{featureIcon}</div>
 
                   <div className="th-main">
                     <div className="th-line1">
-                      <span className="th-feature">{meta.label}</span>
+                      <span className="th-feature">{featureLabel}</span>
                       <span
                         className="th-status"
                         style={{
@@ -176,7 +183,7 @@ const TransactionHistory = () => {
                           borderColor: sStyle.border,
                         }}
                       >
-                        {tx.isFree ? "Free" : status.charAt(0).toUpperCase() + status.slice(1)}
+                        {statusText}
                       </span>
                     </div>
 
@@ -184,21 +191,21 @@ const TransactionHistory = () => {
                       <span className="th-date">{fmtDate(tx.createdAt)}</span>
                       {tx.referenceId && (
                         <Link to={`/animal/${tx.referenceId}`} className="th-ref">
-                          View animal →
+                          {t("transactions.card.viewAnimal")}
                         </Link>
                       )}
                     </div>
 
                     {tx.razorpayPaymentId && (
                       <div className="th-line3">
-                        Payment ID: <span className="th-mono">{tx.razorpayPaymentId}</span>
+                        {t("transactions.card.paymentId")} <span className="th-mono">{tx.razorpayPaymentId}</span>
                       </div>
                     )}
                   </div>
 
                   <div className="th-amount">
                     {tx.isFree
-                      ? <span className="amt-free">FREE</span>
+                      ? <span className="amt-free">{t("common.free").toUpperCase()}</span>
                       : <span className="amt-val">₹{(tx.amount / 100).toFixed(0)}</span>}
                   </div>
                 </div>

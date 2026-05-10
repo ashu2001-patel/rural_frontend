@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { animalAPI } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import MediaViewer from "../components/MediaViewer";
@@ -10,6 +11,7 @@ const AnimalDetail = () => {
   const { id }    = useParams();
   const navigate  = useNavigate();
   const { user }  = useAuth();
+  const { t, i18n } = useTranslation();
 
   const [animal, setAnimal]               = useState(null);
   const [loading, setLoading]             = useState(true);
@@ -34,7 +36,7 @@ const AnimalDetail = () => {
       setRequestSent(true);
       setShowForm(false);
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to send request");
+      alert(err.response?.data?.message || t("animalDetails.request.failed"));
     } finally {
       setReqLoading(false);
     }
@@ -44,7 +46,7 @@ const AnimalDetail = () => {
   if (loading) return (
     <div className="ad-state">
       <div className="ad-spinner" />
-      <p className="ad-state-text">Loading animal details…</p>
+      <p className="ad-state-text">{t("animalDetails.loading")}</p>
     </div>
   );
 
@@ -52,16 +54,16 @@ const AnimalDetail = () => {
   if (!animal) return (
     <div className="ad-state">
       <span style={{ fontSize: "2.5rem" }}>🐄</span>
-      <h3 className="ad-state-title">Animal not found</h3>
-      <button className="ad-btn ad-btn--gold" onClick={() => navigate(-1)}>← Go Back</button>
+      <h3 className="ad-state-title">{t("animalDetails.notFound")}</h3>
+      <button className="ad-btn ad-btn--gold" onClick={() => navigate(-1)}>← {t("common.goBack")}</button>
     </div>
   );
 
   const isOwner   = user && (animal.employerId === user.id || animal.employerId === user._id);
   const isSold    = animal.status === "sold";
   const createdAt = animal.createdAt
-    ? new Date(animal.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
-    : "N/A";
+    ? new Date(animal.createdAt).toLocaleDateString(i18n.language === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric" })
+    : t("animalDetails.info.dateNA");
 
   return (
     <>
@@ -69,7 +71,7 @@ const AnimalDetail = () => {
       <div className="ad-page">
 
         {/* ── Back ── */}
-        <button className="ad-back" onClick={() => navigate(-1)}>← Back to listings</button>
+        <button className="ad-back" onClick={() => navigate(-1)}>{t("animalDetails.back")}</button>
 
         <div className="ad-grid">
 
@@ -89,7 +91,7 @@ const AnimalDetail = () => {
                   <h1 className="ad-name">{animal.name}</h1>
                 </div>
                 <span className={`ad-status-badge ${isSold ? "ad-status-badge--sold" : "ad-status-badge--live"}`}>
-                  {isSold ? "❌ Sold" : "🟢 Available"}
+                  {isSold ? t("animalDetails.statusSold") : t("animalDetails.statusLive")}
                 </span>
               </div>
 
@@ -99,19 +101,19 @@ const AnimalDetail = () => {
               {/* Info grid */}
               <div className="ad-info-grid">
                 <div className="ad-info-item">
-                  <span className="ad-info-label">📍 Location</span>
-                  <strong className="ad-info-val">{animal.location || "Not specified"}</strong>
+                  <span className="ad-info-label">{t("animalDetails.info.location")}</span>
+                  <strong className="ad-info-val">{animal.location || t("common.notSpecified")}</strong>
                 </div>
                 <div className="ad-info-item">
-                  <span className="ad-info-label">📅 Listed On</span>
+                  <span className="ad-info-label">{t("animalDetails.info.listedOn")}</span>
                   <strong className="ad-info-val">{createdAt}</strong>
                 </div>
                 <div className="ad-info-item">
-                  <span className="ad-info-label">🧾 Category</span>
-                  <strong className="ad-info-val">{animal.category || "Animal"}</strong>
+                  <span className="ad-info-label">{t("animalDetails.info.category")}</span>
+                  <strong className="ad-info-val">{animal.category || t("animalDetails.info.categoryDefault")}</strong>
                 </div>
                 <div className="ad-info-item">
-                  <span className="ad-info-label">📞 Contact</span>
+                  <span className="ad-info-label">{t("animalDetails.info.contact")}</span>
                   <RevealContact contact={animal.contact} animalId={animal._id} />
                 </div>
               </div>
@@ -119,7 +121,7 @@ const AnimalDetail = () => {
               {/* Description */}
               {animal.description && (
                 <div className="ad-desc-wrap">
-                  <p className="ad-desc-label">About this animal</p>
+                  <p className="ad-desc-label">{t("animalDetails.description.label")}</p>
                   <TranslateBox text={animal.description} />
                 </div>
               )}
@@ -129,14 +131,14 @@ const AnimalDetail = () => {
                 {animal.contact && (
                   <div className="ad-cta-row">
                     <a href={`tel:${animal.contact}`} className="ad-cta-btn ad-cta-btn--call">
-                      📞 Call Seller
+                      {t("animalDetails.cta.callSeller")}
                     </a>
                     <a
                       href={`https://wa.me/${animal.contact.replace(/\D/g, "")}`}
                       target="_blank" rel="noreferrer"
                       className="ad-cta-btn ad-cta-btn--whatsapp"
                     >
-                      💬 WhatsApp
+                      {t("animalDetails.cta.whatsapp")}
                     </a>
                   </div>
                 )}
@@ -144,13 +146,14 @@ const AnimalDetail = () => {
                 {!isOwner && !isSold && (
                   <div className="ad-request-wrap">
                     {requestSent ? (
-                      <div className="ad-success-msg">✅ Request sent! The seller will contact you.</div>
+                      <div className="ad-success-msg">{t("animalDetails.request.successMsg")}</div>
                     ) : !showForm ? (
                       <button className="ad-cta-btn ad-cta-btn--request" onClick={() => setShowForm(true)}>
-                        🤝 Request to Buy
+                        {t("animalDetails.cta.requestToBuy")}
                       </button>
                     ) : (
                       <RequestForm
+                        t={t}
                         form={form} setForm={setForm}
                         onSubmit={handleRequest} loading={requestLoading}
                         onCancel={() => setShowForm(false)}
@@ -168,13 +171,13 @@ const AnimalDetail = () => {
         <div className="ad-sticky-bar">
           {animal.contact ? (
             <>
-              <a href={`tel:${animal.contact}`} className="ad-sticky-btn ad-sticky-btn--call">📞 Call</a>
+              <a href={`tel:${animal.contact}`} className="ad-sticky-btn ad-sticky-btn--call">{t("animalDetails.cta.stickyCall")}</a>
               <a
                 href={`https://wa.me/${animal.contact.replace(/\D/g, "")}`}
                 target="_blank" rel="noreferrer"
                 className="ad-sticky-btn ad-sticky-btn--whatsapp"
               >
-                💬 WhatsApp
+                {t("animalDetails.cta.stickyWhatsapp")}
               </a>
             </>
           ) : null}
@@ -183,11 +186,11 @@ const AnimalDetail = () => {
               className="ad-sticky-btn ad-sticky-btn--request"
               onClick={() => setShowForm(f => !f)}
             >
-              {showForm ? "✕ Cancel" : "🤝 Request"}
+              {showForm ? t("animalDetails.cta.stickyCancel") : t("animalDetails.cta.stickyRequest")}
             </button>
           )}
           {!isOwner && !isSold && requestSent && (
-            <div className="ad-sticky-sent">✅ Request Sent</div>
+            <div className="ad-sticky-sent">{t("animalDetails.cta.stickySent")}</div>
           )}
         </div>
 
@@ -195,6 +198,7 @@ const AnimalDetail = () => {
         {showForm && !requestSent && (
           <div className="ad-mobile-form-wrap">
             <RequestForm
+              t={t}
               form={form} setForm={setForm}
               onSubmit={handleRequest} loading={requestLoading}
               onCancel={() => setShowForm(false)}
@@ -207,29 +211,29 @@ const AnimalDetail = () => {
   );
 };
 
-const RequestForm = ({ form, setForm, onSubmit, loading, onCancel }) => (
+const RequestForm = ({ t, form, setForm, onSubmit, loading, onCancel }) => (
   <form onSubmit={onSubmit} className="ad-req-form">
-    <p className="ad-req-title">Send a buying request</p>
+    <p className="ad-req-title">{t("animalDetails.request.title")}</p>
     <input
-      className="ad-req-input" required placeholder="Your Name"
+      className="ad-req-input" required placeholder={t("animalDetails.request.yourName")}
       value={form.buyerName}
       onChange={e => setForm(f => ({ ...f, buyerName: e.target.value }))}
     />
     <input
-      className="ad-req-input" required placeholder="Your Contact Number"
+      className="ad-req-input" required placeholder={t("animalDetails.request.yourContact")}
       value={form.buyerContact}
       onChange={e => setForm(f => ({ ...f, buyerContact: e.target.value }))}
     />
     <textarea
-      className="ad-req-input ad-req-textarea" placeholder="Message (optional)"
+      className="ad-req-input ad-req-textarea" placeholder={t("animalDetails.request.messageOptional")}
       value={form.message}
       onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
     />
     <div className="ad-req-btns">
       <button type="submit" className="ad-req-send" disabled={loading}>
-        {loading ? "Sending…" : "Send Request"}
+        {loading ? t("animalDetails.request.sending") : t("animalDetails.request.send")}
       </button>
-      <button type="button" className="ad-req-cancel" onClick={onCancel}>Cancel</button>
+      <button type="button" className="ad-req-cancel" onClick={onCancel}>{t("common.cancel")}</button>
     </div>
   </form>
 );

@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Footer = () => {
+  const { t } = useTranslation();
   return (
     <>
       <style>{`
@@ -78,31 +80,29 @@ const Footer = () => {
 
           {/* Brand */}
           <div>
-            <div className="footer-logo">🌾 Rural Company</div>
-            <p className="footer-desc">
-              Connecting farmers and buyers across India. Buy and sell animals easily with trust and transparency.
-            </p>
+            <div className="footer-logo">🌾 {t("footer.brand")}</div>
+            <p className="footer-desc">{t("footer.description")}</p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <div className="footer-title">Explore</div>
-            <Link to="/" className="footer-link">🐄 Animals</Link>
-            <Link to="/post-animal" className="footer-link">＋ Post Animal</Link>
-            <Link to="/my-listings" className="footer-link">📋 My Listings</Link>
+            <div className="footer-title">{t("footer.explore")}</div>
+            <Link to="/" className="footer-link">🐄 {t("nav.animals")}</Link>
+            <Link to="/post-animal" className="footer-link">＋ {t("nav.postAnimal")}</Link>
+            <Link to="/my-listings" className="footer-link">📋 {t("nav.myListings")}</Link>
           </div>
 
           {/* Legal */}
           <div>
-            <div className="footer-title">Legal</div>
-            <Link to="/about" className="footer-link">About Us</Link>
-            <Link to="/privacy" className="footer-link">Privacy Policy</Link>
-            <Link to="/terms" className="footer-link">Terms & Conditions</Link>
+            <div className="footer-title">{t("footer.legal")}</div>
+            <Link to="/about" className="footer-link">{t("footer.aboutUs")}</Link>
+            <Link to="/privacy" className="footer-link">{t("footer.privacyPolicy")}</Link>
+            <Link to="/terms" className="footer-link">{t("footer.termsConditions")}</Link>
           </div>
 
           {/* Contact */}
           <div>
-            <div className="footer-title">Contact</div>
+            <div className="footer-title">{t("footer.contact")}</div>
             <a href="mailto:support@ruralcompany.in" className="footer-link">
               📧 support@ruralcompany.in
             </a>
@@ -114,7 +114,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          © {new Date().getFullYear()} Rural Company • Made for Rural India 🇮🇳
+          {t("footer.copyright", { year: new Date().getFullYear() })}
         </div>
       </footer>
     </>

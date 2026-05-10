@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { translateText } from "../api/axios";
 
 const LANGUAGES = [
@@ -16,8 +17,9 @@ const LANGUAGES = [
 ];
 
 const TranslateBox = ({ text }) => {
+  const { t, i18n } = useTranslation();
   const [translated, setTranslated] = useState("");
-  const [selectedLang, setSelectedLang] = useState("hi");
+  const [selectedLang, setSelectedLang] = useState(i18n.language === "hi" ? "hi" : "en");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showOriginal, setShowOriginal] = useState(false);
@@ -31,7 +33,7 @@ const TranslateBox = ({ text }) => {
       setTranslated(result);
       setShowOriginal(false);
     } catch (err) {
-      setError("Translation failed. Please try again.");
+      setError(t("animalDetails.description.translateFailed"));
     } finally {
       setLoading(false);
     }
@@ -42,10 +44,10 @@ const TranslateBox = ({ text }) => {
       {/* Original Text */}
       <div style={s.originalBox}>
         <div style={s.labelRow}>
-          <span style={s.label}>Description</span>
+          <span style={s.label}>{t("animalDetails.description.translateLabel")}</span>
           {translated && (
             <button style={s.toggleBtn} onClick={() => setShowOriginal(!showOriginal)}>
-              {showOriginal ? "Show Translation" : "Show Original"}
+              {showOriginal ? t("animalDetails.description.showTranslation") : t("animalDetails.description.showOriginal")}
             </button>
           )}
         </div>
@@ -60,7 +62,7 @@ const TranslateBox = ({ text }) => {
           ))}
         </select>
         <button style={s.translateBtn} onClick={handleTranslate} disabled={loading}>
-          {loading ? "Translating..." : "🌐 Translate"}
+          {loading ? t("animalDetails.description.translating") : t("animalDetails.description.translateBtn")}
         </button>
       </div>
 
@@ -69,7 +71,7 @@ const TranslateBox = ({ text }) => {
       {translated && !showOriginal && (
         <div style={s.translatedInfo}>
           <span style={s.translatedLabel}>
-            Translated to {LANGUAGES.find(l => l.code === selectedLang)?.label}
+            {t("animalDetails.description.translatedTo", { lang: LANGUAGES.find(l => l.code === selectedLang)?.label })}
           </span>
         </div>
       )}

@@ -1,11 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { animalAPI } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import MediaViewer from "../components/MediaViewer";
 import HighlightPost from "../components/Highlightpost";
 
 const MyAnimals = () => {
+  const { t, i18n } = useTranslation();
   const [animals, setAnimals]   = useState([]);
   const [loading, setLoading]   = useState(true);
   const [deletingId, setDelId]  = useState(null);
@@ -37,13 +39,13 @@ const MyAnimals = () => {
   const handleRefresh = () => { setRefresh(true); fetchMyAnimals(); };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this listing? This cannot be undone.")) return;
+    if (!window.confirm(t("myAnimals.actions.deleteConfirm"))) return;
     try {
       setDelId(id);
       await animalAPI.delete(`/animal/${id}`);
       setAnimals(prev => prev.filter(a => a._id !== id));
     } catch {
-      alert("Delete failed. Please try again.");
+      alert(t("myAnimals.actions.deleteFailed"));
     } finally {
       setDelId(null);
     }
@@ -62,15 +64,15 @@ const MyAnimals = () => {
           {/* ── Top bar ── */}
           <div className="ma-topbar">
             <div>
-              <h2 className="ma-heading">My Animals</h2>
-              <p className="ma-sub">Manage your livestock listings</p>
+              <h2 className="ma-heading">{t("myAnimals.title")}</h2>
+              <p className="ma-sub">{t("myAnimals.sub")}</p>
             </div>
             <div className="ma-topbar-actions">
               <button className="ma-btn ma-btn--ghost" onClick={handleRefresh} disabled={refreshing}>
                 {refreshing ? "…" : "↻"}
               </button>
               <button className="ma-btn ma-btn--gold" onClick={() => navigate("/post-animal")}>
-                + Post Animal
+                + {t("nav.postAnimal")}
               </button>
             </div>
           </div>
@@ -78,10 +80,10 @@ const MyAnimals = () => {
           {/* ── Stats ── */}
           <div className="ma-stats">
             {[
-              { label: "Total",     value: animals.length,             icon: "🐄" },
-              { label: "Available", value: availableCount,             icon: "🟢" },
-              { label: "Sold",      value: soldCount,                  icon: "✅" },
-              { label: "Est. Value",value: `₹${totalValue.toLocaleString()}`, icon: "💰" },
+              { label: t("myAnimals.stats.total"),     value: animals.length,             icon: "🐄" },
+              { label: t("myAnimals.stats.available"), value: availableCount,             icon: "🟢" },
+              { label: t("myAnimals.stats.sold"),      value: soldCount,                  icon: "✅" },
+              { label: t("myAnimals.stats.estValue"),  value: `₹${totalValue.toLocaleString()}`, icon: "💰" },
             ].map(s => (
               <div key={s.label} className="ma-stat-card">
                 <span className="ma-stat-icon">{s.icon}</span>
@@ -95,16 +97,16 @@ const MyAnimals = () => {
           {loading ? (
             <div className="ma-center">
               <div className="ma-spinner" />
-              <p className="ma-hint">Loading your animals…</p>
+              <p className="ma-hint">{t("common.loading")}</p>
             </div>
 
           ) : animals.length === 0 ? (
             <div className="ma-empty">
               <span className="ma-empty-icon">🐄</span>
-              <h3 className="ma-empty-title">No listings yet</h3>
-              <p className="ma-empty-sub">Post your first animal to reach thousands of buyers</p>
+              <h3 className="ma-empty-title">{t("myAnimals.empty.title")}</h3>
+              <p className="ma-empty-sub">{t("myAnimals.empty.sub")}</p>
               <button className="ma-btn ma-btn--gold ma-btn--wide" onClick={() => navigate("/post-animal")}>
-                + Post Your First Animal
+                {t("myAnimals.empty.cta")}
               </button>
             </div>
 
@@ -117,7 +119,7 @@ const MyAnimals = () => {
                   <div className="ma-card-media">
                     <MediaViewer images={animal.images || []} videos={animal.videos || []} />
                     <span className={`ma-status-badge ${animal.status === "sold" ? "ma-status-badge--sold" : "ma-status-badge--live"}`}>
-                      {animal.status === "sold" ? "Sold" : "Live"}
+                      {animal.status === "sold" ? t("myAnimals.card.sold") : t("myAnimals.card.live")}
                     </span>
                   </div>
 
@@ -138,9 +140,9 @@ const MyAnimals = () => {
                     </div>
 
                     <p className="ma-card-date">
-                      Posted {animal.createdAt
-                        ? new Date(animal.createdAt).toLocaleDateString("en-IN", { day:"numeric", month:"short", year:"numeric" })
-                        : "N/A"}
+                      {animal.createdAt
+                        ? new Date(animal.createdAt).toLocaleDateString(i18n.language === "hi" ? "hi-IN" : "en-IN", { day:"numeric", month:"short", year:"numeric" })
+                        : t("animalDetails.info.dateNA")}
                     </p>
 
                     {/* Highlight */}
@@ -158,17 +160,18 @@ const MyAnimals = () => {
                         className="ma-action-btn ma-action-btn--requests"
                         onClick={() => navigate("/requests")}
                       >
-                        📥 Requests
+                        📥 {t("myAnimals.card.requests")}
                       </button>
                       <button
                         className="ma-action-btn ma-action-btn--view"
                         onClick={() => navigate(`/animal/${animal._id}`)}
                       >
-                        👁 View
+                        👁 {t("myAnimals.card.view")}
                       </button>
                       <button
                         className="ma-action-btn ma-action-btn--delete"
                         disabled={deletingId === animal._id}
+                        aria-label={t("myAnimals.card.delete")}
                         onClick={() => handleDelete(animal._id)}
                       >
                         {deletingId === animal._id ? "…" : "🗑"}

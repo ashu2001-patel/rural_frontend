@@ -1,0 +1,573 @@
+{
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "send": "Send",
+    "search": "Search",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "retry": "Retry",
+    "view": "View",
+    "viewAll": "View all",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "free": "Free",
+    "paid": "Paid",
+    "pending": "Pending",
+    "success": "Success",
+    "failed": "Failed",
+    "available": "Available",
+    "sold": "Sold",
+    "notProvided": "Not provided",
+    "notSpecified": "Not specified",
+    "optional": "(optional)",
+    "required": "Required",
+    "all": "All",
+    "comingSoon": "Coming Soon",
+    "pageNotFound": "Page Not Found",
+    "goHome": "Go to Home",
+    "goBack": "Go Back",
+    "perUseAfterLimit": "per use after limit",
+    "rupee": "₹",
+    "and": "and"
+  },
+
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "hindi": "हिंदी",
+    "switchTo": "Switch to {{lang}}"
+  },
+
+  "nav": {
+    "brandTitle": "Animal Market",
+    "brandSub": "Buy • Sell • Trade Animals",
+    "animals": "Animals",
+    "dashboard": "Dashboard",
+    "myListings": "My Listings",
+    "requests": "Requests",
+    "transactions": "Transactions",
+    "transactionHistory": "Transaction History",
+    "profile": "Profile",
+    "postAnimal": "Post Animal",
+    "login": "Login",
+    "register": "Register",
+    "registerFree": "Register Free",
+    "signOut": "Sign Out",
+    "myAccount": "My Account",
+    "browse": "Browse"
+  },
+
+  "footer": {
+    "brand": "Rural Company",
+    "description": "Connecting farmers and buyers across India. Buy and sell animals easily with trust and transparency.",
+    "explore": "Explore",
+    "legal": "Legal",
+    "contact": "Contact",
+    "aboutUs": "About Us",
+    "privacyPolicy": "Privacy Policy",
+    "termsConditions": "Terms & Conditions",
+    "copyright": "© {{year}} Rural Company • Made for Rural India 🇮🇳"
+  },
+
+  "auth": {
+    "welcomeBack": "Welcome Back",
+    "signInSub": "Sign in to your account",
+    "joinTitle": "Join Rural Company",
+    "joinSub": "Create your account",
+    "chooseSignInMethod": "Choose how to sign in",
+    "chooseRegisterMethod": "Choose how to register",
+    "method": {
+      "emailPassword": "Email & Password",
+      "emailPasswordSub": "Classic login",
+      "phoneOtp": "Phone OTP",
+      "phoneOtpSub": "Verify via SMS",
+      "registerOtp": "Register with OTP",
+      "registerOtpSub": "Verify via phone",
+      "emailGoogle": "Email / Google",
+      "emailGoogleSub": "Email or one-click"
+    },
+    "fields": {
+      "email": "Email Address",
+      "emailPlaceholder": "you@example.com",
+      "emailGmailPlaceholder": "you@gmail.com",
+      "password": "Password",
+      "passwordPlaceholder": "••••••••",
+      "phone": "Phone Number",
+      "phonePlaceholder": "98765 43210",
+      "name": "Full Name",
+      "namePlaceholder": "Ramesh Kumar",
+      "address": "Address",
+      "addressPlaceholder": "Village, District, State",
+      "otpCode": "OTP Code",
+      "otpPlaceholder": "• • • • • •"
+    },
+    "buttons": {
+      "signIn": "Sign In →",
+      "signingIn": "Signing in…",
+      "sendOtp": "Send OTP →",
+      "sendingOtp": "Sending OTP…",
+      "resend": "Resend",
+      "verifySignIn": "Verify & Sign In →",
+      "verifying": "Verifying…",
+      "verifyOtp": "Verify OTP →",
+      "createAccount": "🌾 Create Account",
+      "creatingAccount": "Creating account…",
+      "back": "← Back",
+      "goHome": "Go to Home →"
+    },
+    "step": {
+      "step1Phone": "Step 1 — Enter your phone number",
+      "step2OtpSent": "Step 2 — OTP sent to +91 {{phone}}",
+      "step3Profile": "Step 3 — Complete your profile",
+      "phoneVerified": "Phone verified!",
+      "signupGoogleOrEmail": "Sign up with Google or your email",
+      "orFillManually": "— or fill in manually —"
+    },
+    "footer": {
+      "noAccount": "Don't have an account?",
+      "createOne": "Create one",
+      "alreadyHaveAccount": "Already have an account?",
+      "signIn": "Sign in"
+    },
+    "welcome": {
+      "message": "Welcome to Rural Company, {{name}}! 🌾 Your account is ready.",
+      "smsSent": "A welcome SMS has been sent to your registered phone.",
+      "smsSentShort": "A welcome SMS has been sent to your phone."
+    },
+    "errors": {
+      "emailPasswordRequired": "Email and password are required",
+      "validPhone": "Enter a valid 10-digit phone number",
+      "enterOtp": "Enter the OTP",
+      "fillRequired": "Please fill all required fields",
+      "loginFailed": "Login failed",
+      "registrationFailed": "Registration failed",
+      "otpFailed": "Failed to send OTP",
+      "otpInvalid": "Invalid OTP",
+      "otpVerifyFailed": "OTP verification failed",
+      "noAccountForNumber": "No account found for this number. Please register first.",
+      "googleFailed": "Google Sign In Failed",
+      "googleSignupFailed": "Google signup failed",
+      "googleLoginFailed": "Google login failed"
+    }
+  },
+
+  "animalList": {
+    "heroTag": "🌾 Livestock Marketplace",
+    "heroTitle": "Find animals from trusted rural sellers",
+    "heroSub": "Browse livestock with photos, videos and direct contact",
+    "stats": {
+      "listings": "Listings",
+      "withPhotos": "With Photos",
+      "withVideos": "With Videos",
+      "states": "States"
+    },
+    "categories": {
+      "all": "All",
+      "cow": "Cow",
+      "buffalo": "Buffalo",
+      "goat": "Goat",
+      "sheep": "Sheep",
+      "pig": "Pig",
+      "poultry": "Poultry",
+      "horse": "Horse",
+      "camel": "Camel",
+      "other": "Other"
+    },
+    "toolbar": {
+      "showFilters": "⚙ Filters",
+      "hideFilters": "✕ Hide Filters",
+      "sortLatest": "Latest",
+      "sortPriceAsc": "Price ↑",
+      "sortPriceDesc": "Price ↓",
+      "viewGrid": "Grid view",
+      "viewList": "List view",
+      "search": "Search",
+      "clear": "Clear"
+    },
+    "filters": {
+      "name": "🔍 Animal name",
+      "location": "📍 Location",
+      "minPrice": "Min ₹",
+      "maxPrice": "Max ₹"
+    },
+    "card": {
+      "video": "🎥 Video",
+      "photos_one": "{{count}} photo",
+      "photos_other": "{{count}} photos",
+      "videoCount_one": "{{count}} video",
+      "videoCount_other": "{{count}} videos",
+      "viewLink": "View →",
+      "available": "Available",
+      "availableShort": "Avail.",
+      "sold": "Sold",
+      "locationMissing": "Location not added",
+      "locationDash": "—",
+      "wishlist": "Wishlist"
+    },
+    "count_one": "{{count}} listing found",
+    "count_other": "{{count}} listings found",
+    "empty": {
+      "title": "No animals found",
+      "sub": "Try changing the filters or check back later"
+    }
+  },
+
+  "animalDetails": {
+    "back": "← Back to listings",
+    "loading": "Loading animal details…",
+    "notFound": "Animal not found",
+    "statusLive": "🟢 Available",
+    "statusSold": "❌ Sold",
+    "info": {
+      "location": "📍 Location",
+      "listedOn": "📅 Listed On",
+      "category": "🧾 Category",
+      "contact": "📞 Contact",
+      "categoryDefault": "Animal",
+      "dateNA": "N/A"
+    },
+    "description": {
+      "label": "About this animal",
+      "translateLabel": "Description",
+      "showOriginal": "Show Original",
+      "showTranslation": "Show Translation",
+      "translateBtn": "🌐 Translate",
+      "translating": "Translating…",
+      "translateFailed": "Translation failed. Please try again.",
+      "translatedTo": "Translated to {{lang}}"
+    },
+    "cta": {
+      "callSeller": "📞 Call Seller",
+      "whatsapp": "💬 WhatsApp",
+      "requestToBuy": "🤝 Request to Buy",
+      "stickyCall": "📞 Call",
+      "stickyWhatsapp": "💬 WhatsApp",
+      "stickyRequest": "🤝 Request",
+      "stickyCancel": "✕ Cancel",
+      "stickySent": "✅ Request Sent"
+    },
+    "request": {
+      "title": "Send a buying request",
+      "yourName": "Your Name",
+      "yourContact": "Your Contact Number",
+      "messageOptional": "Message (optional)",
+      "send": "Send Request",
+      "sending": "Sending…",
+      "successMsg": "✅ Request sent! The seller will contact you.",
+      "failed": "Failed to send request"
+    }
+  },
+
+  "postAnimal": {
+    "title": "Post a New Animal",
+    "sub": "Share your livestock with thousands of buyers",
+    "loginRequired": "Please login to post an animal",
+    "submitting": "Posting your animal…",
+    "submitting2": "This may take a moment",
+    "categoryLabel": "Choose Category",
+    "categoryHint": "Tap a category to start",
+    "categories": {
+      "cow": "Cow",
+      "buffalo": "Buffalo",
+      "goat": "Goat",
+      "sheep": "Sheep",
+      "pig": "Pig",
+      "poultry": "Poultry",
+      "horse": "Horse",
+      "camel": "Camel",
+      "other": "Other"
+    },
+    "fields": {
+      "name": "Animal Name",
+      "namePlaceholder": "e.g. Holstein Friesian Cow",
+      "price": "Price (₹)",
+      "pricePlaceholder": "e.g. 50000",
+      "location": "Location",
+      "locationPlaceholder": "Village, District, State",
+      "contact": "Contact Number",
+      "contactPlaceholder": "10-digit mobile number",
+      "description": "Description",
+      "descriptionPlaceholder": "Age, breed, milk yield, health, etc."
+    },
+    "media": {
+      "imagesLabel": "Photos (max 5)",
+      "videosLabel": "Videos (max 2)",
+      "addImages": "📷 Add Photos",
+      "addVideos": "🎥 Add Videos",
+      "removeMedia": "Remove",
+      "imagesHint": "Clear photos build trust. Add multiple angles.",
+      "videosHint": "A short video helps buyers decide faster."
+    },
+    "buttons": {
+      "submit": "🐄 Post Animal",
+      "submitting": "Posting…",
+      "back": "← Back"
+    },
+    "errors": {
+      "nameRequired": "Animal name is required",
+      "priceRequired": "Price is required",
+      "categoryRequired": "Please choose a category",
+      "submitFailed": "Failed to post. Please try again."
+    }
+  },
+
+  "myAnimals": {
+    "title": "My Listings",
+    "sub": "Manage the animals you've posted",
+    "stats": {
+      "total": "Total",
+      "available": "Available",
+      "sold": "Sold",
+      "estValue": "Est. Value"
+    },
+    "card": {
+      "live": "Live",
+      "sold": "Sold",
+      "requests": "Requests",
+      "view": "View",
+      "delete": "Delete"
+    },
+    "actions": {
+      "deleteConfirm": "Are you sure you want to delete this animal?",
+      "deleteFailed": "Failed to delete"
+    },
+    "empty": {
+      "title": "No listings yet",
+      "sub": "Post your first animal to start receiving requests",
+      "cta": "＋ Post Animal"
+    }
+  },
+
+  "requests": {
+    "title": "Requests",
+    "tabs": {
+      "received": "Received",
+      "sent": "Sent"
+    },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
+    },
+    "actions": {
+      "accept": "Accept",
+      "reject": "Reject",
+      "cancel": "Cancel"
+    },
+    "fields": {
+      "buyer": "Buyer",
+      "contact": "Contact",
+      "animal": "Animal",
+      "message": "Message",
+      "received": "Received",
+      "sent": "Sent"
+    },
+    "empty": {
+      "received": "No requests received yet",
+      "sent": "You haven't sent any requests yet"
+    }
+  },
+
+  "profile": {
+    "title": "My Profile",
+    "loginPrompt": "Please login first.",
+    "fields": {
+      "role": "Role",
+      "id": "ID",
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "logout": "Logout",
+    "roleDefault": "User"
+  },
+
+  "dashboard": {
+    "greet": "Welcome back,",
+    "fallbackName": "Friend",
+    "postBtn": "＋ Post Animal",
+    "stats": {
+      "activeListings": "Active Listings",
+      "pendingRequests": "Pending Requests",
+      "freeUsesLeft": "Free Uses Left",
+      "totalSpent": "Total Spent"
+    },
+    "freeUsage": {
+      "title": "Your Free Usage",
+      "resets": "Resets monthly",
+      "leftFormat": "{{remaining}}/{{limit}} left",
+      "perUsePrice": "₹{{price}} per use after limit",
+      "noData": "No usage data available."
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "viewHistory": "View history →",
+      "empty": "Nothing here yet. Browse the marketplace to get started.",
+      "paidFor": "Paid ₹{{amount}} for {{feature}}",
+      "usedFree": "Used free {{feature}}",
+      "newRequestFrom": "New request from {{name}}",
+      "buyerFallback": "buyer",
+      "youRequested": "You requested {{name}}",
+      "animalFallback": "an animal"
+    },
+    "quick": {
+      "myListings": "📋 My Listings",
+      "requests": "📥 Requests",
+      "transactions": "💳 Transactions",
+      "profile": "👤 Profile"
+    },
+    "time": {
+      "justNow": "just now",
+      "minutesShort": "{{m}}m ago",
+      "hoursShort": "{{h}}h ago",
+      "daysShort": "{{d}}d ago"
+    }
+  },
+
+  "transactions": {
+    "title": "Transaction History",
+    "sub": "All your payments, free uses, and pending orders",
+    "back": "← Back",
+    "stats": {
+      "totalSpent": "Total Spent",
+      "paid": "Paid",
+      "freeUses": "Free Uses",
+      "pending": "Pending"
+    },
+    "filters": {
+      "all": "All",
+      "successful": "Successful",
+      "pending": "Pending",
+      "failed": "Failed",
+      "free": "Free"
+    },
+    "feature": {
+      "reveal_contact": "Reveal Contact",
+      "post_animal": "Post Animal",
+      "highlight_post": "Highlight Post"
+    },
+    "status": {
+      "free": "Free",
+      "success": "Successful",
+      "pending": "Pending",
+      "failed": "Failed"
+    },
+    "card": {
+      "viewAnimal": "View animal →",
+      "paymentId": "Payment ID:"
+    },
+    "empty": {
+      "title": "No transactions yet",
+      "all": "Your payments and free uses will appear here.",
+      "filtered": "No {{status}} transactions found.",
+      "showAll": "Show all"
+    },
+    "errors": {
+      "loadFailed": "Could not load history"
+    }
+  },
+
+  "payment": {
+    "benefit": {
+      "reveal_contact": "See the seller's phone number and WhatsApp link",
+      "highlight_post": "Feature your listing at the top of search results for 30 days",
+      "post_animal": "Create a new animal listing",
+      "default": "Access {{feature}}"
+    },
+    "modal": {
+      "limitReached": "Free limit reached",
+      "unlock": "Unlock {{feature}}",
+      "youHaveUsed": "You've used {{used}} of {{limit}} free uses",
+      "costsOnce": "Pay ₹{{price}} (one-time)",
+      "payNow": "Pay ₹{{price}}",
+      "processing": "Processing…",
+      "verifyFailed": "Payment verification failed. Please contact support.",
+      "razorpaySafe": "Secured by Razorpay",
+      "close": "✕"
+    },
+    "highlight": {
+      "alreadyHighlighted": "⭐ Post is Highlighted",
+      "buttonFree": "⭐ Highlight Post (Free)",
+      "buttonPaid": "⭐ Highlight — ₹{{price}}",
+      "buttonPlain": "⭐ Highlight Post",
+      "processing": "Processing…",
+      "displayName": "Highlight Post"
+    },
+    "reveal": {
+      "buttonRevealFree": "👁 Reveal",
+      "buttonRevealPaid": "🔓 ₹{{price}}",
+      "loadingDot": "…",
+      "displayName": "Reveal Contact",
+      "blurredPlaceholder": "+91 ••••• •••••",
+      "whatsapp": "💬 WhatsApp"
+    },
+    "usage": {
+      "loading": "Loading…",
+      "remaining_one": "{{count}} free left",
+      "remaining_other": "{{count}} free left",
+      "limitReached": "Limit reached",
+      "freeLeftLong_one": "{{count}} free use left",
+      "freeLeftLong_other": "{{count}} free uses left",
+      "limitReachedLong": "Free limit reached · ₹{{price}} to continue"
+    }
+  },
+
+  "legal": {
+    "about": {
+      "title": "About Rural Company",
+      "tagline": "Connecting Indian farmers and buyers — directly.",
+      "missionTitle": "Our Mission",
+      "missionBody": "We're building the easiest way for rural India to buy and sell livestock. No middlemen, no commissions — just fair, direct deals between farmers.",
+      "valuesTitle": "What We Value",
+      "trustTitle": "Trust",
+      "trustBody": "Verified sellers, real photos, real videos. What you see is what you get.",
+      "fairnessTitle": "Fairness",
+      "fairnessBody": "Free to list, free to browse. Pay only when you decide to do business.",
+      "transparencyTitle": "Transparency",
+      "transparencyBody": "Clear pricing, clear processes, no hidden charges anywhere.",
+      "techTitle": "Built for rural users",
+      "techBody": "Works on slow connections, simple language options, low battery friendly. Your phone, your language, your business.",
+      "contactTitle": "Get in touch",
+      "contactBody": "Have a question, found a bug, or want to partner with us? Reach out anytime."
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: January 2026",
+      "intro": "Your privacy matters. This page explains what we collect, how we use it, and the choices you have.",
+      "collectTitle": "What we collect",
+      "collectBody": "Name, phone number, email, address (if provided), and listing details. We use this only to power the marketplace.",
+      "useTitle": "How we use your data",
+      "useBody": "To show your listings to potential buyers, to send OTPs and welcome messages, and to keep your account secure.",
+      "shareTitle": "What we share",
+      "shareBody": "Your listing's contact number is only revealed to other users when they explicitly choose to reveal it. We never sell your data.",
+      "rightsTitle": "Your rights",
+      "rightsBody": "You can edit your profile, delete your listings, or close your account anytime. Email us to request a full data export.",
+      "contactTitle": "Contact",
+      "contactBody": "Questions about this policy? Email support@ruralcompany.in."
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "lastUpdated": "Last updated: January 2026",
+      "intro": "By using Rural Company, you agree to the following.",
+      "useTitle": "Acceptable use",
+      "useBody": "List real animals you actually own. Be truthful in descriptions. No spam, no fake listings, no fraud.",
+      "paymentsTitle": "Payments",
+      "paymentsBody": "Some features (e.g. revealing contacts, highlighting posts) require payment after a free quota. All payments are processed by Razorpay.",
+      "responsibilityTitle": "Buyer & Seller responsibility",
+      "responsibilityBody": "Rural Company is a marketplace. We don't physically inspect animals. Always verify before you transact.",
+      "terminationTitle": "Account termination",
+      "terminationBody": "We may suspend accounts that violate these terms. You may close your account anytime.",
+      "changesTitle": "Changes",
+      "changesBody": "We may update these terms occasionally. We'll notify you of significant changes."
+    }
+  }
+}

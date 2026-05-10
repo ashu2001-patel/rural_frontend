@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
+import LanguageToggle from "./LanguageToggle";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const drawerRef = useRef(null);
@@ -146,28 +149,29 @@ const Navbar = () => {
         <Link to="/" className="nav-logo" onClick={close}>
           <span className="nav-logo-icon">🐄</span>
           <div>
-            <span className="nav-logo-text">Animal Market</span>
-            <span className="nav-logo-sub">Buy • Sell • Trade Animals</span>
+            <span className="nav-logo-text">{t("nav.brandTitle")}</span>
+            <span className="nav-logo-sub">{t("nav.brandSub")}</span>
           </div>
         </Link>
 
         {/* Desktop Nav */}
         <div className="nav-center">
-          <Link to="/" className={`nav-link ${isActive("/") ? "active" : ""}`}>Animals</Link>
+          <Link to="/" className={`nav-link ${isActive("/") ? "active" : ""}`}>{t("nav.animals")}</Link>
           {user && (
             <>
-              <Link to="/dashboard" className={`nav-link ${isActive("/dashboard") ? "active" : ""}`}>Dashboard</Link>
-              <Link to="/my-listings" className={`nav-link ${isActive("/my-listings") ? "active" : ""}`}>My Listings</Link>
-              <Link to="/requests" className={`nav-link ${isActive("/requests") ? "active" : ""}`}>Requests</Link>
+              <Link to="/dashboard" className={`nav-link ${isActive("/dashboard") ? "active" : ""}`}>{t("nav.dashboard")}</Link>
+              <Link to="/my-listings" className={`nav-link ${isActive("/my-listings") ? "active" : ""}`}>{t("nav.myListings")}</Link>
+              <Link to="/requests" className={`nav-link ${isActive("/requests") ? "active" : ""}`}>{t("nav.requests")}</Link>
             </>
           )}
         </div>
 
         {/* Right Side */}
         <div className="nav-right">
+          <LanguageToggle variant="compact" />
           {user ? (
             <>
-              <Link to="/post-animal" className="nav-post-btn">＋ Post Animal</Link>
+              <Link to="/post-animal" className="nav-post-btn">＋ {t("nav.postAnimal")}</Link>
               <button
                 className={`nav-avatar-btn ${drawerOpen ? "open" : ""}`}
                 onClick={e => { e.stopPropagation(); setDrawerOpen(prev => !prev); }}
@@ -177,8 +181,8 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="nav-link">Login</Link>
-              <Link to="/register" className="nav-post-btn">Register</Link>
+              <Link to="/login" className="nav-link">{t("nav.login")}</Link>
+              <Link to="/register" className="nav-post-btn">{t("nav.register")}</Link>
             </>
           )}
 
@@ -200,33 +204,37 @@ const Navbar = () => {
               </div>
             </div>
 
-            <div className="pd-section-title">My Account</div>
+            <div style={{ padding: "8px 1.2rem 4px" }}>
+              <LanguageToggle />
+            </div>
+
+            <div className="pd-section-title">{t("nav.myAccount")}</div>
             <Link to="/dashboard" className="pd-item" onClick={close}>
-              <div className="pd-icon amber">📊</div> Dashboard
+              <div className="pd-icon amber">📊</div> {t("nav.dashboard")}
             </Link>
             <Link to="/profile" className="pd-item" onClick={close}>
-              <div className="pd-icon green">👤</div> Profile
+              <div className="pd-icon green">👤</div> {t("nav.profile")}
             </Link>
             <Link to="/my-listings" className="pd-item" onClick={close}>
-              <div className="pd-icon amber">📋</div> My Listings
+              <div className="pd-icon amber">📋</div> {t("nav.myListings")}
             </Link>
             <Link to="/requests" className="pd-item" onClick={close}>
-              <div className="pd-icon amber">📥</div> Requests
+              <div className="pd-icon amber">📥</div> {t("nav.requests")}
             </Link>
             <Link to="/transactions" className="pd-item" onClick={close}>
-              <div className="pd-icon amber">💳</div> Transaction History
+              <div className="pd-icon amber">💳</div> {t("nav.transactionHistory")}
             </Link>
 
             <div className="pd-divider" />
 
             <Link to="/post-animal" className="pd-item" onClick={close}>
-              <div className="pd-icon amber">🐄</div> Post Animal
+              <div className="pd-icon amber">🐄</div> {t("nav.postAnimal")}
             </Link>
 
             <div className="pd-divider" />
 
             <button className="pd-item" style={{ color: "rgba(232,145,122,0.8)" }} onClick={handleLogout}>
-              <div className="pd-icon red">🚪</div> Sign Out
+              <div className="pd-icon red">🚪</div> {t("nav.signOut")}
             </button>
           </div>
         )}
@@ -237,16 +245,20 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div className={`nav-mobile ${menuOpen ? "open" : ""}`}>
-        <div className="nm-section">Browse</div>
-        <Link to="/" className={`nm-item ${isActive("/") ? "active" : ""}`} onClick={close}>🐄 Animals</Link>
+        <div style={{ padding: "10px 1.2rem 4px" }}>
+          <LanguageToggle />
+        </div>
+
+        <div className="nm-section">{t("nav.browse")}</div>
+        <Link to="/" className={`nm-item ${isActive("/") ? "active" : ""}`} onClick={close}>🐄 {t("nav.animals")}</Link>
 
         {user && (
           <>
-            <Link to="/dashboard" className={`nm-item ${isActive("/dashboard") ? "active" : ""}`} onClick={close}>📊 Dashboard</Link>
-            <Link to="/my-listings" className={`nm-item ${isActive("/my-listings") ? "active" : ""}`} onClick={close}>📋 My Listings</Link>
-            <Link to="/requests" className={`nm-item ${isActive("/requests") ? "active" : ""}`} onClick={close}>📥 Requests</Link>
-            <Link to="/transactions" className={`nm-item ${isActive("/transactions") ? "active" : ""}`} onClick={close}>💳 Transactions</Link>
-            <Link to="/profile" className={`nm-item ${isActive("/profile") ? "active" : ""}`} onClick={close}>👤 Profile</Link>
+            <Link to="/dashboard" className={`nm-item ${isActive("/dashboard") ? "active" : ""}`} onClick={close}>📊 {t("nav.dashboard")}</Link>
+            <Link to="/my-listings" className={`nm-item ${isActive("/my-listings") ? "active" : ""}`} onClick={close}>📋 {t("nav.myListings")}</Link>
+            <Link to="/requests" className={`nm-item ${isActive("/requests") ? "active" : ""}`} onClick={close}>📥 {t("nav.requests")}</Link>
+            <Link to="/transactions" className={`nm-item ${isActive("/transactions") ? "active" : ""}`} onClick={close}>💳 {t("nav.transactions")}</Link>
+            <Link to="/profile" className={`nm-item ${isActive("/profile") ? "active" : ""}`} onClick={close}>👤 {t("nav.profile")}</Link>
           </>
         )}
 
@@ -254,17 +266,17 @@ const Navbar = () => {
 
         {user ? (
           <>
-            <Link to="/post-animal" className="nm-post" onClick={close}>🐄 Post Animal</Link>
+            <Link to="/post-animal" className="nm-post" onClick={close}>🐄 {t("nav.postAnimal")}</Link>
             <div className="nm-user">
               <div className="nm-avatar">{getInitial()}</div>
               <span className="nm-username">{user.name?.split(" ")[0]}</span>
-              <button className="nm-logout" onClick={handleLogout}>Sign Out</button>
+              <button className="nm-logout" onClick={handleLogout}>{t("nav.signOut")}</button>
             </div>
           </>
         ) : (
           <>
-            <Link to="/login" className="nm-item" onClick={close}>🔑 Login</Link>
-            <Link to="/register" className="nm-post" onClick={close}>Register Free</Link>
+            <Link to="/login" className="nm-item" onClick={close}>🔑 {t("nav.login")}</Link>
+            <Link to="/register" className="nm-post" onClick={close}>{t("nav.registerFree")}</Link>
           </>
         )}
       </div>

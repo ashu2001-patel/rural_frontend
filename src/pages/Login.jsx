@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
+import { useTranslation } from "react-i18next";
 import { userAPI } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 const NO_ACCOUNT_MSG = "Name required for new account";
 
 const Login = () => {
+  const { t } = useTranslation();
   const [method, setMethod] = useState(null); // null | "email" | "otp" | "google"
   const [step, setStep] = useState(1);        // OTP flow: 1=phone, 2=otp
   const [form, setForm] = useState({ email: "", password: "", phoneNumber: "" });
@@ -34,7 +36,7 @@ const Login = () => {
   const handleEmailLogin = async (e) => {
     e.preventDefault();
     if (!form.email || !form.password) {
-      setError("Email and password are required");
+      setError(t("auth.errors.emailPasswordRequired"));
       return;
     }
     setLoading(true);
@@ -47,7 +49,7 @@ const Login = () => {
       login(res.data.user, res.data.token);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || t("auth.errors.loginFailed"));
     } finally {
       setLoading(false);
     }
@@ -57,7 +59,7 @@ const Login = () => {
   const handleSendOtp = async () => {
     const digits = normalisePhone(form.phoneNumber);
     if (digits.length !== 10) {
-      setError("Enter a valid 10-digit phone number");
+      setError(t("auth.errors.validPhone"));
       return;
     }
     setLoading(true);
@@ -66,7 +68,7 @@ const Login = () => {
       await userAPI.post("/users/send-otp", { phoneNumber: digits });
       setStep(2);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to send OTP");
+      setError(err.response?.data?.message || t("auth.errors.otpFailed"));
     } finally {
       setLoading(false);
     }
@@ -74,7 +76,7 @@ const Login = () => {
 
   // ─── OTP Step 2: Verify OTP then login ─────────────────────
   const handleVerifyAndLogin = async () => {
-    if (!otp || otp.length < 4) { setError("Enter the OTP"); return; }
+    if (!otp || otp.length < 4) { setError(t("auth.errors.enterOtp")); return; }
     setLoading(true);
     setError("");
     try {
@@ -90,9 +92,9 @@ const Login = () => {
       login(res.data.user, res.data.token);
       navigate("/");
     } catch (err) {
-      const msg = err.response?.data?.message || "OTP verification failed";
+      const msg = err.response?.data?.message || t("auth.errors.otpVerifyFailed");
       if (msg === NO_ACCOUNT_MSG) {
-        setError("No account found for this number. Please register first.");
+        setError(t("auth.errors.noAccountForNumber"));
       } else {
         setError(msg);
       }
@@ -110,10 +112,10 @@ const Login = () => {
         credential: credentialResponse.credential,
       });
       login(res.data.user, res.data.token);
-      if (res.data.isNewUser) setWelcome(`Welcome to Rural Company, ${res.data.user.name}! 🌾 Your account is ready.`);
+      if (res.data.isNewUser) setWelcome(t("auth.welcome.message", { name: res.data.user.name }));
       else navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Google login failed");
+      setError(err.response?.data?.message || t("auth.errors.googleLoginFailed"));
     } finally {
       setLoading(false);
     }
@@ -268,8 +270,8 @@ const Login = () => {
 
           <div className="login-brand">
             <span className="login-icon">🌾</span>
-            <h2 className="login-title">Welcome Back</h2>
-            <p className="login-sub">Sign in to your account</p>
+            <h2 className="login-title">{t("auth.welcomeBack")}</h2>
+            <p className="login-sub">{t("auth.signInSub")}</p>
           </div>
 
           <div className="login-divider">
@@ -285,8 +287,8 @@ const Login = () => {
             <div className="login-welcome">
               <span className="login-welcome-icon">🌾</span>
               <p className="login-welcome-text">{welcome}</p>
-              <span className="login-welcome-sub">A welcome SMS has been sent to your registered phone.</span>
-              <button className="login-btn" onClick={() => navigate("/")}>Go to Home →</button>
+              <span className="login-welcome-sub">{t("auth.welcome.smsSent")}</span>
+              <button className="login-btn" onClick={() => navigate("/")}>{t("auth.buttons.goHome")}</button>
             </div>
           )}
 
@@ -294,18 +296,18 @@ const Login = () => {
           {!welcome && !method && (
             <>
               <p style={{ textAlign: "center", fontSize: "0.8rem", color: "rgba(212,175,99,0.38)", marginBottom: "1rem", letterSpacing: "0.08em" }}>
-                Choose how to sign in
+                {t("auth.chooseSignInMethod")}
               </p>
               <div className="login-method-grid">
                 <button className="login-method-btn" onClick={() => setMethod("email")}>
                   <span className="login-method-icon">✉️</span>
-                  <span className="login-method-label">Email & Password</span>
-                  <span className="login-method-sub">Classic login</span>
+                  <span className="login-method-label">{t("auth.method.emailPassword")}</span>
+                  <span className="login-method-sub">{t("auth.method.emailPasswordSub")}</span>
                 </button>
                 <button className="login-method-btn" onClick={() => setMethod("otp")}>
                   <span className="login-method-icon">📱</span>
-                  <span className="login-method-label">Phone OTP</span>
-                  <span className="login-method-sub">Verify via SMS</span>
+                  <span className="login-method-label">{t("auth.method.phoneOtp")}</span>
+                  <span className="login-method-sub">{t("auth.method.phoneOtpSub")}</span>
                 </button>
               </div>
 
@@ -313,7 +315,7 @@ const Login = () => {
               <div className="login-google-wrap">
                 <GoogleLogin
                   onSuccess={handleGoogleLogin}
-                  onError={() => setError("Google Sign In Failed")}
+                  onError={() => setError(t("auth.errors.googleFailed"))}
                   theme="filled_black"
                   shape="pill"
                   text="signin_with"
@@ -322,7 +324,7 @@ const Login = () => {
               </div>
 
               <p className="login-footer">
-                Don't have an account? <Link to="/register">Create one</Link>
+                {t("auth.footer.noAccount")} <Link to="/register">{t("auth.footer.createOne")}</Link>
               </p>
             </>
           )}
@@ -334,27 +336,27 @@ const Login = () => {
             <>
               <form onSubmit={handleEmailLogin}>
                 <div className="login-field">
-                  <label className="login-label">Email Address</label>
+                  <label className="login-label">{t("auth.fields.email")}</label>
                   <input
                     className="login-input" type="email" name="email"
-                    placeholder="you@example.com"
+                    placeholder={t("auth.fields.emailPlaceholder")}
                     value={form.email} onChange={handleChange} required
                   />
                 </div>
                 <div className="login-field">
-                  <label className="login-label">Password</label>
+                  <label className="login-label">{t("auth.fields.password")}</label>
                   <input
                     className="login-input" type="password" name="password"
-                    placeholder="••••••••"
+                    placeholder={t("auth.fields.passwordPlaceholder")}
                     value={form.password} onChange={handleChange} required
                   />
                 </div>
                 <button className="login-btn" type="submit" disabled={loading}>
-                  {loading ? "Signing in..." : "Sign In →"}
+                  {loading ? t("auth.buttons.signingIn") : t("auth.buttons.signIn")}
                 </button>
               </form>
               <button className="login-btn-outline" onClick={() => { setMethod(null); resetState(); }}>
-                ← Back
+                {t("auth.buttons.back")}
               </button>
             </>
           )}
@@ -376,23 +378,23 @@ const Login = () => {
               {/* Step 1 — Phone */}
               {step === 1 && (
                 <>
-                  <p className="login-step-title">Step 1 — Enter your phone number</p>
+                  <p className="login-step-title">{t("auth.step.step1Phone")}</p>
                   <div className="login-field">
-                    <label className="login-label">Phone Number</label>
+                    <label className="login-label">{t("auth.fields.phone")}</label>
                     <div className="login-phone-row">
                       <span className="login-phone-prefix">+91</span>
                       <input
                         className="login-input" type="tel" name="phoneNumber"
-                        placeholder="98765 43210"
+                        placeholder={t("auth.fields.phonePlaceholder")}
                         value={form.phoneNumber} onChange={handleChange} maxLength={10}
                       />
                     </div>
                   </div>
                   <button className="login-btn" onClick={handleSendOtp} disabled={loading}>
-                    {loading ? "Sending OTP..." : "Send OTP →"}
+                    {loading ? t("auth.buttons.sendingOtp") : t("auth.buttons.sendOtp")}
                   </button>
                   <button className="login-btn-outline" onClick={() => { setMethod(null); resetState(); }}>
-                    ← Back
+                    {t("auth.buttons.back")}
                   </button>
                 </>
               )}
@@ -400,13 +402,13 @@ const Login = () => {
               {/* Step 2 — OTP */}
               {step === 2 && (
                 <>
-                  <p className="login-step-title">Step 2 — OTP sent to +91 {form.phoneNumber}</p>
+                  <p className="login-step-title">{t("auth.step.step2OtpSent", { phone: form.phoneNumber })}</p>
                   <div className="login-field">
-                    <label className="login-label">OTP Code</label>
+                    <label className="login-label">{t("auth.fields.otpCode")}</label>
                     <div className="login-otp-row">
                       <input
                         className="login-otp-input" type="tel"
-                        placeholder="• • • • • •"
+                        placeholder={t("auth.fields.otpPlaceholder")}
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
                         maxLength={6}
@@ -416,15 +418,15 @@ const Login = () => {
                         onClick={handleSendOtp}
                         disabled={loading}
                       >
-                        Resend
+                        {t("auth.buttons.resend")}
                       </button>
                     </div>
                   </div>
                   <button className="login-btn" onClick={handleVerifyAndLogin} disabled={loading}>
-                    {loading ? "Verifying..." : "Verify & Sign In →"}
+                    {loading ? t("auth.buttons.verifying") : t("auth.buttons.verifySignIn")}
                   </button>
                   <button className="login-btn-outline" onClick={() => { setStep(1); setOtp(""); setError(""); }}>
-                    ← Back
+                    {t("auth.buttons.back")}
                   </button>
                 </>
               )}
@@ -433,7 +435,7 @@ const Login = () => {
 
           {!welcome && method && (
             <p className="login-footer">
-              Don't have an account? <Link to="/register">Create one</Link>
+              {t("auth.footer.noAccount")} <Link to="/register">{t("auth.footer.createOne")}</Link>
             </p>
           )}
         </div>

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
+import { useTranslation } from "react-i18next";
 import { userAPI } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
+  const { t } = useTranslation();
   const [method, setMethod] = useState(null); // "otp" | "gmail"
   const [step, setStep] = useState(1);        // 1=phone, 2=otp, 3=details
   const [form, setForm] = useState({
@@ -29,7 +31,7 @@ const Register = () => {
   const handleSendOtp = async () => {
     const digits = normalisePhone(form.phoneNumber);
     if (digits.length !== 10) {
-      setError("Enter a valid 10-digit phone number");
+      setError(t("auth.errors.validPhone"));
       return;
     }
     setLoading(true);
@@ -38,7 +40,7 @@ const Register = () => {
       await userAPI.post("/users/send-otp", { phoneNumber: digits });
       setStep(2);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to send OTP");
+      setError(err.response?.data?.message || t("auth.errors.otpFailed"));
     } finally {
       setLoading(false);
     }
@@ -46,7 +48,7 @@ const Register = () => {
 
   // ─── Step 2: Verify OTP ────────────────────────────────────
   const handleVerifyOtp = async () => {
-    if (!otp || otp.length < 4) { setError("Enter the OTP"); return; }
+    if (!otp || otp.length < 4) { setError(t("auth.errors.enterOtp")); return; }
     setLoading(true);
     setError("");
     try {
@@ -56,7 +58,7 @@ const Register = () => {
       });
       setStep(3);
     } catch (err) {
-      setError(err.response?.data?.message || "Invalid OTP");
+      setError(err.response?.data?.message || t("auth.errors.otpInvalid"));
     } finally {
       setLoading(false);
     }
@@ -67,7 +69,7 @@ const Register = () => {
   const handleOtpRegister = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.password) {
-      setError("Please fill all required fields");
+      setError(t("auth.errors.fillRequired"));
       return;
     }
     setLoading(true);
@@ -82,10 +84,10 @@ const Register = () => {
         password: form.password,
       });
       login(res.data.user, res.data.token);
-      if (res.data.isNewUser) setWelcome(`Welcome to Rural Company, ${res.data.user.name}! 🌾 Your account is ready.`);
+      if (res.data.isNewUser) setWelcome(t("auth.welcome.message", { name: res.data.user.name }));
       else navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.response?.data?.message || t("auth.errors.registrationFailed"));
     } finally {
       setLoading(false);
     }
@@ -95,7 +97,7 @@ const Register = () => {
   const handleEmailRegister = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.password) {
-      setError("Please fill all required fields");
+      setError(t("auth.errors.fillRequired"));
       return;
     }
     setLoading(true);
@@ -109,10 +111,10 @@ const Register = () => {
         address: form.address || undefined,
       });
       login(res.data.user, res.data.token);
-      if (res.data.isNewUser) setWelcome(`Welcome to Rural Company, ${res.data.user.name}! 🌾 Your account is ready.`);
+      if (res.data.isNewUser) setWelcome(t("auth.welcome.message", { name: res.data.user.name }));
       else navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.response?.data?.message || t("auth.errors.registrationFailed"));
     } finally {
       setLoading(false);
     }
@@ -127,10 +129,10 @@ const Register = () => {
         credential: credentialResponse.credential,
       });
       login(res.data.user, res.data.token);
-      if (res.data.isNewUser) setWelcome(`Welcome to Rural Company, ${res.data.user.name}! 🌾 Your account is ready.`);
+      if (res.data.isNewUser) setWelcome(t("auth.welcome.message", { name: res.data.user.name }));
       else navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Google signup failed");
+      setError(err.response?.data?.message || t("auth.errors.googleSignupFailed"));
     } finally {
       setLoading(false);
     }
@@ -199,8 +201,8 @@ const Register = () => {
 
           <div className="reg-brand">
             <span className="reg-icon">🌾</span>
-            <span className="reg-title">Join Rural Company</span>
-            <span className="reg-sub">Create your account</span>
+            <span className="reg-title">{t("auth.joinTitle")}</span>
+            <span className="reg-sub">{t("auth.joinSub")}</span>
           </div>
 
           <div className="reg-divider">
@@ -216,9 +218,9 @@ const Register = () => {
             <div className="reg-welcome">
               <span className="reg-welcome-icon">🌾</span>
               <p className="reg-welcome-text">{welcome}</p>
-              <span className="reg-welcome-sub">A welcome SMS has been sent to your phone.</span>
+              <span className="reg-welcome-sub">{t("auth.welcome.smsSentShort")}</span>
               <button className="reg-btn" style={{ marginTop: "1rem" }} onClick={() => navigate("/")}>
-                Go to Home →
+                {t("auth.buttons.goHome")}
               </button>
             </div>
           )}
@@ -227,22 +229,22 @@ const Register = () => {
           {!welcome && !method && (
             <>
               <p style={{ textAlign: "center", fontSize: "0.82rem", color: "rgba(212,175,99,0.4)", marginBottom: "1rem", letterSpacing: "0.08em" }}>
-                Choose how to register
+                {t("auth.chooseRegisterMethod")}
               </p>
               <div className="reg-method-row">
                 <button className="reg-method-btn" onClick={() => { setMethod("otp"); setStep(1); }}>
                   <span className="reg-method-icon">📱</span>
-                  <span className="reg-method-label">Register with OTP</span>
-                  <span className="reg-method-sub">Verify via phone</span>
+                  <span className="reg-method-label">{t("auth.method.registerOtp")}</span>
+                  <span className="reg-method-sub">{t("auth.method.registerOtpSub")}</span>
                 </button>
                 <button className="reg-method-btn" onClick={() => setMethod("gmail")}>
                   <span className="reg-method-icon">✉️</span>
-                  <span className="reg-method-label">Email / Google</span>
-                  <span className="reg-method-sub">Email or one-click</span>
+                  <span className="reg-method-label">{t("auth.method.emailGoogle")}</span>
+                  <span className="reg-method-sub">{t("auth.method.emailGoogleSub")}</span>
                 </button>
               </div>
               <p className="reg-login">
-                Already have an account? <Link to="/login">Sign in</Link>
+                {t("auth.footer.alreadyHaveAccount")} <Link to="/login">{t("auth.footer.signIn")}</Link>
               </p>
             </>
           )}
@@ -264,16 +266,16 @@ const Register = () => {
               {/* Step 1 — Phone */}
               {step === 1 && (
                 <>
-                  <p className="reg-step-title">Step 1 — Enter your phone number</p>
+                  <p className="reg-step-title">{t("auth.step.step1Phone")}</p>
                   <div className="reg-field">
-                    <label className="reg-label">Phone Number <span className="reg-required">*</span></label>
+                    <label className="reg-label">{t("auth.fields.phone")} <span className="reg-required">*</span></label>
                     <div className="reg-phone-row">
                       <span className="reg-phone-prefix">+91</span>
                       <input
                         className="reg-input"
                         type="tel"
                         name="phoneNumber"
-                        placeholder="98765 43210"
+                        placeholder={t("auth.fields.phonePlaceholder")}
                         value={form.phoneNumber}
                         onChange={handleChange}
                         maxLength={10}
@@ -281,37 +283,37 @@ const Register = () => {
                     </div>
                   </div>
                   <button className="reg-btn" onClick={handleSendOtp} disabled={loading}>
-                    {loading ? "Sending OTP..." : "Send OTP →"}
+                    {loading ? t("auth.buttons.sendingOtp") : t("auth.buttons.sendOtp")}
                   </button>
-                  <button className="reg-btn-outline" onClick={() => setMethod(null)}>← Back</button>
+                  <button className="reg-btn-outline" onClick={() => setMethod(null)}>{t("auth.buttons.back")}</button>
                 </>
               )}
 
               {/* Step 2 — OTP */}
               {step === 2 && (
                 <>
-                  <p className="reg-step-title">Step 2 — OTP sent to +91 {form.phoneNumber}</p>
+                  <p className="reg-step-title">{t("auth.step.step2OtpSent", { phone: form.phoneNumber })}</p>
                   <div className="reg-field">
-                    <label className="reg-label">OTP Code <span className="reg-required">*</span></label>
+                    <label className="reg-label">{t("auth.fields.otpCode")} <span className="reg-required">*</span></label>
                     <div className="reg-otp-row">
                       <input
                         className="reg-otp-input"
                         type="tel"
-                        placeholder="• • • • • •"
+                        placeholder={t("auth.fields.otpPlaceholder")}
                         value={otp}
                         onChange={(e) => setOtp(e.target.value)}
                         maxLength={6}
                       />
                       <button className="reg-otp-btn" onClick={handleSendOtp} disabled={loading}>
-                        Resend
+                        {t("auth.buttons.resend")}
                       </button>
                     </div>
                   </div>
                   <button className="reg-btn" onClick={handleVerifyOtp} disabled={loading}>
-                    {loading ? "Verifying..." : "Verify OTP →"}
+                    {loading ? t("auth.buttons.verifying") : t("auth.buttons.verifyOtp")}
                   </button>
                   <button className="reg-btn-outline" onClick={() => { setStep(1); setOtp(""); setError(""); }}>
-                    ← Back
+                    {t("auth.buttons.back")}
                   </button>
                 </>
               )}
@@ -322,35 +324,35 @@ const Register = () => {
                   <div style={{ textAlign: "center", marginBottom: "1rem" }}>
                     <div className="reg-success-check">✅</div>
                     <p style={{ fontSize: "0.78rem", color: "rgba(120,180,80,0.7)", letterSpacing: "0.1em" }}>
-                      Phone verified!
+                      {t("auth.step.phoneVerified")}
                     </p>
                   </div>
-                  <p className="reg-step-title">Step 3 — Complete your profile</p>
+                  <p className="reg-step-title">{t("auth.step.step3Profile")}</p>
                   <form onSubmit={handleOtpRegister}>
                     <div className="reg-row">
                       <div className="reg-field">
-                        <label className="reg-label">Full Name <span className="reg-required">*</span></label>
-                        <input className="reg-input" type="text" name="name" placeholder="Ramesh Kumar"
+                        <label className="reg-label">{t("auth.fields.name")} <span className="reg-required">*</span></label>
+                        <input className="reg-input" type="text" name="name" placeholder={t("auth.fields.namePlaceholder")}
                           value={form.name} onChange={handleChange} required />
                       </div>
                       <div className="reg-field">
-                        <label className="reg-label">Email <span className="reg-required">*</span></label>
-                        <input className="reg-input" type="email" name="email" placeholder="you@email.com"
+                        <label className="reg-label">{t("auth.fields.email")} <span className="reg-required">*</span></label>
+                        <input className="reg-input" type="email" name="email" placeholder={t("auth.fields.emailPlaceholder")}
                           value={form.email} onChange={handleChange} required />
                       </div>
                     </div>
                     <div className="reg-field">
-                      <label className="reg-label">Address</label>
-                      <input className="reg-input" type="text" name="address" placeholder="Village, District, State"
+                      <label className="reg-label">{t("auth.fields.address")}</label>
+                      <input className="reg-input" type="text" name="address" placeholder={t("auth.fields.addressPlaceholder")}
                         value={form.address} onChange={handleChange} />
                     </div>
                     <div className="reg-field">
-                      <label className="reg-label">Password <span className="reg-required">*</span></label>
-                      <input className="reg-input" type="password" name="password" placeholder="••••••••"
+                      <label className="reg-label">{t("auth.fields.password")} <span className="reg-required">*</span></label>
+                      <input className="reg-input" type="password" name="password" placeholder={t("auth.fields.passwordPlaceholder")}
                         value={form.password} onChange={handleChange} required />
                     </div>
                     <button className="reg-btn" type="submit" disabled={loading}>
-                      {loading ? "Creating account..." : "🌾 Create Account"}
+                      {loading ? t("auth.buttons.creatingAccount") : t("auth.buttons.createAccount")}
                     </button>
                   </form>
                 </>
@@ -363,13 +365,13 @@ const Register = () => {
           ══════════════════════════════════ */}
           {!welcome && method === "gmail" && (
             <>
-              <p className="reg-step-title">Sign up with Google or your email</p>
+              <p className="reg-step-title">{t("auth.step.signupGoogleOrEmail")}</p>
 
               {/* Option A — Google one-click */}
               <div className="reg-google-wrap">
                 <GoogleLogin
                   onSuccess={handleGoogleRegister}
-                  onError={() => setError("Google Sign In Failed")}
+                  onError={() => setError(t("auth.errors.googleFailed"))}
                   theme="filled_black"
                   shape="pill"
                   text="signup_with"
@@ -377,52 +379,52 @@ const Register = () => {
               </div>
 
               <p style={{ textAlign: "center", fontSize: "0.75rem", color: "rgba(212,175,99,0.3)", margin: "12px 0", letterSpacing: "0.08em" }}>
-                — or fill in manually —
+                {t("auth.step.orFillManually")}
               </p>
 
               {/* Option B — Manual email form */}
               <form onSubmit={handleEmailRegister}>
                 <div className="reg-row">
                   <div className="reg-field">
-                    <label className="reg-label">Full Name <span className="reg-required">*</span></label>
-                    <input className="reg-input" type="text" name="name" placeholder="Ramesh Kumar"
+                    <label className="reg-label">{t("auth.fields.name")} <span className="reg-required">*</span></label>
+                    <input className="reg-input" type="text" name="name" placeholder={t("auth.fields.namePlaceholder")}
                       value={form.name} onChange={handleChange} required />
                   </div>
                   <div className="reg-field">
-                    <label className="reg-label">Phone</label>
-                    <input className="reg-input" type="tel" name="phoneNumber" placeholder="98765 43210"
+                    <label className="reg-label">{t("auth.fields.phone")}</label>
+                    <input className="reg-input" type="tel" name="phoneNumber" placeholder={t("auth.fields.phonePlaceholder")}
                       value={form.phoneNumber} onChange={handleChange} maxLength={10} />
                   </div>
                 </div>
                 <div className="reg-field">
-                  <label className="reg-label">Email Address <span className="reg-required">*</span></label>
-                  <input className="reg-input" type="email" name="email" placeholder="you@gmail.com"
+                  <label className="reg-label">{t("auth.fields.email")} <span className="reg-required">*</span></label>
+                  <input className="reg-input" type="email" name="email" placeholder={t("auth.fields.emailGmailPlaceholder")}
                     value={form.email} onChange={handleChange} required />
                 </div>
                 <div className="reg-field">
-                  <label className="reg-label">Address</label>
-                  <input className="reg-input" type="text" name="address" placeholder="Village, District, State"
+                  <label className="reg-label">{t("auth.fields.address")}</label>
+                  <input className="reg-input" type="text" name="address" placeholder={t("auth.fields.addressPlaceholder")}
                     value={form.address} onChange={handleChange} />
                 </div>
                 <div className="reg-field">
-                  <label className="reg-label">Password <span className="reg-required">*</span></label>
-                  <input className="reg-input" type="password" name="password" placeholder="••••••••"
+                  <label className="reg-label">{t("auth.fields.password")} <span className="reg-required">*</span></label>
+                  <input className="reg-input" type="password" name="password" placeholder={t("auth.fields.passwordPlaceholder")}
                     value={form.password} onChange={handleChange} required />
                 </div>
                 <button className="reg-btn" type="submit" disabled={loading}>
-                  {loading ? "Creating account..." : "🌾 Create Account"}
+                  {loading ? t("auth.buttons.creatingAccount") : t("auth.buttons.createAccount")}
                 </button>
               </form>
 
               <button className="reg-btn-outline" onClick={() => { setMethod(null); setError(""); }}>
-                ← Back
+                {t("auth.buttons.back")}
               </button>
             </>
           )}
 
           {!welcome && method && (
             <p className="reg-login">
-              Already have an account? <Link to="/login">Sign in</Link>
+              {t("auth.footer.alreadyHaveAccount")} <Link to="/login">{t("auth.footer.signIn")}</Link>
             </p>
           )}
         </div>

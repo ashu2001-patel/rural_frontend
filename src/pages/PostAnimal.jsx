@@ -1,20 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { animalAPI } from "../api/axios";
 
 const CATEGORIES = [
-  { key: "Cow",     icon: "🐄" },
-  { key: "Buffalo", icon: "🐃" },
-  { key: "Goat",    icon: "🐐" },
-  { key: "Sheep",   icon: "🐑" },
-  { key: "Pig",     icon: "🐷" },
-  { key: "Poultry", icon: "🐓" },
-  { key: "Horse",   icon: "🐴" },
-  { key: "Camel",   icon: "🐪" },
-  { key: "Other",   icon: "🐾" },
+  { key: "Cow",     i18nKey: "cow",     icon: "🐄" },
+  { key: "Buffalo", i18nKey: "buffalo", icon: "🐃" },
+  { key: "Goat",    i18nKey: "goat",    icon: "🐐" },
+  { key: "Sheep",   i18nKey: "sheep",   icon: "🐑" },
+  { key: "Pig",     i18nKey: "pig",     icon: "🐷" },
+  { key: "Poultry", i18nKey: "poultry", icon: "🐓" },
+  { key: "Horse",   i18nKey: "horse",   icon: "🐴" },
+  { key: "Camel",   i18nKey: "camel",   icon: "🐪" },
+  { key: "Other",   i18nKey: "other",   icon: "🐾" },
 ];
 
 const PostAnimal = () => {
+  const { t } = useTranslation();
   const [form, setForm] = useState({
     name: "", category: "", price: "",
     description: "", location: "", contact: "",
@@ -43,7 +45,7 @@ const PostAnimal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.category) { setError("Please select a category"); return; }
+    if (!form.category) { setError(t("postAnimal.errors.categoryRequired")); return; }
     setLoading(true);
     setError("");
     try {
@@ -56,7 +58,7 @@ const PostAnimal = () => {
       });
       navigate("/my-animals");
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to post animal");
+      setError(err.response?.data?.message || t("postAnimal.errors.submitFailed"));
     } finally {
       setLoading(false);
     }
@@ -69,7 +71,7 @@ const PostAnimal = () => {
       {loading && (
         <div className="pa-overlay">
           <div className="pa-spinner" />
-          <p className="pa-overlay-text">Uploading your listing…</p>
+          <p className="pa-overlay-text">{t("postAnimal.submitting")}</p>
         </div>
       )}
 
@@ -78,9 +80,9 @@ const PostAnimal = () => {
 
           {/* ── Header ── */}
           <div className="pa-header">
-            <button className="pa-back" onClick={() => navigate(-1)}>← Back</button>
-            <h1 className="pa-title">Post Animal</h1>
-            <p className="pa-sub">List your livestock for thousands of rural buyers</p>
+            <button className="pa-back" onClick={() => navigate(-1)}>{t("postAnimal.buttons.back")}</button>
+            <h1 className="pa-title">{t("postAnimal.title")}</h1>
+            <p className="pa-sub">{t("postAnimal.sub")}</p>
           </div>
 
           {error && <div className="pa-error">{error}</div>}
@@ -89,9 +91,9 @@ const PostAnimal = () => {
 
             {/* ── Category ── */}
             <div className="pa-section">
-              <label className="pa-label">Select Category *</label>
+              <label className="pa-label">{t("postAnimal.categoryLabel")} *</label>
               <div className="pa-cat-grid">
-                {CATEGORIES.map(({ key, icon }) => (
+                {CATEGORIES.map(({ key, i18nKey, icon }) => (
                   <button
                     key={key}
                     type="button"
@@ -99,7 +101,7 @@ const PostAnimal = () => {
                     onClick={() => pickCategory(key)}
                   >
                     <span className="pa-cat-icon">{icon}</span>
-                    <span className="pa-cat-label">{key}</span>
+                    <span className="pa-cat-label">{t(`postAnimal.categories.${i18nKey}`)}</span>
                   </button>
                 ))}
               </div>
@@ -107,59 +109,59 @@ const PostAnimal = () => {
 
             {/* ── Basic details ── */}
             <div className="pa-section">
-              <label className="pa-label">Animal Name *</label>
+              <label className="pa-label">{t("postAnimal.fields.name")} *</label>
               <input
                 className="pa-input"
                 name="name"
                 value={form.name}
                 onChange={e => set("name", e.target.value)}
-                placeholder="e.g. Jersey Cow, Male Buffalo…"
+                placeholder={t("postAnimal.fields.namePlaceholder")}
                 required
               />
             </div>
 
             <div className="pa-row">
               <div className="pa-section pa-section--flex">
-                <label className="pa-label">Price (₹) *</label>
+                <label className="pa-label">{t("postAnimal.fields.price")} *</label>
                 <input
                   className="pa-input"
                   type="number"
                   name="price"
                   value={form.price}
                   onChange={e => set("price", e.target.value)}
-                  placeholder="25000"
+                  placeholder={t("postAnimal.fields.pricePlaceholder")}
                   required
                 />
               </div>
               <div className="pa-section pa-section--flex">
-                <label className="pa-label">Location *</label>
+                <label className="pa-label">{t("postAnimal.fields.location")} *</label>
                 <input
                   className="pa-input"
                   name="location"
                   value={form.location}
                   onChange={e => set("location", e.target.value)}
-                  placeholder="Village / City"
+                  placeholder={t("postAnimal.fields.locationPlaceholder")}
                   required
                 />
               </div>
             </div>
 
             <div className="pa-section">
-              <label className="pa-label">Contact Number *</label>
+              <label className="pa-label">{t("postAnimal.fields.contact")} *</label>
               <input
                 className="pa-input"
                 type="tel"
                 name="contact"
                 value={form.contact}
                 onChange={e => set("contact", e.target.value)}
-                placeholder="10-digit mobile number"
+                placeholder={t("postAnimal.fields.contactPlaceholder")}
                 required
               />
             </div>
 
             <div className="pa-section">
               <label className="pa-label">
-                Description
+                {t("postAnimal.fields.description")}
                 <span className="pa-char">{form.description.length}/500</span>
               </label>
               <textarea
@@ -167,18 +169,18 @@ const PostAnimal = () => {
                 name="description"
                 value={form.description}
                 onChange={e => set("description", e.target.value)}
-                placeholder="Age, breed, health condition, reason for selling…"
+                placeholder={t("postAnimal.fields.descriptionPlaceholder")}
                 maxLength={500}
               />
             </div>
 
             {/* ── Images ── */}
             <div className="pa-section">
-              <label className="pa-label">Photos ({images.length}/5)</label>
+              <label className="pa-label">{t("postAnimal.media.imagesLabel")} ({images.length}/5)</label>
               <label className="pa-upload" htmlFor="img-input">
                 <span className="pa-upload-icon">📸</span>
-                <span className="pa-upload-text">Tap to add photos</span>
-                <span className="pa-upload-hint">Up to 5 images · JPG, PNG</span>
+                <span className="pa-upload-text">{t("postAnimal.media.addImages")}</span>
+                <span className="pa-upload-hint">{t("postAnimal.media.imagesHint")}</span>
               </label>
               <input
                 id="img-input" type="file" accept="image/*" multiple
@@ -193,6 +195,7 @@ const PostAnimal = () => {
                       <button
                         type="button"
                         className="pa-thumb-remove"
+                        aria-label={t("postAnimal.media.removeMedia")}
                         onClick={() => setImages(p => p.filter((_, j) => j !== i))}
                       >×</button>
                     </div>
@@ -203,11 +206,11 @@ const PostAnimal = () => {
 
             {/* ── Videos ── */}
             <div className="pa-section">
-              <label className="pa-label">Videos ({videos.length}/2)</label>
+              <label className="pa-label">{t("postAnimal.media.videosLabel")} ({videos.length}/2)</label>
               <label className="pa-upload" htmlFor="vid-input">
                 <span className="pa-upload-icon">🎥</span>
-                <span className="pa-upload-text">Tap to add videos</span>
-                <span className="pa-upload-hint">Up to 2 videos · MP4, MOV</span>
+                <span className="pa-upload-text">{t("postAnimal.media.addVideos")}</span>
+                <span className="pa-upload-hint">{t("postAnimal.media.videosHint")}</span>
               </label>
               <input
                 id="vid-input" type="file" accept="video/*" multiple
@@ -222,6 +225,7 @@ const PostAnimal = () => {
                       <button
                         type="button"
                         className="pa-thumb-remove"
+                        aria-label={t("postAnimal.media.removeMedia")}
                         onClick={() => setVideos(p => p.filter((_, j) => j !== i))}
                       >×</button>
                     </div>
@@ -231,7 +235,7 @@ const PostAnimal = () => {
             </div>
 
             <button type="submit" className="pa-submit" disabled={loading}>
-              {loading ? "Posting…" : "🐄 Post Animal Listing"}
+              {loading ? t("postAnimal.buttons.submitting") : t("postAnimal.buttons.submit")}
             </button>
           </form>
         </div>

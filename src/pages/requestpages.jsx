@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { animalAPI } from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 
 const RequestsPage = () => {
+  const { t } = useTranslation();
   const [tab, setTab] = useState("received");
   const [received, setReceived] = useState([]);
   const [sent, setSent] = useState([]);
@@ -51,7 +53,7 @@ const RequestsPage = () => {
   };
 
   const handleCancel = async (id) => {
-    if (!window.confirm("Cancel request?")) return;
+    if (!window.confirm(t("requests.actions.cancel") + "?")) return;
     await animalAPI.delete(`/request/${id}/cancel`);
     fetchAll();
   };
@@ -62,32 +64,35 @@ const RequestsPage = () => {
     return "#f59e0b";
   };
 
+  const statusLabel = (status) => {
+    return t(`requests.status.${status}`, status);
+  };
+
   const tabs = [
-    { key: "received", label: "📥 Received" },
-    { key: "sent", label: "📤 Sent" },
-   
+    { key: "received", label: `📥 ${t("requests.tabs.received")}` },
+    { key: "sent", label: `📤 ${t("requests.tabs.sent")}` },
   ];
 
   if (loading) {
-    return <h2 style={{ textAlign: "center", color: "#fff" }}>Loading...</h2>;
+    return <h2 style={{ textAlign: "center", color: "#fff" }}>{t("common.loading")}</h2>;
   }
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.heading}>📋 Activity & History</h2>
+      <h2 style={styles.heading}>📋 {t("requests.title")}</h2>
 
       {/* Tabs */}
       <div style={styles.tabs}>
-        {tabs.map((t) => (
+        {tabs.map((tabItem) => (
           <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
+            key={tabItem.key}
+            onClick={() => setTab(tabItem.key)}
             style={{
               ...styles.tabButton,
-              ...(tab === t.key ? styles.activeTab : {})
+              ...(tab === tabItem.key ? styles.activeTab : {})
             }}
           >
-            {t.label}
+            {tabItem.label}
           </button>
         ))}
       </div>
@@ -96,15 +101,15 @@ const RequestsPage = () => {
       <div style={styles.grid}>
         {tab === "received" &&
           (received.length === 0 ? (
-            <p>No requests</p>
+            <p>{t("requests.empty.received")}</p>
           ) : (
             received.map((r) => (
               <div key={r._id} style={styles.card}>
                 <h3>{r.animalId?.name}</h3>
-                <p>Buyer: {r.buyerName}</p>
+                <p>{t("requests.fields.buyer")}: {r.buyerName}</p>
 
                 <p style={{ color: statusColor(r.status) }}>
-                  {r.status.toUpperCase()}
+                  {statusLabel(r.status).toUpperCase()}
                 </p>
 
                 <div style={styles.actions}>
@@ -114,13 +119,13 @@ const RequestsPage = () => {
                         style={styles.acceptBtn}
                         onClick={() => handleAccept(r._id)}
                       >
-                        Accept
+                        {t("requests.actions.accept")}
                       </button>
                       <button
                         style={styles.rejectBtn}
                         onClick={() => handleReject(r._id)}
                       >
-                        Reject
+                        {t("requests.actions.reject")}
                       </button>
                     </>
                   )}
@@ -129,7 +134,7 @@ const RequestsPage = () => {
                     style={styles.viewBtn}
                     onClick={() => navigate(`/animal/${r.animalId?._id}`)}
                   >
-                    View
+                    {t("common.view")}
                   </button>
                 </div>
               </div>
@@ -138,14 +143,14 @@ const RequestsPage = () => {
 
         {tab === "sent" &&
           (sent.length === 0 ? (
-            <p>No sent requests</p>
+            <p>{t("requests.empty.sent")}</p>
           ) : (
             sent.map((r) => (
               <div key={r._id} style={styles.card}>
                 <h3>{r.animalId?.name}</h3>
 
                 <p style={{ color: statusColor(r.status) }}>
-                  {r.status.toUpperCase()}
+                  {statusLabel(r.status).toUpperCase()}
                 </p>
 
                 {r.status === "pending" && (
@@ -153,28 +158,9 @@ const RequestsPage = () => {
                     style={styles.rejectBtn}
                     onClick={() => handleCancel(r._id)}
                   >
-                    Cancel
+                    {t("requests.actions.cancel")}
                   </button>
                 )}
-              </div>
-            ))
-          ))}
-
-        {tab === "myanimals" &&
-          (myAnimals.length === 0 ? (
-            <p>No animals</p>
-          ) : (
-            myAnimals.map((a) => (
-              <div key={a._id} style={styles.card}>
-                <h3>{a.name}</h3>
-                <p>₹{a.price}</p>
-
-                <button
-                  style={styles.viewBtn}
-                  onClick={() => navigate(`/animal/${a._id}`)}
-                >
-                  View
-                </button>
               </div>
             ))
           ))}

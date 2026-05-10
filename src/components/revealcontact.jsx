@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "../context/AuthContext";
 import usePaymentGate from "../hooks/usePaymentGate";
 import PaymentGateModal from "./PaymentGateModal";
 import UsageBadge from "./UsageBadge";
 
 const RevealContact = ({ contact, animalId }) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
 
   // Persist reveal state for this animal across re-renders (sessionStorage)
@@ -26,7 +28,7 @@ const RevealContact = ({ contact, animalId }) => {
   };
 
   if (!contact) {
-    return <span style={s.none}>Not provided</span>;
+    return <span style={s.none}>{t("common.notProvided")}</span>;
   }
 
   // ── Already revealed ──────────────────────────────────────────────────────
@@ -39,7 +41,7 @@ const RevealContact = ({ contact, animalId }) => {
           target="_blank" rel="noreferrer"
           style={s.waBtn}
         >
-          💬 WhatsApp
+          {t("payment.reveal.whatsapp")}
         </a>
       </div>
     );
@@ -50,13 +52,13 @@ const RevealContact = ({ contact, animalId }) => {
     <div style={s.wrap}>
 
       <div style={s.blurRow}>
-        <span style={s.blurred}>+91 ••••• •••••</span>
+        <span style={s.blurred}>{t("payment.reveal.blurredPlaceholder")}</span>
         <button style={s.revealBtn} onClick={handleReveal} disabled={gate.loading}>
           {gate.loading
-            ? "…"
+            ? t("payment.reveal.loadingDot")
             : gate.requiresPayment
-            ? `🔓 ₹${(gate.price / 100).toFixed(0)}`
-            : "👁 Reveal"}
+            ? t("payment.reveal.buttonRevealPaid", { price: (gate.price / 100).toFixed(0) })
+            : t("payment.reveal.buttonRevealFree")}
         </button>
       </div>
 
@@ -73,7 +75,7 @@ const RevealContact = ({ contact, animalId }) => {
         show={gate.showModal}
         onClose={gate.closeModal}
         featureKey="reveal_contact"
-        displayName={gate.displayName || "Reveal Contact"}
+        displayName={gate.displayName || t("payment.reveal.displayName")}
         price={gate.price}
         remaining={gate.remaining}
         freeLimit={gate.freeLimit}

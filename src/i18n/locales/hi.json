@@ -1,0 +1,573 @@
+{
+  "common": {
+    "loading": "लोड हो रहा है…",
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "delete": "हटाएँ",
+    "edit": "बदलें",
+    "back": "वापस",
+    "next": "आगे",
+    "submit": "जमा करें",
+    "send": "भेजें",
+    "search": "खोजें",
+    "close": "बंद करें",
+    "yes": "हाँ",
+    "no": "नहीं",
+    "confirm": "पुष्टि करें",
+    "retry": "फिर से",
+    "view": "देखें",
+    "viewAll": "सब देखें",
+    "showMore": "और दिखाएँ",
+    "showLess": "कम दिखाएँ",
+    "free": "मुफ़्त",
+    "paid": "भुगतान",
+    "pending": "अधूरा",
+    "success": "सफल",
+    "failed": "असफल",
+    "available": "उपलब्ध",
+    "sold": "बिक चुका",
+    "notProvided": "नहीं दिया",
+    "notSpecified": "नहीं बताया",
+    "optional": "(वैकल्पिक)",
+    "required": "ज़रूरी",
+    "all": "सभी",
+    "comingSoon": "जल्द आ रहा है",
+    "pageNotFound": "पेज नहीं मिला",
+    "goHome": "होम पर जाएँ",
+    "goBack": "वापस जाएँ",
+    "perUseAfterLimit": "सीमा के बाद हर बार",
+    "rupee": "₹",
+    "and": "और"
+  },
+
+  "language": {
+    "label": "भाषा",
+    "english": "English",
+    "hindi": "हिंदी",
+    "switchTo": "{{lang}} में बदलें"
+  },
+
+  "nav": {
+    "brandTitle": "पशु बाज़ार",
+    "brandSub": "पशु ख़रीदें • बेचें • विनिमय करें",
+    "animals": "पशु",
+    "dashboard": "डैशबोर्ड",
+    "myListings": "मेरे विज्ञापन",
+    "requests": "अनुरोध",
+    "transactions": "लेन-देन",
+    "transactionHistory": "लेन-देन का इतिहास",
+    "profile": "प्रोफ़ाइल",
+    "postAnimal": "पशु डालें",
+    "login": "लॉग इन",
+    "register": "रजिस्टर करें",
+    "registerFree": "मुफ़्त रजिस्टर करें",
+    "signOut": "लॉग आउट",
+    "myAccount": "मेरा खाता",
+    "browse": "देखें"
+  },
+
+  "footer": {
+    "brand": "Rural Company",
+    "description": "पूरे भारत के किसानों और ख़रीदारों को जोड़ता है। भरोसे के साथ आसानी से पशु ख़रीदें और बेचें।",
+    "explore": "और देखें",
+    "legal": "नियम",
+    "contact": "संपर्क",
+    "aboutUs": "हमारे बारे में",
+    "privacyPolicy": "गोपनीयता नीति",
+    "termsConditions": "नियम व शर्तें",
+    "copyright": "© {{year}} Rural Company • भारत के गाँवों के लिए 🇮🇳"
+  },
+
+  "auth": {
+    "welcomeBack": "वापस स्वागत है",
+    "signInSub": "अपने खाते में लॉग इन करें",
+    "joinTitle": "Rural Company से जुड़ें",
+    "joinSub": "अपना खाता बनाएँ",
+    "chooseSignInMethod": "लॉग इन का तरीक़ा चुनें",
+    "chooseRegisterMethod": "रजिस्टर का तरीक़ा चुनें",
+    "method": {
+      "emailPassword": "ईमेल और पासवर्ड",
+      "emailPasswordSub": "साधारण लॉग इन",
+      "phoneOtp": "फ़ोन OTP",
+      "phoneOtpSub": "SMS से सत्यापन",
+      "registerOtp": "OTP से रजिस्टर करें",
+      "registerOtpSub": "फ़ोन से सत्यापन",
+      "emailGoogle": "ईमेल / गूगल",
+      "emailGoogleSub": "ईमेल या एक क्लिक"
+    },
+    "fields": {
+      "email": "ईमेल पता",
+      "emailPlaceholder": "you@example.com",
+      "emailGmailPlaceholder": "you@gmail.com",
+      "password": "पासवर्ड",
+      "passwordPlaceholder": "••••••••",
+      "phone": "फ़ोन नंबर",
+      "phonePlaceholder": "98765 43210",
+      "name": "पूरा नाम",
+      "namePlaceholder": "रमेश कुमार",
+      "address": "पता",
+      "addressPlaceholder": "गाँव, ज़िला, राज्य",
+      "otpCode": "OTP कोड",
+      "otpPlaceholder": "• • • • • •"
+    },
+    "buttons": {
+      "signIn": "लॉग इन →",
+      "signingIn": "लॉग इन हो रहा है…",
+      "sendOtp": "OTP भेजें →",
+      "sendingOtp": "OTP भेज रहे हैं…",
+      "resend": "फिर भेजें",
+      "verifySignIn": "सत्यापित करें और लॉग इन →",
+      "verifying": "सत्यापित हो रहा है…",
+      "verifyOtp": "OTP सत्यापित करें →",
+      "createAccount": "🌾 खाता बनाएँ",
+      "creatingAccount": "खाता बन रहा है…",
+      "back": "← वापस",
+      "goHome": "होम पर जाएँ →"
+    },
+    "step": {
+      "step1Phone": "चरण 1 — अपना फ़ोन नंबर डालें",
+      "step2OtpSent": "चरण 2 — OTP +91 {{phone}} पर भेजा गया",
+      "step3Profile": "चरण 3 — अपनी जानकारी पूरी करें",
+      "phoneVerified": "फ़ोन सत्यापित हुआ!",
+      "signupGoogleOrEmail": "गूगल या ईमेल से रजिस्टर करें",
+      "orFillManually": "— या ख़ुद भरें —"
+    },
+    "footer": {
+      "noAccount": "अभी खाता नहीं है?",
+      "createOne": "बनाएँ",
+      "alreadyHaveAccount": "पहले से खाता है?",
+      "signIn": "लॉग इन करें"
+    },
+    "welcome": {
+      "message": "Rural Company में आपका स्वागत है, {{name}}! 🌾 आपका खाता तैयार है।",
+      "smsSent": "एक स्वागत SMS आपके रजिस्टर्ड फ़ोन पर भेजा गया है।",
+      "smsSentShort": "एक स्वागत SMS आपके फ़ोन पर भेजा गया है।"
+    },
+    "errors": {
+      "emailPasswordRequired": "ईमेल और पासवर्ड ज़रूरी हैं",
+      "validPhone": "10 अंकों का सही फ़ोन नंबर डालें",
+      "enterOtp": "OTP डालें",
+      "fillRequired": "कृपया सभी ज़रूरी जानकारी भरें",
+      "loginFailed": "लॉग इन नहीं हुआ",
+      "registrationFailed": "रजिस्ट्रेशन नहीं हुआ",
+      "otpFailed": "OTP नहीं भेजा गया",
+      "otpInvalid": "OTP ग़लत है",
+      "otpVerifyFailed": "OTP सत्यापित नहीं हुआ",
+      "noAccountForNumber": "इस नंबर पर कोई खाता नहीं है। कृपया पहले रजिस्टर करें।",
+      "googleFailed": "गूगल साइन इन नहीं हुआ",
+      "googleSignupFailed": "गूगल रजिस्ट्रेशन नहीं हुआ",
+      "googleLoginFailed": "गूगल लॉग इन नहीं हुआ"
+    }
+  },
+
+  "animalList": {
+    "heroTag": "🌾 पशुधन बाज़ार",
+    "heroTitle": "भरोसेमंद ग्रामीण विक्रेताओं से पशु ढूँढें",
+    "heroSub": "फ़ोटो, वीडियो और सीधे संपर्क के साथ पशुओं को देखें",
+    "stats": {
+      "listings": "विज्ञापन",
+      "withPhotos": "फ़ोटो वाले",
+      "withVideos": "वीडियो वाले",
+      "states": "राज्य"
+    },
+    "categories": {
+      "all": "सभी",
+      "cow": "गाय",
+      "buffalo": "भैंस",
+      "goat": "बकरी",
+      "sheep": "भेड़",
+      "pig": "सूअर",
+      "poultry": "मुर्ग़ी",
+      "horse": "घोड़ा",
+      "camel": "ऊँट",
+      "other": "अन्य"
+    },
+    "toolbar": {
+      "showFilters": "⚙ छाँटें",
+      "hideFilters": "✕ छुपाएँ",
+      "sortLatest": "नवीनतम",
+      "sortPriceAsc": "क़ीमत ↑",
+      "sortPriceDesc": "क़ीमत ↓",
+      "viewGrid": "ग्रिड देखें",
+      "viewList": "सूची देखें",
+      "search": "खोजें",
+      "clear": "साफ़ करें"
+    },
+    "filters": {
+      "name": "🔍 पशु का नाम",
+      "location": "📍 जगह",
+      "minPrice": "कम से कम ₹",
+      "maxPrice": "ज़्यादा से ज़्यादा ₹"
+    },
+    "card": {
+      "video": "🎥 वीडियो",
+      "photos_one": "{{count}} फ़ोटो",
+      "photos_other": "{{count}} फ़ोटो",
+      "videoCount_one": "{{count}} वीडियो",
+      "videoCount_other": "{{count}} वीडियो",
+      "viewLink": "देखें →",
+      "available": "उपलब्ध",
+      "availableShort": "उपल.",
+      "sold": "बिक गया",
+      "locationMissing": "जगह नहीं डाली",
+      "locationDash": "—",
+      "wishlist": "पसंद"
+    },
+    "count_one": "{{count}} विज्ञापन मिला",
+    "count_other": "{{count}} विज्ञापन मिले",
+    "empty": {
+      "title": "कोई पशु नहीं मिला",
+      "sub": "फ़िल्टर बदलें या बाद में फिर देखें"
+    }
+  },
+
+  "animalDetails": {
+    "back": "← विज्ञापनों पर वापस",
+    "loading": "पशु की जानकारी लोड हो रही है…",
+    "notFound": "पशु नहीं मिला",
+    "statusLive": "🟢 उपलब्ध",
+    "statusSold": "❌ बिक गया",
+    "info": {
+      "location": "📍 जगह",
+      "listedOn": "📅 डाला गया",
+      "category": "🧾 श्रेणी",
+      "contact": "📞 संपर्क",
+      "categoryDefault": "पशु",
+      "dateNA": "उपलब्ध नहीं"
+    },
+    "description": {
+      "label": "इस पशु के बारे में",
+      "translateLabel": "विवरण",
+      "showOriginal": "मूल दिखाएँ",
+      "showTranslation": "अनुवाद दिखाएँ",
+      "translateBtn": "🌐 अनुवाद करें",
+      "translating": "अनुवाद हो रहा है…",
+      "translateFailed": "अनुवाद नहीं हुआ। कृपया फिर कोशिश करें।",
+      "translatedTo": "{{lang}} में अनुवादित"
+    },
+    "cta": {
+      "callSeller": "📞 विक्रेता को कॉल करें",
+      "whatsapp": "💬 व्हाट्सएप",
+      "requestToBuy": "🤝 ख़रीदने का अनुरोध",
+      "stickyCall": "📞 कॉल",
+      "stickyWhatsapp": "💬 व्हाट्सएप",
+      "stickyRequest": "🤝 अनुरोध",
+      "stickyCancel": "✕ रद्द",
+      "stickySent": "✅ अनुरोध भेजा गया"
+    },
+    "request": {
+      "title": "ख़रीदने का अनुरोध भेजें",
+      "yourName": "आपका नाम",
+      "yourContact": "आपका फ़ोन नंबर",
+      "messageOptional": "संदेश (वैकल्पिक)",
+      "send": "अनुरोध भेजें",
+      "sending": "भेज रहे हैं…",
+      "successMsg": "✅ अनुरोध भेज दिया! विक्रेता आपसे संपर्क करेगा।",
+      "failed": "अनुरोध नहीं भेजा गया"
+    }
+  },
+
+  "postAnimal": {
+    "title": "नया पशु डालें",
+    "sub": "हज़ारों ख़रीदारों के साथ अपना पशु साझा करें",
+    "loginRequired": "पशु डालने के लिए लॉग इन करें",
+    "submitting": "आपका पशु डाला जा रहा है…",
+    "submitting2": "इसमें थोड़ा समय लग सकता है",
+    "categoryLabel": "श्रेणी चुनें",
+    "categoryHint": "शुरू करने के लिए श्रेणी पर टैप करें",
+    "categories": {
+      "cow": "गाय",
+      "buffalo": "भैंस",
+      "goat": "बकरी",
+      "sheep": "भेड़",
+      "pig": "सूअर",
+      "poultry": "मुर्ग़ी",
+      "horse": "घोड़ा",
+      "camel": "ऊँट",
+      "other": "अन्य"
+    },
+    "fields": {
+      "name": "पशु का नाम",
+      "namePlaceholder": "जैसे होल्स्टीन फ्रिज़ियन गाय",
+      "price": "क़ीमत (₹)",
+      "pricePlaceholder": "जैसे 50000",
+      "location": "जगह",
+      "locationPlaceholder": "गाँव, ज़िला, राज्य",
+      "contact": "फ़ोन नंबर",
+      "contactPlaceholder": "10 अंकों का मोबाइल नंबर",
+      "description": "विवरण",
+      "descriptionPlaceholder": "उम्र, नस्ल, दूध, स्वास्थ्य, आदि।"
+    },
+    "media": {
+      "imagesLabel": "फ़ोटो (अधिकतम 5)",
+      "videosLabel": "वीडियो (अधिकतम 2)",
+      "addImages": "📷 फ़ोटो जोड़ें",
+      "addVideos": "🎥 वीडियो जोड़ें",
+      "removeMedia": "हटाएँ",
+      "imagesHint": "साफ़ फ़ोटो भरोसा बढ़ाते हैं। कई कोणों से फ़ोटो जोड़ें।",
+      "videosHint": "एक छोटा वीडियो ख़रीदारों को जल्दी फ़ैसला लेने में मदद करता है।"
+    },
+    "buttons": {
+      "submit": "🐄 पशु डालें",
+      "submitting": "डाल रहे हैं…",
+      "back": "← वापस"
+    },
+    "errors": {
+      "nameRequired": "पशु का नाम ज़रूरी है",
+      "priceRequired": "क़ीमत ज़रूरी है",
+      "categoryRequired": "श्रेणी चुनें",
+      "submitFailed": "नहीं डाला गया। कृपया फिर कोशिश करें।"
+    }
+  },
+
+  "myAnimals": {
+    "title": "मेरे विज्ञापन",
+    "sub": "अपने डाले गए पशुओं को संभालें",
+    "stats": {
+      "total": "कुल",
+      "available": "उपलब्ध",
+      "sold": "बिक गए",
+      "estValue": "अनुमानित मूल्य"
+    },
+    "card": {
+      "live": "लाइव",
+      "sold": "बिक गया",
+      "requests": "अनुरोध",
+      "view": "देखें",
+      "delete": "हटाएँ"
+    },
+    "actions": {
+      "deleteConfirm": "क्या आप वाकई इस पशु को हटाना चाहते हैं?",
+      "deleteFailed": "हटाया नहीं गया"
+    },
+    "empty": {
+      "title": "कोई विज्ञापन नहीं",
+      "sub": "अनुरोध पाने के लिए अपना पहला पशु डालें",
+      "cta": "＋ पशु डालें"
+    }
+  },
+
+  "requests": {
+    "title": "अनुरोध",
+    "tabs": {
+      "received": "मिले हुए",
+      "sent": "भेजे हुए"
+    },
+    "status": {
+      "pending": "अधूरा",
+      "accepted": "स्वीकार",
+      "rejected": "अस्वीकार",
+      "cancelled": "रद्द"
+    },
+    "actions": {
+      "accept": "स्वीकार करें",
+      "reject": "अस्वीकार करें",
+      "cancel": "रद्द करें"
+    },
+    "fields": {
+      "buyer": "ख़रीदार",
+      "contact": "संपर्क",
+      "animal": "पशु",
+      "message": "संदेश",
+      "received": "मिला",
+      "sent": "भेजा"
+    },
+    "empty": {
+      "received": "अभी तक कोई अनुरोध नहीं मिला",
+      "sent": "आपने अभी तक कोई अनुरोध नहीं भेजा"
+    }
+  },
+
+  "profile": {
+    "title": "मेरी प्रोफ़ाइल",
+    "loginPrompt": "कृपया पहले लॉग इन करें।",
+    "fields": {
+      "role": "भूमिका",
+      "id": "आईडी",
+      "email": "ईमेल",
+      "phone": "फ़ोन"
+    },
+    "logout": "लॉग आउट",
+    "roleDefault": "उपयोगकर्ता"
+  },
+
+  "dashboard": {
+    "greet": "वापस स्वागत है,",
+    "fallbackName": "मित्र",
+    "postBtn": "＋ पशु डालें",
+    "stats": {
+      "activeListings": "सक्रिय विज्ञापन",
+      "pendingRequests": "अधूरे अनुरोध",
+      "freeUsesLeft": "मुफ़्त बचे",
+      "totalSpent": "कुल ख़र्च"
+    },
+    "freeUsage": {
+      "title": "आपका मुफ़्त उपयोग",
+      "resets": "हर महीने रीसेट",
+      "leftFormat": "{{remaining}}/{{limit}} बचा",
+      "perUsePrice": "₹{{price}} सीमा के बाद हर बार",
+      "noData": "उपयोग की जानकारी नहीं है।"
+    },
+    "activity": {
+      "title": "हाल की गतिविधि",
+      "viewHistory": "इतिहास देखें →",
+      "empty": "अभी कुछ नहीं है। शुरू करने के लिए बाज़ार देखें।",
+      "paidFor": "{{feature}} के लिए ₹{{amount}} का भुगतान",
+      "usedFree": "मुफ़्त {{feature}} इस्तेमाल किया",
+      "newRequestFrom": "{{name}} से नया अनुरोध",
+      "buyerFallback": "ख़रीदार",
+      "youRequested": "आपने {{name}} का अनुरोध किया",
+      "animalFallback": "एक पशु"
+    },
+    "quick": {
+      "myListings": "📋 मेरे विज्ञापन",
+      "requests": "📥 अनुरोध",
+      "transactions": "💳 लेन-देन",
+      "profile": "👤 प्रोफ़ाइल"
+    },
+    "time": {
+      "justNow": "अभी",
+      "minutesShort": "{{m}} मिनट पहले",
+      "hoursShort": "{{h}} घंटे पहले",
+      "daysShort": "{{d}} दिन पहले"
+    }
+  },
+
+  "transactions": {
+    "title": "लेन-देन का इतिहास",
+    "sub": "आपके सभी भुगतान, मुफ़्त उपयोग और अधूरे ऑर्डर",
+    "back": "← वापस",
+    "stats": {
+      "totalSpent": "कुल ख़र्च",
+      "paid": "भुगतान किए",
+      "freeUses": "मुफ़्त उपयोग",
+      "pending": "अधूरे"
+    },
+    "filters": {
+      "all": "सभी",
+      "successful": "सफल",
+      "pending": "अधूरे",
+      "failed": "असफल",
+      "free": "मुफ़्त"
+    },
+    "feature": {
+      "reveal_contact": "संपर्क देखें",
+      "post_animal": "पशु डालें",
+      "highlight_post": "विशेष बनाएँ"
+    },
+    "status": {
+      "free": "मुफ़्त",
+      "success": "सफल",
+      "pending": "अधूरा",
+      "failed": "असफल"
+    },
+    "card": {
+      "viewAnimal": "पशु देखें →",
+      "paymentId": "भुगतान आईडी:"
+    },
+    "empty": {
+      "title": "अभी तक कोई लेन-देन नहीं",
+      "all": "आपके भुगतान और मुफ़्त उपयोग यहाँ दिखेंगे।",
+      "filtered": "{{status}} लेन-देन नहीं मिले।",
+      "showAll": "सभी दिखाएँ"
+    },
+    "errors": {
+      "loadFailed": "इतिहास लोड नहीं हो सका"
+    }
+  },
+
+  "payment": {
+    "benefit": {
+      "reveal_contact": "विक्रेता का फ़ोन नंबर और व्हाट्सएप लिंक देखें",
+      "highlight_post": "अपने विज्ञापन को 30 दिन तक सर्च के सबसे ऊपर रखें",
+      "post_animal": "नया पशु विज्ञापन डालें",
+      "default": "{{feature}} खोलें"
+    },
+    "modal": {
+      "limitReached": "मुफ़्त सीमा ख़त्म",
+      "unlock": "{{feature}} खोलें",
+      "youHaveUsed": "आपने {{limit}} में से {{used}} मुफ़्त उपयोग कर लिए",
+      "costsOnce": "₹{{price}} (एक बार)",
+      "payNow": "₹{{price}} भुगतान करें",
+      "processing": "प्रक्रिया में…",
+      "verifyFailed": "भुगतान सत्यापित नहीं हुआ। कृपया मदद के लिए संपर्क करें।",
+      "razorpaySafe": "Razorpay द्वारा सुरक्षित",
+      "close": "✕"
+    },
+    "highlight": {
+      "alreadyHighlighted": "⭐ विज्ञापन विशेष है",
+      "buttonFree": "⭐ विशेष बनाएँ (मुफ़्त)",
+      "buttonPaid": "⭐ विशेष — ₹{{price}}",
+      "buttonPlain": "⭐ विशेष बनाएँ",
+      "processing": "प्रक्रिया में…",
+      "displayName": "विशेष विज्ञापन"
+    },
+    "reveal": {
+      "buttonRevealFree": "👁 दिखाएँ",
+      "buttonRevealPaid": "🔓 ₹{{price}}",
+      "loadingDot": "…",
+      "displayName": "संपर्क देखें",
+      "blurredPlaceholder": "+91 ••••• •••••",
+      "whatsapp": "💬 व्हाट्सएप"
+    },
+    "usage": {
+      "loading": "लोड…",
+      "remaining_one": "{{count}} मुफ़्त बचा",
+      "remaining_other": "{{count}} मुफ़्त बचे",
+      "limitReached": "सीमा ख़त्म",
+      "freeLeftLong_one": "{{count}} मुफ़्त उपयोग बचा",
+      "freeLeftLong_other": "{{count}} मुफ़्त उपयोग बचे",
+      "limitReachedLong": "मुफ़्त सीमा ख़त्म · आगे ₹{{price}}"
+    }
+  },
+
+  "legal": {
+    "about": {
+      "title": "Rural Company के बारे में",
+      "tagline": "भारतीय किसानों और ख़रीदारों को सीधे जोड़ता है।",
+      "missionTitle": "हमारा उद्देश्य",
+      "missionBody": "हम ग्रामीण भारत के लिए पशु ख़रीदने और बेचने का सबसे आसान तरीक़ा बना रहे हैं। बिचौलिए नहीं, कमीशन नहीं — बस किसानों के बीच सीधा, उचित सौदा।",
+      "valuesTitle": "हम क्या मानते हैं",
+      "trustTitle": "भरोसा",
+      "trustBody": "सत्यापित विक्रेता, असली फ़ोटो, असली वीडियो। जो दिखता है, वही मिलता है।",
+      "fairnessTitle": "उचित नीति",
+      "fairnessBody": "विज्ञापन डालना मुफ़्त, देखना मुफ़्त। केवल जब आप व्यापार करना तय करें तब भुगतान।",
+      "transparencyTitle": "पारदर्शिता",
+      "transparencyBody": "साफ़ क़ीमतें, साफ़ प्रक्रिया, कोई छुपे शुल्क नहीं।",
+      "techTitle": "ग्रामीण उपयोगकर्ताओं के लिए बना",
+      "techBody": "धीमे इंटरनेट पर भी चलता है, सरल भाषा विकल्प, कम बैटरी में आसान। आपका फ़ोन, आपकी भाषा, आपका व्यापार।",
+      "contactTitle": "संपर्क करें",
+      "contactBody": "सवाल है, कोई समस्या मिली, या साझेदारी करना चाहते हैं? कभी भी संपर्क करें।"
+    },
+    "privacy": {
+      "title": "गोपनीयता नीति",
+      "lastUpdated": "अंतिम अपडेट: जनवरी 2026",
+      "intro": "आपकी गोपनीयता ज़रूरी है। यह पेज बताता है कि हम क्या एकत्र करते हैं, कैसे उपयोग करते हैं, और आपके पास क्या विकल्प हैं।",
+      "collectTitle": "हम क्या एकत्र करते हैं",
+      "collectBody": "नाम, फ़ोन नंबर, ईमेल, पता (यदि दिया हो), और विज्ञापन की जानकारी। हम इसका उपयोग केवल बाज़ार चलाने के लिए करते हैं।",
+      "useTitle": "हम आपकी जानकारी का उपयोग कैसे करते हैं",
+      "useBody": "आपके विज्ञापन ख़रीदारों को दिखाने, OTP और स्वागत संदेश भेजने, और आपका खाता सुरक्षित रखने के लिए।",
+      "shareTitle": "हम क्या साझा करते हैं",
+      "shareBody": "आपके विज्ञापन का संपर्क नंबर तब ही दूसरों को दिखाया जाता है जब वे ख़ुद देखना चुनते हैं। हम आपकी जानकारी कभी नहीं बेचते।",
+      "rightsTitle": "आपके अधिकार",
+      "rightsBody": "आप कभी भी अपनी प्रोफ़ाइल बदल सकते हैं, विज्ञापन हटा सकते हैं, या खाता बंद कर सकते हैं। पूरी जानकारी निर्यात के लिए हमें ईमेल करें।",
+      "contactTitle": "संपर्क",
+      "contactBody": "इस नीति पर सवाल? support@ruralcompany.in पर ईमेल करें।"
+    },
+    "terms": {
+      "title": "नियम व शर्तें",
+      "lastUpdated": "अंतिम अपडेट: जनवरी 2026",
+      "intro": "Rural Company का उपयोग करके आप निम्नलिखित से सहमत होते हैं।",
+      "useTitle": "उचित उपयोग",
+      "useBody": "केवल असली पशु डालें जो वाक़ई आपके हैं। विवरण में सच्चाई रखें। कोई स्पैम, झूठे विज्ञापन या धोखाधड़ी नहीं।",
+      "paymentsTitle": "भुगतान",
+      "paymentsBody": "कुछ सुविधाओं (जैसे संपर्क देखना, विज्ञापन विशेष बनाना) के लिए मुफ़्त सीमा के बाद भुगतान ज़रूरी है। सभी भुगतान Razorpay द्वारा होते हैं।",
+      "responsibilityTitle": "ख़रीदार और विक्रेता की ज़िम्मेदारी",
+      "responsibilityBody": "Rural Company एक बाज़ार है। हम पशुओं की शारीरिक जाँच नहीं करते। लेन-देन से पहले हमेशा जाँचें।",
+      "terminationTitle": "खाता बंद करना",
+      "terminationBody": "हम उन खातों को निलंबित कर सकते हैं जो इन नियमों का उल्लंघन करते हैं। आप कभी भी अपना खाता बंद कर सकते हैं।",
+      "changesTitle": "बदलाव",
+      "changesBody": "हम कभी-कभी ये नियम अपडेट कर सकते हैं। बड़े बदलावों की सूचना आपको दी जाएगी।"
+    }
+  }
+}

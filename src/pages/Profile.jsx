@@ -1,7 +1,10 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LanguageToggle from "../components/LanguageToggle";
 
 const Profile = () => {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -10,7 +13,7 @@ const Profile = () => {
     navigate("/login");
   };
 
-  if (!user) return <p style={{ textAlign: "center", marginTop: "40px" }}>Please login first.</p>;
+  if (!user) return <p style={{ textAlign: "center", marginTop: "40px" }}>{t("profile.loginPrompt")}</p>;
 
   return (
     <div style={styles.container}>
@@ -19,9 +22,13 @@ const Profile = () => {
         <h2 style={styles.name}>{user.name}</h2>
         <p style={styles.email}>{user.email}</p>
         <div style={styles.divider} />
-        <div style={styles.row}><span style={styles.label}>Role</span><span>{user.role || "User"}</span></div>
-        <div style={styles.row}><span style={styles.label}>ID</span><span style={{ fontSize: "12px", color: "#999" }}>{user._id || user.id}</span></div>
-        <button style={styles.btn} onClick={handleLogout}>Logout</button>
+        <div style={styles.row}><span style={styles.label}>{t("profile.fields.role")}</span><span>{user.role || t("profile.roleDefault")}</span></div>
+        <div style={styles.row}><span style={styles.label}>{t("profile.fields.id")}</span><span style={{ fontSize: "12px", color: "#999" }}>{user._id || user.id}</span></div>
+        <div style={{ ...styles.row, justifyContent: "space-between", alignItems: "center" }}>
+          <span style={styles.label}>{t("language.label")}</span>
+          <LanguageToggle />
+        </div>
+        <button style={styles.btn} onClick={handleLogout}>{t("profile.logout")}</button>
       </div>
     </div>
   );

@@ -1,14 +1,11 @@
+import { useTranslation } from "react-i18next";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // UsageBadge — shows remaining free uses inline next to a feature button.
-//
-// Props:
-//   remaining   – free uses left
-//   freeLimit   – total free uses
-//   price       – price in paise (0 = always free)
-//   loading     – true while fetching
-//   size        – "sm" | "md" (default "sm")
 // ─────────────────────────────────────────────────────────────────────────────
 const UsageBadge = ({ remaining, freeLimit, price = 0, loading = false, size = "sm" }) => {
+  const { t } = useTranslation();
+
   if (loading) return <span style={s.skeleton} />;
 
   // Always-free feature — no badge needed
@@ -29,8 +26,8 @@ const UsageBadge = ({ remaining, freeLimit, price = 0, loading = false, size = "
         </div>
         <span style={{ ...s.text, color }}>
           {isDone
-            ? `Free limit reached · ₹${(price / 100).toFixed(0)} to continue`
-            : `${remaining} free use${remaining !== 1 ? "s" : ""} left`}
+            ? t("payment.usage.limitReachedLong", { price: (price / 100).toFixed(0) })
+            : t("payment.usage.freeLeftLong", { count: remaining })}
         </span>
       </div>
     );
@@ -50,7 +47,7 @@ const UsageBadge = ({ remaining, freeLimit, price = 0, loading = false, size = "
         color,
       }}
     >
-      {isDone ? "Limit reached" : `${remaining} free left`}
+      {isDone ? t("payment.usage.limitReached") : t("payment.usage.remaining", { count: remaining })}
     </span>
   );
 };

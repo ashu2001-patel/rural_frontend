@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { AuthProvider } from "./context/AuthContext";
 
 import Navbar from "./components/Navbar";
@@ -19,20 +20,23 @@ import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 
-const ComingSoon = ({ title }) => (
-  <div
-    style={{
-      minHeight: "60vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "#d4af63",
-      fontSize: "20px",
-    }}
-  >
-    {title}
-  </div>
-);
+const ComingSoon = ({ titleKey }) => {
+  const { t } = useTranslation();
+  return (
+    <div
+      style={{
+        minHeight: "60vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "#d4af63",
+        fontSize: "20px",
+      }}
+    >
+      {t(titleKey)}
+    </div>
+  );
+};
 
 function App() {
   return (
@@ -82,7 +86,7 @@ function App() {
               {/* Fallback */}
               <Route
                 path="*"
-                element={<ComingSoon title="Page Not Found" />}
+                element={<ComingSoon titleKey="common.pageNotFound" />}
               />
 
             </Routes>
