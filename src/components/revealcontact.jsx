@@ -1,16 +1,29 @@
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RevealContact — shows the seller's phone freely.
-// Pricing may be re-introduced later (the payment-gate scaffolding still
-// exists in usePaymentGate / FeatureConfig and can be turned back on
-// without UI changes here).
-// ─────────────────────────────────────────────────────────────────────────────
 const RevealContact = ({ contact }) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   if (!contact) {
     return <span style={s.none}>{t("common.notProvided")}</span>;
+  }
+
+  if (!user) {
+    return (
+      <div style={s.lockWrap}>
+        <div style={s.lockIcon}>🔒</div>
+        <p style={s.lockText}>{t("animalDetails.contactLoginRequired") || "Contact details are private"}</p>
+        <button
+          style={s.loginBtn}
+          onClick={() => navigate("/login")}
+        >
+          {t("common.login") || "Login to view contact"}
+        </button>
+      </div>
+    );
   }
 
   const waNumber = contact.replace(/\D/g, "");
@@ -76,6 +89,35 @@ const s = {
     fontSize: ".68rem",
     color: "rgba(212,175,99,.45)",
     lineHeight: 1.4,
+  },
+  lockWrap: {
+    display: "flex", flexDirection: "column", alignItems: "center", gap: "12px",
+    padding: "16px 12px",
+    background: "rgba(220,53,69,.08)",
+    border: "1px solid rgba(220,53,69,.25)",
+    borderRadius: "10px",
+    textAlign: "center",
+  },
+  lockIcon: {
+    fontSize: "2rem",
+  },
+  lockText: {
+    margin: 0,
+    fontSize: ".85rem",
+    color: "rgba(240,230,208,.6)",
+    fontWeight: 500,
+  },
+  loginBtn: {
+    padding: "8px 16px",
+    background: "linear-gradient(135deg,#d4af63,#8b5a2b)",
+    border: "none",
+    borderRadius: "6px",
+    color: "#1a0f05",
+    fontWeight: 600,
+    fontSize: ".8rem",
+    cursor: "pointer",
+    fontFamily: "'Poppins',sans-serif",
+    transition: "opacity .2s",
   },
 };
 
