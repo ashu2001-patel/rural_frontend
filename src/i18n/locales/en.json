@@ -44,6 +44,7 @@
     "label": "Language",
     "english": "English",
     "hindi": "हिंदी",
+    "awadhi": "अवधी",
     "switchTo": "Switch to {{lang}}"
   },
 

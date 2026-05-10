@@ -1,0 +1,574 @@
+{
+  "common": {
+    "loading": "लोड होत बा…",
+    "save": "सहेजा",
+    "cancel": "रद्द करा",
+    "delete": "हटावा",
+    "edit": "बदला",
+    "back": "पीछे",
+    "next": "आगे",
+    "submit": "जमा करा",
+    "send": "पठावा",
+    "search": "खोजा",
+    "close": "बंद करा",
+    "yes": "हाँ",
+    "no": "नाहीं",
+    "confirm": "पक्का करा",
+    "retry": "फिर से",
+    "view": "देखा",
+    "viewAll": "सब देखा",
+    "showMore": "अउर देखावा",
+    "showLess": "कम देखावा",
+    "free": "मुफ्त",
+    "paid": "पैसा दिहल",
+    "pending": "बाकी",
+    "success": "सफल",
+    "failed": "असफल",
+    "available": "उपलब्ध",
+    "sold": "बिकि गा",
+    "notProvided": "नाहीं दिहल गा",
+    "notSpecified": "नाहीं बतावल गा",
+    "optional": "(मर्ज़ी पे)",
+    "required": "ज़रूरी",
+    "all": "सब",
+    "comingSoon": "जल्दी आइहै",
+    "pageNotFound": "पेज नाहीं मिला",
+    "goHome": "घरे जाओ",
+    "goBack": "पीछे जाओ",
+    "perUseAfterLimit": "सीमा के बाद हर बार",
+    "rupee": "₹",
+    "and": "अउर"
+  },
+
+  "language": {
+    "label": "भाषा",
+    "english": "English",
+    "hindi": "हिंदी",
+    "awadhi": "अवधी",
+    "switchTo": "{{lang}} मा बदला"
+  },
+
+  "nav": {
+    "brandTitle": "पशु बाज़ार",
+    "brandSub": "पशु लीहा • बेचा • बदला",
+    "animals": "पशु",
+    "dashboard": "डैशबोर्ड",
+    "myListings": "हमार विज्ञापन",
+    "requests": "निवेदन",
+    "transactions": "लेन-देन",
+    "transactionHistory": "लेन-देन के इतिहास",
+    "profile": "प्रोफ़ाइल",
+    "postAnimal": "पशु डाला",
+    "login": "लॉग इन",
+    "register": "रजिस्टर करा",
+    "registerFree": "मुफ्त रजिस्टर करा",
+    "signOut": "लॉग आउट",
+    "myAccount": "हमार खाता",
+    "browse": "देखा"
+  },
+
+  "footer": {
+    "brand": "Rural Company",
+    "description": "पूरे भारत के किसान अउर खरीदार का जोड़ै बा। भरोसा के साथ आसानी से पशु लीहा अउर बेचा।",
+    "explore": "अउर देखा",
+    "legal": "नियम",
+    "contact": "संपर्क",
+    "aboutUs": "हमरे बारे मा",
+    "privacyPolicy": "गोपनीयता नीति",
+    "termsConditions": "नियम अउर शर्त",
+    "copyright": "© {{year}} Rural Company • भारत के गाँव खातिर 🇮🇳"
+  },
+
+  "auth": {
+    "welcomeBack": "फिर से स्वागत बा",
+    "signInSub": "अपन खाता मा लॉग इन करा",
+    "joinTitle": "Rural Company से जुड़ा",
+    "joinSub": "अपन खाता बनावा",
+    "chooseSignInMethod": "लॉग इन के तरीका चुना",
+    "chooseRegisterMethod": "रजिस्टर के तरीका चुना",
+    "method": {
+      "emailPassword": "ईमेल अउर पासवर्ड",
+      "emailPasswordSub": "साधारण लॉग इन",
+      "phoneOtp": "फ़ोन OTP",
+      "phoneOtpSub": "SMS से प्रमाण",
+      "registerOtp": "OTP से रजिस्टर करा",
+      "registerOtpSub": "फ़ोन से प्रमाण",
+      "emailGoogle": "ईमेल / गूगल",
+      "emailGoogleSub": "ईमेल या एक क्लिक"
+    },
+    "fields": {
+      "email": "ईमेल पता",
+      "emailPlaceholder": "you@example.com",
+      "emailGmailPlaceholder": "you@gmail.com",
+      "password": "पासवर्ड",
+      "passwordPlaceholder": "••••••••",
+      "phone": "फ़ोन नंबर",
+      "phonePlaceholder": "98765 43210",
+      "name": "पूरा नाम",
+      "namePlaceholder": "रमेश कुमार",
+      "address": "पता",
+      "addressPlaceholder": "गाँव, ज़िला, राज्य",
+      "otpCode": "OTP कोड",
+      "otpPlaceholder": "• • • • • •"
+    },
+    "buttons": {
+      "signIn": "लॉग इन →",
+      "signingIn": "लॉग इन होत बा…",
+      "sendOtp": "OTP पठावा →",
+      "sendingOtp": "OTP पठावत बानी…",
+      "resend": "फिर पठावा",
+      "verifySignIn": "जाँचा अउर लॉग इन →",
+      "verifying": "जाँच होत बा…",
+      "verifyOtp": "OTP जाँचा →",
+      "createAccount": "🌾 खाता बनावा",
+      "creatingAccount": "खाता बनत बा…",
+      "back": "← पीछे",
+      "goHome": "घरे जाओ →"
+    },
+    "step": {
+      "step1Phone": "चरण 1 — अपन फ़ोन नंबर डाला",
+      "step2OtpSent": "चरण 2 — OTP +91 {{phone}} पे पठावल गा",
+      "step3Profile": "चरण 3 — अपन जानकारी पूरी करा",
+      "phoneVerified": "फ़ोन जाँचा गा!",
+      "signupGoogleOrEmail": "गूगल या ईमेल से रजिस्टर करा",
+      "orFillManually": "— या खुद भरा —"
+    },
+    "footer": {
+      "noAccount": "अबहीं खाता नाहीं बा?",
+      "createOne": "बनावा",
+      "alreadyHaveAccount": "पहिले से खाता बा?",
+      "signIn": "लॉग इन करा"
+    },
+    "welcome": {
+      "message": "Rural Company मा तोहार स्वागत बा, {{name}}! 🌾 तोहार खाता तैयार बा।",
+      "smsSent": "एक स्वागत SMS तोहार रजिस्टर्ड फ़ोन पे पठावल गा बा।",
+      "smsSentShort": "एक स्वागत SMS तोहार फ़ोन पे पठावल गा बा।"
+    },
+    "errors": {
+      "emailPasswordRequired": "ईमेल अउर पासवर्ड ज़रूरी बा",
+      "validPhone": "10 अंक के सही फ़ोन नंबर डाला",
+      "enterOtp": "OTP डाला",
+      "fillRequired": "किरपा करि के सब ज़रूरी जानकारी भरा",
+      "loginFailed": "लॉग इन नाहीं भा",
+      "registrationFailed": "रजिस्ट्रेशन नाहीं भा",
+      "otpFailed": "OTP नाहीं पठावल गा",
+      "otpInvalid": "OTP गलत बा",
+      "otpVerifyFailed": "OTP जाँच नाहीं भै",
+      "noAccountForNumber": "इ नंबर पे कौनो खाता नाहीं बा। पहिले रजिस्टर करा।",
+      "googleFailed": "गूगल साइन इन नाहीं भा",
+      "googleSignupFailed": "गूगल रजिस्ट्रेशन नाहीं भा",
+      "googleLoginFailed": "गूगल लॉग इन नाहीं भा"
+    }
+  },
+
+  "animalList": {
+    "heroTag": "🌾 पशुधन बाज़ार",
+    "heroTitle": "भरोसेमंद गाँव के बेचवइया से पशु पावा",
+    "heroSub": "फ़ोटो, वीडियो अउर सीधा संपर्क के साथ पशु देखा",
+    "stats": {
+      "listings": "विज्ञापन",
+      "withPhotos": "फ़ोटो वाले",
+      "withVideos": "वीडियो वाले",
+      "states": "राज्य"
+    },
+    "categories": {
+      "all": "सब",
+      "cow": "गाय",
+      "buffalo": "भैंस",
+      "goat": "बकरी",
+      "sheep": "भेड़",
+      "pig": "सूअर",
+      "poultry": "मुर्गी",
+      "horse": "घोड़ा",
+      "camel": "ऊँट",
+      "other": "दूसर"
+    },
+    "toolbar": {
+      "showFilters": "⚙ छाँटा",
+      "hideFilters": "✕ छुपावा",
+      "sortLatest": "ताज़ा",
+      "sortPriceAsc": "दाम ↑",
+      "sortPriceDesc": "दाम ↓",
+      "viewGrid": "ग्रिड देखा",
+      "viewList": "सूची देखा",
+      "search": "खोजा",
+      "clear": "साफ़ करा"
+    },
+    "filters": {
+      "name": "🔍 पशु के नाम",
+      "location": "📍 जगह",
+      "minPrice": "कम से कम ₹",
+      "maxPrice": "ज़्यादा से ज़्यादा ₹"
+    },
+    "card": {
+      "video": "🎥 वीडियो",
+      "photos_one": "{{count}} फ़ोटो",
+      "photos_other": "{{count}} फ़ोटो",
+      "videoCount_one": "{{count}} वीडियो",
+      "videoCount_other": "{{count}} वीडियो",
+      "viewLink": "देखा →",
+      "available": "उपलब्ध",
+      "availableShort": "उपल.",
+      "sold": "बिकि गा",
+      "locationMissing": "जगह नाहीं डाला गा",
+      "locationDash": "—",
+      "wishlist": "पसंद"
+    },
+    "count_one": "{{count}} विज्ञापन मिला",
+    "count_other": "{{count}} विज्ञापन मिले",
+    "empty": {
+      "title": "कौनो पशु नाहीं मिला",
+      "sub": "फ़िल्टर बदला या बाद मा फिर देखा"
+    }
+  },
+
+  "animalDetails": {
+    "back": "← विज्ञापन पे पीछे",
+    "loading": "पशु के जानकारी लोड होत बा…",
+    "notFound": "पशु नाहीं मिला",
+    "statusLive": "🟢 उपलब्ध",
+    "statusSold": "❌ बिकि गा",
+    "info": {
+      "location": "📍 जगह",
+      "listedOn": "📅 डाला गा",
+      "category": "🧾 श्रेणी",
+      "contact": "📞 संपर्क",
+      "categoryDefault": "पशु",
+      "dateNA": "नाहीं बा"
+    },
+    "description": {
+      "label": "इ पशु के बारे मा",
+      "translateLabel": "विवरण",
+      "showOriginal": "मूल देखावा",
+      "showTranslation": "अनुवाद देखावा",
+      "translateBtn": "🌐 अनुवाद करा",
+      "translating": "अनुवाद होत बा…",
+      "translateFailed": "अनुवाद नाहीं भा। फिर कोशिश करा।",
+      "translatedTo": "{{lang}} मा अनुवादित"
+    },
+    "cta": {
+      "callSeller": "📞 बेचवइया का कॉल करा",
+      "whatsapp": "💬 व्हाट्सएप",
+      "requestToBuy": "🤝 खरीदै के निवेदन",
+      "stickyCall": "📞 कॉल",
+      "stickyWhatsapp": "💬 व्हाट्सएप",
+      "stickyRequest": "🤝 निवेदन",
+      "stickyCancel": "✕ रद्द",
+      "stickySent": "✅ निवेदन पठावल गा"
+    },
+    "request": {
+      "title": "खरीदै के निवेदन पठावा",
+      "yourName": "तोहार नाम",
+      "yourContact": "तोहार फ़ोन नंबर",
+      "messageOptional": "संदेश (मर्ज़ी पे)",
+      "send": "निवेदन पठावा",
+      "sending": "पठावत बानी…",
+      "successMsg": "✅ निवेदन पठावा गै! बेचवइया तोहसे संपर्क करिहैं।",
+      "failed": "निवेदन नाहीं पठावल गा"
+    }
+  },
+
+  "postAnimal": {
+    "title": "नया पशु डाला",
+    "sub": "हज़ारन खरीदारन के साथ अपन पशु बाँटा",
+    "loginRequired": "पशु डालै खातिर लॉग इन करा",
+    "submitting": "तोहार पशु डालल जात बा…",
+    "submitting2": "इ मा थोड़ी देर लग सकत बा",
+    "categoryLabel": "श्रेणी चुना",
+    "categoryHint": "शुरू करै खातिर श्रेणी पे टैप करा",
+    "categories": {
+      "cow": "गाय",
+      "buffalo": "भैंस",
+      "goat": "बकरी",
+      "sheep": "भेड़",
+      "pig": "सूअर",
+      "poultry": "मुर्गी",
+      "horse": "घोड़ा",
+      "camel": "ऊँट",
+      "other": "दूसर"
+    },
+    "fields": {
+      "name": "पशु के नाम",
+      "namePlaceholder": "जइसे होल्स्टीन फ्रिज़ियन गाय",
+      "price": "दाम (₹)",
+      "pricePlaceholder": "जइसे 50000",
+      "location": "जगह",
+      "locationPlaceholder": "गाँव, ज़िला, राज्य",
+      "contact": "फ़ोन नंबर",
+      "contactPlaceholder": "10 अंक के मोबाइल नंबर",
+      "description": "विवरण",
+      "descriptionPlaceholder": "उमर, नस्ल, दूध, सेहत, इत्यादि।"
+    },
+    "media": {
+      "imagesLabel": "फ़ोटो (ज़्यादा से ज़्यादा 5)",
+      "videosLabel": "वीडियो (ज़्यादा से ज़्यादा 2)",
+      "addImages": "📷 फ़ोटो जोड़ा",
+      "addVideos": "🎥 वीडियो जोड़ा",
+      "removeMedia": "हटावा",
+      "imagesHint": "साफ़ फ़ोटो भरोसा बढ़ावत बाटें। कई कोने से फ़ोटो जोड़ा।",
+      "videosHint": "एक छोट वीडियो खरीदारन का जल्दी फ़ैसला करै मा मदद देत बा।"
+    },
+    "buttons": {
+      "submit": "🐄 पशु डाला",
+      "submitting": "डालत बानी…",
+      "back": "← पीछे"
+    },
+    "errors": {
+      "nameRequired": "पशु के नाम ज़रूरी बा",
+      "priceRequired": "दाम ज़रूरी बा",
+      "categoryRequired": "श्रेणी चुना",
+      "submitFailed": "नाहीं डालल गा। फिर कोशिश करा।"
+    }
+  },
+
+  "myAnimals": {
+    "title": "हमार विज्ञापन",
+    "sub": "अपन डाले पशुअन का सँभारा",
+    "stats": {
+      "total": "कुल",
+      "available": "उपलब्ध",
+      "sold": "बिकि गा",
+      "estValue": "अनुमानित मूल्य"
+    },
+    "card": {
+      "live": "लाइव",
+      "sold": "बिकि गा",
+      "requests": "निवेदन",
+      "view": "देखा",
+      "delete": "हटावा"
+    },
+    "actions": {
+      "deleteConfirm": "का तू सच मा इ पशु का हटावै चाहत बाड़ा?",
+      "deleteFailed": "नाहीं हटा गा"
+    },
+    "empty": {
+      "title": "कौनो विज्ञापन नाहीं",
+      "sub": "निवेदन पावै खातिर अपन पहिल पशु डाला",
+      "cta": "＋ पशु डाला"
+    }
+  },
+
+  "requests": {
+    "title": "निवेदन",
+    "tabs": {
+      "received": "मिले हुए",
+      "sent": "पठावे हुए"
+    },
+    "status": {
+      "pending": "बाकी",
+      "accepted": "मानल गा",
+      "rejected": "मना भा",
+      "cancelled": "रद्द"
+    },
+    "actions": {
+      "accept": "स्वीकार करा",
+      "reject": "मना करा",
+      "cancel": "रद्द करा"
+    },
+    "fields": {
+      "buyer": "खरीदार",
+      "contact": "संपर्क",
+      "animal": "पशु",
+      "message": "संदेश",
+      "received": "मिला",
+      "sent": "पठावा"
+    },
+    "empty": {
+      "received": "अबहीं तक कौनो निवेदन नाहीं मिला",
+      "sent": "तू अबहीं तक कौनो निवेदन नाहीं पठावा"
+    }
+  },
+
+  "profile": {
+    "title": "हमार प्रोफ़ाइल",
+    "loginPrompt": "किरपा करि के पहिले लॉग इन करा।",
+    "fields": {
+      "role": "भूमिका",
+      "id": "आईडी",
+      "email": "ईमेल",
+      "phone": "फ़ोन"
+    },
+    "logout": "लॉग आउट",
+    "roleDefault": "उपयोगकर्ता"
+  },
+
+  "dashboard": {
+    "greet": "फिर से स्वागत बा,",
+    "fallbackName": "मीत",
+    "postBtn": "＋ पशु डाला",
+    "stats": {
+      "activeListings": "सक्रिय विज्ञापन",
+      "pendingRequests": "बाकी निवेदन",
+      "freeUsesLeft": "मुफ्त बचा",
+      "totalSpent": "कुल खर्च"
+    },
+    "freeUsage": {
+      "title": "तोहार मुफ्त उपयोग",
+      "resets": "हर महीना रीसेट",
+      "leftFormat": "{{remaining}}/{{limit}} बचा",
+      "perUsePrice": "₹{{price}} सीमा के बाद हर बार",
+      "noData": "उपयोग के जानकारी नाहीं बा।"
+    },
+    "activity": {
+      "title": "हाल के काम",
+      "viewHistory": "इतिहास देखा →",
+      "empty": "अबहीं कुछ नाहीं बा। शुरू करै खातिर बाज़ार देखा।",
+      "paidFor": "{{feature}} खातिर ₹{{amount}} दिहल गा",
+      "usedFree": "मुफ्त {{feature}} उपयोग कीन्ह",
+      "newRequestFrom": "{{name}} से नया निवेदन",
+      "buyerFallback": "खरीदार",
+      "youRequested": "तू {{name}} के निवेदन कीन्हा",
+      "animalFallback": "एक पशु"
+    },
+    "quick": {
+      "myListings": "📋 हमार विज्ञापन",
+      "requests": "📥 निवेदन",
+      "transactions": "💳 लेन-देन",
+      "profile": "👤 प्रोफ़ाइल"
+    },
+    "time": {
+      "justNow": "अबहीं",
+      "minutesShort": "{{m}} मिनट पहिले",
+      "hoursShort": "{{h}} घंटा पहिले",
+      "daysShort": "{{d}} दिन पहिले"
+    }
+  },
+
+  "transactions": {
+    "title": "लेन-देन के इतिहास",
+    "sub": "तोहार सब भुगतान, मुफ्त उपयोग अउर बाकी आर्डर",
+    "back": "← पीछे",
+    "stats": {
+      "totalSpent": "कुल खर्च",
+      "paid": "भुगतान कीन्ह",
+      "freeUses": "मुफ्त उपयोग",
+      "pending": "बाकी"
+    },
+    "filters": {
+      "all": "सब",
+      "successful": "सफल",
+      "pending": "बाकी",
+      "failed": "असफल",
+      "free": "मुफ्त"
+    },
+    "feature": {
+      "reveal_contact": "संपर्क देखा",
+      "post_animal": "पशु डाला",
+      "highlight_post": "विशेष बनावा"
+    },
+    "status": {
+      "free": "मुफ्त",
+      "success": "सफल",
+      "pending": "बाकी",
+      "failed": "असफल"
+    },
+    "card": {
+      "viewAnimal": "पशु देखा →",
+      "paymentId": "भुगतान आईडी:"
+    },
+    "empty": {
+      "title": "अबहीं तक कौनो लेन-देन नाहीं",
+      "all": "तोहार भुगतान अउर मुफ्त उपयोग इहाँ देखाइ देई।",
+      "filtered": "{{status}} लेन-देन नाहीं मिला।",
+      "showAll": "सब देखावा"
+    },
+    "errors": {
+      "loadFailed": "इतिहास लोड नाहीं भा"
+    }
+  },
+
+  "payment": {
+    "benefit": {
+      "reveal_contact": "बेचवइया के फ़ोन नंबर अउर व्हाट्सएप लिंक देखा",
+      "highlight_post": "अपन विज्ञापन का 30 दिन तक खोज मा सबसे ऊपर राखा",
+      "post_animal": "नया पशु विज्ञापन डाला",
+      "default": "{{feature}} खोला"
+    },
+    "modal": {
+      "limitReached": "मुफ्त सीमा खतम",
+      "unlock": "{{feature}} खोला",
+      "youHaveUsed": "तू {{limit}} मा से {{used}} मुफ्त उपयोग कीन्हा",
+      "costsOnce": "₹{{price}} (एक बार)",
+      "payNow": "₹{{price}} दा",
+      "processing": "प्रक्रिया मा…",
+      "verifyFailed": "भुगतान जाँच नाहीं भै। मदद खातिर संपर्क करा।",
+      "razorpaySafe": "Razorpay से सुरक्षित",
+      "close": "✕"
+    },
+    "highlight": {
+      "alreadyHighlighted": "⭐ विज्ञापन विशेष बा",
+      "buttonFree": "⭐ विशेष बनावा (मुफ्त)",
+      "buttonPaid": "⭐ विशेष — ₹{{price}}",
+      "buttonPlain": "⭐ विशेष बनावा",
+      "processing": "प्रक्रिया मा…",
+      "displayName": "विशेष विज्ञापन"
+    },
+    "reveal": {
+      "buttonRevealFree": "👁 देखा",
+      "buttonRevealPaid": "🔓 ₹{{price}}",
+      "loadingDot": "…",
+      "displayName": "संपर्क देखा",
+      "blurredPlaceholder": "+91 ••••• •••••",
+      "whatsapp": "💬 व्हाट्सएप"
+    },
+    "usage": {
+      "loading": "लोड…",
+      "remaining_one": "{{count}} मुफ्त बचा",
+      "remaining_other": "{{count}} मुफ्त बचा",
+      "limitReached": "सीमा खतम",
+      "freeLeftLong_one": "{{count}} मुफ्त उपयोग बचा",
+      "freeLeftLong_other": "{{count}} मुफ्त उपयोग बचा",
+      "limitReachedLong": "मुफ्त सीमा खतम · आगे ₹{{price}}"
+    }
+  },
+
+  "legal": {
+    "about": {
+      "title": "Rural Company के बारे मा",
+      "tagline": "भारतीय किसान अउर खरीदार का सीधा जोड़त बा।",
+      "missionTitle": "हमार उद्देश्य",
+      "missionBody": "हम गाँव के भारत खातिर पशु लीहै अउर बेचै के सबसे आसान तरीका बनावत बाटी। बीच मा कौनो दलाल नाहीं, कौनो कमीशन नाहीं — बस किसानन के बीच सीधा, सही सौदा।",
+      "valuesTitle": "हम का मानत बाटी",
+      "trustTitle": "भरोसा",
+      "trustBody": "जाँचा गा बेचवइया, असली फ़ोटो, असली वीडियो। जो देखाइ देत बा, वोही मिलत बा।",
+      "fairnessTitle": "उचित नीति",
+      "fairnessBody": "विज्ञापन डाला मुफ्त, देखा मुफ्त। जब तू व्यापार करै के तय करा तब्बै भुगतान।",
+      "transparencyTitle": "पारदर्शिता",
+      "transparencyBody": "साफ़ दाम, साफ़ प्रक्रिया, कौनो छुपा शुल्क नाहीं।",
+      "techTitle": "गाँव के लोगन खातिर बना",
+      "techBody": "धीमे इंटरनेट पे भी चलत बा, सरल भाषा के विकल्प, कम बैटरी मा आसान। तोहार फ़ोन, तोहार भाषा, तोहार व्यापार।",
+      "contactTitle": "संपर्क करा",
+      "contactBody": "कुछ पूछै के बा, कौनो दिक्कत मिली, या साझेदारी करै चाहत बाड़ा? कबहूँ संपर्क करा।"
+    },
+    "privacy": {
+      "title": "गोपनीयता नीति",
+      "lastUpdated": "अंतिम अपडेट: जनवरी 2026",
+      "intro": "तोहार गोपनीयता ज़रूरी बा। इ पेज बतावत बा कि हम का इकट्ठा करत बाटी, कइसे उपयोग करत बाटी, अउर तोहरे पास का विकल्प बा।",
+      "collectTitle": "हम का इकट्ठा करत बाटी",
+      "collectBody": "नाम, फ़ोन नंबर, ईमेल, पता (अगर दिहल हो), अउर विज्ञापन के जानकारी। हम इकर उपयोग सिर्फ़ बाज़ार चलावै खातिर करत बाटी।",
+      "useTitle": "हम तोहार जानकारी कइसे उपयोग करत बाटी",
+      "useBody": "तोहार विज्ञापन खरीदारन का देखावै खातिर, OTP अउर स्वागत संदेश पठावै खातिर, अउर तोहार खाता सुरक्षित रखै खातिर।",
+      "shareTitle": "हम का बाँटत बाटी",
+      "shareBody": "तोहार विज्ञापन के संपर्क नंबर तब्बै दूसर का देखाइ देत बा जब उ खुद देखै के चुनत बाटें। हम तोहार जानकारी कबहूँ नाहीं बेचत।",
+      "rightsTitle": "तोहार अधिकार",
+      "rightsBody": "तू कबहूँ अपन प्रोफ़ाइल बदल सकत बाड़ा, विज्ञापन हटा सकत बाड़ा, या खाता बंद कर सकत बाड़ा। पूरी जानकारी पावै खातिर हमका ईमेल करा।",
+      "contactTitle": "संपर्क",
+      "contactBody": "इ नीति पे सवाल? support@ruralcompany.in पे ईमेल करा।"
+    },
+    "terms": {
+      "title": "नियम अउर शर्त",
+      "lastUpdated": "अंतिम अपडेट: जनवरी 2026",
+      "intro": "Rural Company के उपयोग करि के तू निम्नलिखित से सहमत बाड़ा।",
+      "useTitle": "उचित उपयोग",
+      "useBody": "सिर्फ़ असली पशु डाला जो सच मा तोहार बाटें। विवरण मा सच्चाई राखा। कौनो स्पैम, झूठा विज्ञापन या धोखा नाहीं।",
+      "paymentsTitle": "भुगतान",
+      "paymentsBody": "कुछ सुविधा (जइसे संपर्क देखा, विज्ञापन विशेष बनावा) खातिर मुफ्त सीमा के बाद भुगतान ज़रूरी बा। सब भुगतान Razorpay से होत बा।",
+      "responsibilityTitle": "खरीदार अउर बेचवइया के ज़िम्मेदारी",
+      "responsibilityBody": "Rural Company एक बाज़ार बा। हम पशुअन के शारीरिक जाँच नाहीं करत। लेन-देन से पहिले हमेशा जाँचा।",
+      "terminationTitle": "खाता बंद करा",
+      "terminationBody": "हम वो खाता का निलंबित कर सकत बाटी जो इ नियम तोड़त बा। तू कबहूँ अपन खाता बंद कर सकत बाड़ा।",
+      "changesTitle": "बदलाव",
+      "changesBody": "हम कबहूँ-कबहूँ इ नियम अपडेट कर सकत बाटी। बड़ बदलाव के सूचना तोहका दीहल जाइ।"
+    }
+  }
+}
