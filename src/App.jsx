@@ -12,6 +12,8 @@ import Profile from "./pages/Profile";
 import AnimalDetail from "./pages/AnimalDetails";
 import MyAnimals from "./pages/myanimal";
 import RequestsPage from "./pages/requestpages";
+import Dashboard from "./pages/Dashboard";
+import TransactionHistory from "./pages/TransactionHistory";
 
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
@@ -60,6 +62,10 @@ function App() {
               {/* Requests */}
               <Route path="/requests" element={<RequestsPage />} />
               <Route path="/history" element={<RequestsPage />} />
+
+              {/* Dashboard & Transactions */}
+              <Route path="/dashboard"    element={<Dashboard />} />
+              <Route path="/transactions" element={<TransactionHistory />} />
 
               {/* Authentication */}
               <Route path="/login" element={<Login />} />

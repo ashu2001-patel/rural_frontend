@@ -156,6 +156,7 @@ const Navbar = () => {
           <Link to="/" className={`nav-link ${isActive("/") ? "active" : ""}`}>Animals</Link>
           {user && (
             <>
+              <Link to="/dashboard" className={`nav-link ${isActive("/dashboard") ? "active" : ""}`}>Dashboard</Link>
               <Link to="/my-listings" className={`nav-link ${isActive("/my-listings") ? "active" : ""}`}>My Listings</Link>
               <Link to="/requests" className={`nav-link ${isActive("/requests") ? "active" : ""}`}>Requests</Link>
             </>
@@ -200,6 +201,9 @@ const Navbar = () => {
             </div>
 
             <div className="pd-section-title">My Account</div>
+            <Link to="/dashboard" className="pd-item" onClick={close}>
+              <div className="pd-icon amber">📊</div> Dashboard
+            </Link>
             <Link to="/profile" className="pd-item" onClick={close}>
               <div className="pd-icon green">👤</div> Profile
             </Link>
@@ -208,6 +212,9 @@ const Navbar = () => {
             </Link>
             <Link to="/requests" className="pd-item" onClick={close}>
               <div className="pd-icon amber">📥</div> Requests
+            </Link>
+            <Link to="/transactions" className="pd-item" onClick={close}>
+              <div className="pd-icon amber">💳</div> Transaction History
             </Link>
 
             <div className="pd-divider" />
@@ -235,8 +242,10 @@ const Navbar = () => {
 
         {user && (
           <>
+            <Link to="/dashboard" className={`nm-item ${isActive("/dashboard") ? "active" : ""}`} onClick={close}>📊 Dashboard</Link>
             <Link to="/my-listings" className={`nm-item ${isActive("/my-listings") ? "active" : ""}`} onClick={close}>📋 My Listings</Link>
             <Link to="/requests" className={`nm-item ${isActive("/requests") ? "active" : ""}`} onClick={close}>📥 Requests</Link>
+            <Link to="/transactions" className={`nm-item ${isActive("/transactions") ? "active" : ""}`} onClick={close}>💳 Transactions</Link>
             <Link to="/profile" className={`nm-item ${isActive("/profile") ? "active" : ""}`} onClick={close}>👤 Profile</Link>
           </>
         )}
